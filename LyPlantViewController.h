@@ -8,12 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "DetailViewController.h"
+#import "EGORefreshTableHeaderView.h"
 @interface LyPlantViewController : UITableViewController
 {
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _reloading;
     @public
      NSMutableArray *listOfItems;
      NSMutableData *responseData;
 }
+
+- (void)reloadTableViewDataSource;
+- (void)doneLoadingTableViewData;
 @property (retain, nonatomic) IBOutlet UITableView *m_oTableView;
 
 @end

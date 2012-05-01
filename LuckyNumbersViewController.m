@@ -38,6 +38,8 @@
 	label.text = [NSString stringWithFormat:@"Connection failed: %@", [error description]];
 }
 
+
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {		
 	[connection release];
 	
@@ -57,7 +59,7 @@
         id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
         id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
         NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
-        [lpStrGroupNo appendFormat:@"%@-%@-%@-%@",logroupid,locompanyid,lofactoryid,loplantid];
+        [lpStrGroupNo appendFormat:@"%@-%@-%@",logroupid,locompanyid,lofactoryid];
         NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
         lpResult  = [[lpResult
                   stringByReplacingOccurrencesOfString:@"+" withString:@" "]
@@ -68,22 +70,8 @@
 	if (listOfItems == nil)
 		label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
 	else {		
-		NSMutableString *text = [NSMutableString stringWithString:@"Lucky numbers:\n"];
 		
-		for (int i = 0; i < [listOfItems count]; i++) 
-		{
-            id lpStr = [listOfItems objectAtIndex:i];
-            
-            
-            
-           [text appendFormat:@"%@\n", [listOfItems objectAtIndex:i]]; 
-            
-            
-        }
 
-		text  = [[text
-                                                        stringByReplacingOccurrencesOfString:@"+" withString:@" "]
-                                                       stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         self.m_oActivityProgressbar.hidesWhenStopped = TRUE;
         label.text = @"";
