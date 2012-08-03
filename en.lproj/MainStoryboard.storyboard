@@ -34,11 +34,11 @@
             </objects>
             <point key="canvasLocation" x="788" y="-317"/>
         </scene>
-        <!--Table View Controller - Title-->
+        <!--Detail View Controller - Title-->
         <scene sceneID="Lfc-E0-kB7">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BaP-wx-00t" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="N98-1c-TBu" sceneMemberID="viewController">
+                <tableViewController id="N98-1c-TBu" customClass="DetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="tx0-X6-gq3">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -132,6 +132,9 @@
         <image name="Default.png" width="267" height="400"/>
     </resources>
     <classes>
+        <class className="DetailViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DetailViewController.h"/>
+        </class>
         <class className="LYNVController" superclassName="UINavigationController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYNVController.h"/>
         </class>

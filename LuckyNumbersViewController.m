@@ -68,8 +68,12 @@
     }
 	
 	if (listOfItems == nil)
-		label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
-	else {		
+	{
+        
+        label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
+    }
+	else
+    {
 		
 
         

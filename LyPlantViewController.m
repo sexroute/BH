@@ -265,7 +265,8 @@
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{ 
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
     NSInteger row = indexPath.row;
 	
     DetailViewController * detailViewController = [[DetailViewController alloc] initWithNibName:nil  bundle:nil]; 
