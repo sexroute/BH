@@ -16,6 +16,7 @@
     @public
      NSMutableArray *listOfItems;
      NSMutableData *responseData;
+
 }
 
 - (void)reloadTableViewDataSource;

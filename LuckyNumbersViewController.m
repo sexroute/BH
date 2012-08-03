@@ -90,13 +90,11 @@
             
             [self->m_pPlantViewController->listOfItems retain];
             
-            [self presentViewController:self.m_pNavViewController animated:NO completion:nil];
+            [self presentViewController:self.m_pNavViewController animated:YES completion:nil];
             [self.m_pNavViewController pushViewController:self->m_pPlantViewController animated:NO];
              
         }
-        
 
-;
 	}
 }
 

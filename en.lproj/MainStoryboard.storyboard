@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11D50d" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="S93-Zd-DNF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2549" systemVersion="12A269" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="S93-Zd-DNF">
     <dependencies>
         <deployment defaultVersion="1296" identifier="iOS"/>
-        <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1498"/>
     </dependencies>
     <scenes>
         <!--Ly Plant View Controller - 设备列表-->
@@ -35,7 +34,7 @@
             </objects>
             <point key="canvasLocation" x="788" y="-317"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Table View Controller - Title-->
         <scene sceneID="Lfc-E0-kB7">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BaP-wx-00t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -61,7 +60,9 @@
                             <outlet property="delegate" destination="N98-1c-TBu" id="kVC-Co-I9H"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Mhv-T0-IKE"/>
+                    <navigationItem key="navigationItem" title="Title" id="iUC-vP-nLu">
+                        <barButtonItem key="rightBarButtonItem" title="测点列表" id="egC-BR-q88"/>
+                    </navigationItem>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="1350" y="-317"/>

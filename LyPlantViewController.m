@@ -9,6 +9,7 @@
 #import "LyPlantViewController.h"
 #import "DetailViewController.h"
 #include "LYCellviewCell.h"
+#import "JSON/JSON.h"
 
 @interface LyPlantViewController ()
 
@@ -32,6 +33,77 @@
     }
     return self;
 }
+
+- (void) doLoadData
+{
+    responseData = [[NSMutableData data] retain];		
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bhxz808.3322.org:8090/xapi/alarm/gethierarchy/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%E5%A4%A7%E5%BA%86%E7%9F%B3%E5%8C%96&factoryid=%E5%8C%96%E5%B7%A5%E4%B8%80%E5%8E%82&setid=&plantid=EC1301&pointname=2H&confirmtype=1&password="]];
+	[[NSURLConnection alloc] initWithRequest:request delegate:self];			
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+	[responseData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    
+    [self doneLoadingTableViewData];  
+}
+
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {		
+	[connection release];
+	
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	[responseData release];
+    
+	//NSLog(@"%s",[responseString2 cString] );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+    
+    NSMutableArray * lpListOfItems = [json objectWithString:responseString error:&error];
+    
+    if (nil!=lpListOfItems) 
+    {
+        if (nil!=self->listOfItems) 
+        {
+            [self->listOfItems release];
+        }
+        
+        
+        self->listOfItems = lpListOfItems;
+        
+        [self->listOfItems retain];
+        
+        [responseString release];	
+ #ifdef DEBUG       
+        for (int i=0;i<[listOfItems count];i++) 
+        {
+            id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
+            id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"]; 
+            id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
+            id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
+            NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
+            [lpStrGroupNo appendFormat:@"%@-%@-%@",logroupid,locompanyid,lofactoryid];
+            NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
+            lpResult  = [[lpResult
+                          stringByReplacingOccurrencesOfString:@"+" withString:@" "]
+                         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSLog(@"%@",lpResult);
+        }
+#endif
+        
+        [self.m_oTableView reloadData];
+    }
+    
+    [self doneLoadingTableViewData];  
+}
+
 
 - (void)viewDidLoad
 {
@@ -88,7 +160,7 @@
 {
 
        
-    return 110;
+    return 100;
         
 
 }
@@ -122,7 +194,7 @@
     id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
     id losetid = [[listOfItems objectAtIndex:i] objectForKey:@"setid"];
     id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
-    id loRpm =[[listOfItems objectAtIndex:i] objectForKey:@"rev1"]; 
+    id loRpm =[[listOfItems objectAtIndex:i] objectForKey:@"rev"]; 
     id loAlarmStatus = [[listOfItems objectAtIndex:i] objectForKey:@"alarm_status"];
     id loStopStatus = [[listOfItems objectAtIndex:i] objectForKey:@"stop_status"];
     NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@""];
@@ -137,7 +209,7 @@
 
         if(!cell)
         {
-            
+            //加载自定义表格
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"cell" owner:nil options:nil];
             
             for(id currentObject in topLevelObjects)
@@ -149,13 +221,23 @@
                     cell.m_plblOrg.text = lpResult;
                     [cell.m_plblOrg setNumberOfLines:0];
                     [cell.m_plblOrg sizeToFit];
-                    cell.m_plblRpm.text = [self GetStringFromID:loRpm];
+                    NSString * lpStreRpm = [self GetStringFromID:loRpm];
+                    int lnValueRpm = [lpStreRpm integerValue];
+                    if (lnValueRpm<0) {
+                        lpStreRpm = [[NSString alloc] initWithUTF8String:"0"];
+                        cell.m_plblRpm.text = lpStreRpm;
+                    }else {
+                        cell.m_plblRpm.text = [self GetStringFromID:loRpm];
+                    }
+                    
                     cell.m_plblRpm.textAlignment = UITextAlignmentRight;
                     NSString * lpAlarmStatus = [self GetStringFromID:loAlarmStatus];
                     NSInteger lnAlarmStatus = [lpAlarmStatus integerValue];
                     NSString  * lpStopStatus = [self GetStringFromID:loStopStatus];
                     NSInteger lnStopStatus = [lpStopStatus integerValue];
+                    #ifdef DEBUG 
                     NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
+                    #endif
                     if (nil != lpAlarmStatus) {
                         if (2 == lnAlarmStatus) {
                             cell.m_pImgStatus.backgroundColor = [[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1];
@@ -265,6 +347,7 @@
     
     //  should be calling your tableviews data source model to reload
     //  put here just for demo
+    [self doLoadData];
     _reloading = YES;
     
 }
@@ -272,6 +355,7 @@
 - (void)doneLoadingTableViewData{
     
     //  model should call this when its done loading
+    
     _reloading = NO;
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     
@@ -298,7 +382,7 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
     
     [self reloadTableViewDataSource];
-    [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+    //[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
     
 }
 
