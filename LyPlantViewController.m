@@ -265,17 +265,19 @@
     return cell;
 }
 
+
+
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
-	
-    DetailViewController * detailViewController = [[DetailViewController alloc] initWithNibName:nil  bundle:nil]; 
-    
-    int i= indexPath.row;
-    
-    detailViewController.m_pData = [listOfItems objectAtIndex:i];
 
-		[self.navigationController pushViewController:detailViewController animated:YES]; 	
+//    NSInteger row = indexPath.row;
+//    DetailViewController * detailViewController = [[DetailViewController alloc] initWithNibName:nil  bundle:nil];
+//    
+//    int i= indexPath.row;
+//    
+//    detailViewController.m_pData = [listOfItems objectAtIndex:i];
+//
+//	[self.navigationController pushViewController:detailViewController animated:YES]; 	
 }
 
 /*
@@ -322,16 +324,37 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
+//    [self performSegueWithIdentifier: @"1" sender: self];
+//    return;
+//1.load from storyboard
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                                             bundle: nil];
     
-     DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
-    
-     int i= indexPath.row;
-    
-     detailViewController.m_pData = [listOfItems objectAtIndex:i];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
+    DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
+                                                       instantiateViewControllerWithIdentifier: @"DetailView"];
+    int i= indexPath.row;
+    detailViewController.m_pData = [listOfItems objectAtIndex:i];
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    return;
+//2.load from xib
+//    DetailViewController *detailViewController
+//    = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
+//    int i= indexPath.row;    
+//    detailViewController.m_pData = [listOfItems objectAtIndex:i];
+//    [self.navigationController pushViewController:detailViewController animated:YES];
+//    
+//    [detailViewController release];
+//    return;
+//3.load by manual
+//    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
+//     
+//    int i= indexPath.row;
+//    
+//     detailViewController.m_pData = [listOfItems objectAtIndex:i];
+//     // ...
+//     // Pass the selected object to the new view controller.
+//     [self.navigationController pushViewController:detailViewController animated:YES];
+//     [detailViewController release];
      
 }
 
@@ -397,5 +420,14 @@
     
     return [NSDate date]; // should return date data source was last changed
     
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    //    NSString *Title;
+    NSLog(@"%@",[segue identifier]);
+    if ([[segue identifier] isEqualToString:@"ShowDetail"])
+    {        
+        NSLog(@"%@",[segue identifier]);
+    }
 }
 @end

@@ -9,46 +9,46 @@
         <scene sceneID="r4E-2N-pna">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dBC-f5-NNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="Jq2-v1-unc" customClass="LyPlantViewController" sceneMemberID="viewController">
+                <tableViewController modalTransitionStyle="flipHorizontal" id="Jq2-v1-unc" customClass="LyPlantViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="oJe-74-gSC">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="n1U-Lt-umU">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="n1U-Lt-umU">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <connections>
+                                    <segue destination="N98-1c-TBu" kind="push" identifier="1" id="CxW-c4-qOp"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="设备列表" id="wc9-Bx-2kB"/>
-                    <connections>
-                        <segue destination="N98-1c-TBu" kind="push" id="sbL-aa-4gd"/>
-                    </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="788" y="-317"/>
         </scene>
-        <!--Detail View Controller - Title-->
+        <!--DetailViewController-->
         <scene sceneID="Lfc-E0-kB7">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BaP-wx-00t" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="N98-1c-TBu" customClass="DetailViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DetailView" title="DetailView" id="N98-1c-TBu" userLabel="DetailViewController" customClass="DetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="tx0-X6-gq3">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" id="r0Y-0W-8dZ">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" id="r0Y-0W-8dZ">
                                 <rect key="frame" x="0.0" y="46" width="320" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                    <rect key="frame" x="10" y="1" width="280" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
@@ -60,12 +60,105 @@
                             <outlet property="delegate" destination="N98-1c-TBu" id="kVC-Co-I9H"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="iUC-vP-nLu">
-                        <barButtonItem key="rightBarButtonItem" title="测点列表" id="egC-BR-q88"/>
+                    <navigationItem key="navigationItem" title="设备信息" id="iUC-vP-nLu">
+                        <barButtonItem key="rightBarButtonItem" title="测点列表" id="egC-BR-q88">
+                            <connections>
+                                <segue destination="UYf-5s-x4D" kind="push" identifier="SegueToChann" id="KJZ-ta-weY"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="1350" y="-317"/>
+            <point key="canvasLocation" x="1256" y="-317"/>
+        </scene>
+        <!--Chann View Controller - ChannViewController-->
+        <scene sceneID="5Qu-lv-oI9">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Od-K8-qfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController storyboardIdentifier="ChannViewController" title="ChannViewController" id="UYf-5s-x4D" customClass="LYChannViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="onl-Za-Fc2">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <activityIndicatorView key="tableFooterView" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="whiteLarge" id="LbO-OV-Uuy">
+                            <rect key="frame" x="0.0" y="102" width="320" height="37"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="10" textLabel="u7S-Ml-poL" detailTextLabel="qRM-g6-S3C" style="IBUITableViewCellStyleValue1" id="Scc-Hs-b5k">
+                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="10" y="1" width="280" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u7S-Ml-poL">
+                                            <rect key="frame" x="10" y="11" width="35" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qRM-g6-S3C">
+                                            <rect key="frame" x="226" y="11" width="44" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.2196078431372549" green="0.32941176470588235" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <segue destination="7LA-7R-VjG" kind="push" identifier="ChannInfo" id="xd7-OK-2w8"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="UYf-5s-x4D" id="8jZ-Rh-TRc"/>
+                            <outlet property="delegate" destination="UYf-5s-x4D" id="uUc-oB-IAe"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="测点列表" id="R4C-dq-Vhi"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="m_pProgressBar" destination="LbO-OV-Uuy" id="YBT-4Y-9US"/>
+                    </connections>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="1707" y="-317"/>
+        </scene>
+        <!--Chann Info View Controller - ChannInfo-->
+        <scene sceneID="S5f-Mt-XCI">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p0M-Mz-r6S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController storyboardIdentifier="ChannInfo" title="ChannInfo" id="7LA-7R-VjG" customClass="LYChannInfoViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="uoo-QB-BJj">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="BII-bC-ZpB">
+                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="7LA-7R-VjG" id="zK5-rF-bYc"/>
+                            <outlet property="delegate" destination="7LA-7R-VjG" id="6X5-8n-Igo"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="测点信息" id="EM4-5B-OxK">
+                        <barButtonItem key="rightBarButtonItem" title="波形/频谱" id="Q1K-sK-l2u"/>
+                    </navigationItem>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="2199" y="-317"/>
         </scene>
         <!--Controller-->
         <scene sceneID="M70-Xz-1Q2">
@@ -131,29 +224,6 @@
     <resources>
         <image name="Default.png" width="267" height="400"/>
     </resources>
-    <classes>
-        <class className="DetailViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DetailViewController.h"/>
-        </class>
-        <class className="LYNVController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYNVController.h"/>
-        </class>
-        <class className="LuckyNumbersViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LuckyNumbersViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="m_oActivityProgressbar" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="m_pNavViewController" candidateClass="LYNVController"/>
-            </relationships>
-        </class>
-        <class className="LyPlantViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LyPlantViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

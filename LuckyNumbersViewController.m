@@ -86,16 +86,13 @@
         //2. load view
         if (nil == self->m_pPlantViewController) 
         {
-            self->m_pPlantViewController = [[[LyPlantViewController alloc] init]autorelease];
             
+            self->m_pPlantViewController = [[[LyPlantViewController alloc] init]autorelease];            
             self.m_pNavViewController = [[[LYNVController alloc]init] autorelease];
-            
             self->m_pPlantViewController->listOfItems = self->listOfItems;
-            
             [self->m_pPlantViewController->listOfItems retain];
-            
             [self presentViewController:self.m_pNavViewController animated:YES completion:nil];
-            [self.m_pNavViewController pushViewController:self->m_pPlantViewController animated:NO];
+            [self.m_pNavViewController pushViewController:self->m_pPlantViewController animated:YES];
              
         }
 
