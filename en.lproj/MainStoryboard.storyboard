@@ -30,7 +30,18 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="设备列表" id="wc9-Bx-2kB"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="1oq-xY-pnt" id="md2-FM-bS6"/>
+                    </connections>
                 </tableViewController>
+                <searchDisplayController id="1oq-xY-pnt">
+                    <connections>
+                        <outlet property="delegate" destination="Jq2-v1-unc" id="SWj-Bf-s8P"/>
+                        <outlet property="searchContentsController" destination="Jq2-v1-unc" id="Z14-K8-QXA"/>
+                        <outlet property="searchResultsDataSource" destination="Jq2-v1-unc" id="zu6-dg-hJ9"/>
+                        <outlet property="searchResultsDelegate" destination="Jq2-v1-unc" id="wZV-Qs-dbr"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="788" y="-317"/>
         </scene>
@@ -128,6 +139,40 @@
             </objects>
             <point key="canvasLocation" x="1707" y="-317"/>
         </scene>
+        <!--Wave View Controller-->
+        <scene sceneID="JJF-si-T13">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MSS-Hq-l2a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="eE5-jO-Msr" customClass="LYWaveViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="y8b-aQ-e15">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="1fB-Y1-Y6I">
+                                <rect key="frame" x="0.0" y="372" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="波形 | 频谱" width="96" id="vAe-we-Njf"/>
+                                    <barButtonItem title="历史 | 实时" width="95" id="qwj-g9-hYP"/>
+                                    <barButtonItem title="停止|刷新" width="92" id="z6q-mJ-WUi"/>
+                                </items>
+                            </toolbar>
+                            <view contentMode="scaleToFill" id="2a8-96-jPV">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="nKo-wh-J0n"/>
+                    <connections>
+                        <outlet property="m_pChartViewParent" destination="2a8-96-jPV" id="hRD-PW-MLb"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2655" y="-312"/>
+        </scene>
         <!--Chann Info View Controller - ChannInfo-->
         <scene sceneID="S5f-Mt-XCI">
             <objects>
@@ -154,7 +199,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="测点信息" id="EM4-5B-OxK">
-                        <barButtonItem key="rightBarButtonItem" title="波形/频谱" id="Q1K-sK-l2u"/>
+                        <barButtonItem key="rightBarButtonItem" title="波形/频谱" id="Q1K-sK-l2u">
+                            <connections>
+                                <segue destination="eE5-jO-Msr" kind="push" id="8Rz-2W-X7O"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
             </objects>
@@ -224,6 +273,44 @@
     <resources>
         <image name="Default.png" width="267" height="400"/>
     </resources>
+    <classes>
+        <class className="DetailViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DetailViewController.h"/>
+        </class>
+        <class className="LYChannInfoViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChannInfoViewController.h"/>
+        </class>
+        <class className="LYChannViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChannViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="m_pProgressBar" candidateClass="UIActivityIndicatorView"/>
+            </relationships>
+        </class>
+        <class className="LYNVController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYNVController.h"/>
+        </class>
+        <class className="LYWaveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="LuckyNumbersViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LuckyNumbersViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_oActivityProgressbar" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="m_pNavViewController" candidateClass="LYNVController"/>
+            </relationships>
+        </class>
+        <class className="LyPlantViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LyPlantViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
