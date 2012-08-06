@@ -8,7 +8,7 @@
 #import "CorePlot-CocoaTouch.h"
 #import "CPTGraphHostingView.h"
 
-@interface LYChartView : UIView<CPTPlotDataSource>
+@interface LYChartView : UITableViewController<CPTPlotDataSource>
 {
     CPTXYGraph                  *graph;             //画板
     CPTScatterPlot              *dataSourceLinePlot;//线
@@ -17,10 +17,22 @@
     int                         j;
     int                         r;
     UIView                      * m_pParent;
+    NSMutableData               *responseData;
+    NSString * m_pStrGroup;
+    NSString * m_pStrCompany;
+    NSString * m_pStrFactory;
+    NSString * m_pStrChann;
+    NSString * m_pStrPlant;
+    NSMutableArray *listOfItems;
 }
 
 @property (retain, nonatomic) NSMutableArray *dataForPlot1;
 @property (retain, nonatomic) UIView *m_pParent;
+@property (retain, nonatomic) NSString * m_pStrGroup;
+@property (retain, nonatomic) NSString * m_pStrCompany;
+@property (retain, nonatomic) NSString * m_pStrFactory;
+@property (retain, nonatomic) NSString * m_pStrChann;
+@property (retain, nonatomic) NSString * m_pStrPlant;
 -(void) initGraph;
 
 

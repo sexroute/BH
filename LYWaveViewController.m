@@ -16,6 +16,11 @@
 @synthesize hostView;
 @synthesize m_pChartViewParent;
 
+@synthesize m_pStrGroup;
+@synthesize m_pStrCompany;
+@synthesize m_pStrFactory;
+@synthesize m_pStrChann;
+@synthesize m_pStrPlant;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,6 +38,10 @@
     self.hostView = [[LYChartView alloc] init];
     
     //self.hostView.bounds = self.m_pChartViewParent.bounds;
+    self.hostView.m_pStrCompany = self.m_pStrCompany;
+    self.hostView.m_pStrFactory = self.m_pStrFactory;
+    self.hostView.m_pStrPlant = self.m_pStrPlant;
+    self.hostView.m_pStrChann = self.m_pStrChann;
     self.hostView.m_pParent = self.view;
     [self.hostView initGraph];
     

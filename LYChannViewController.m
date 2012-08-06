@@ -141,8 +141,8 @@
            
         }
 	}
-    [responseString release];
-    [connection release];
+   // [responseString release];
+   // [connection release];
     [self.tableView reloadData];
     
 }
@@ -294,9 +294,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-                                                             bundle: nil];
-    
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+//                                                             bundle: nil];
+    UIStoryboard *mainStoryboard = self.storyboard;
     LYChannInfoViewController *ChanninfoDetailViewController = (LYChannInfoViewController*)[mainStoryboard
                                                                          instantiateViewControllerWithIdentifier: @"ChannInfo"];
     int i= indexPath.row;
@@ -315,7 +315,11 @@
         default:
             break;
     }
+    ChanninfoDetailViewController.m_pStrCompany = self.m_pStrCompany;
+    ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
+    ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
     ChanninfoDetailViewController.m_pData = loObj;
+    NSLog(@"test:123%@",self.m_pStrCompany);
     [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
 }
 

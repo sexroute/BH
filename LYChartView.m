@@ -7,12 +7,17 @@
 //
 
 #import "LYChartView.h"
-
+#import "JSON/JSON.h"
 @implementation LYChartView
 @synthesize m_pParent;
-
+@synthesize m_pStrGroup;
+@synthesize m_pStrCompany;
+@synthesize m_pStrFactory;
+@synthesize m_pStrChann;
+@synthesize m_pStrPlant;
 
 @synthesize dataForPlot1;
+
 
 
 // I added the NSLog to see if these get called, but they don't seem to get called!
@@ -47,8 +52,8 @@
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = NO;
     
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(1024.0)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-50.0) length:CPTDecimalFromFloat(100.0)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(2048)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-10.0) length:CPTDecimalFromFloat(20.0)];
     
     //设置坐标刻度大小
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *) graph.axisSet ;
@@ -98,14 +103,15 @@
     dataForPlot1 = [[NSMutableArray alloc] init];
     j = 200;
     r = 0;
-    timer1 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(dataOpt) userInfo:nil repeats:YES];
+    //timer1 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(dataOpt) userInfo:nil repeats:YES];
     //[timer1 fire];
     [self initData];
+    [self LoadDataFromMiddleWare];
     [graph reloadData];
 }
 - (void) initData
 {
-    //return;
+    return;
     double ldblPI = 3.1415926535;
     for (int i=0; i<1024; i++)
     {
@@ -116,15 +122,113 @@
         [dataForPlot1 insertObject:point1 atIndex:0];
     }
 }
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+	[responseData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+	//弹出网络错误对话框
+    NSLog(@"%@",error.description);
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+	
+	//[self.m_pProgressBar stopAnimating];
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	[responseData release];
+    
+	//NSLog(@"%s",[responseString2 cString] );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self->listOfItems = [json objectWithString:responseString error:&error];
+    
+  
+        id wave = [listOfItems objectForKey:@"wave"];
+        id freq = [listOfItems objectForKey:@"freq"];
+        id wave_len = [listOfItems objectForKey:@"wave_len"];
+    int lnWave_Len = [(NSNumber *)wave_len intValue];
+    short binChars [lnWave_Len/2];
+       // NSLog(@"%@ | %@",wave,freq);
+        
+     char *hexChars = [wave UTF8String];
+     NSUInteger hexLen = strlen(hexChars);
+     char *nextHex = hexChars;
+    char *nextChar = binChars;
+    char byte_chars[3] = {'\0','\0','\0'};
+    for (NSUInteger i = 0; i < lnWave_Len/2 - 1; i++)
+    {
+       
+        byte_chars[0] = *(nextHex+i*4+3);
+        byte_chars[1] = *(nextHex+i*4+2);
+       *(nextChar+i*2+1) = strtol(byte_chars, NULL, 16);
+        
+        byte_chars[0] = *(nextHex+i*4+1);
+        byte_chars[1] = *(nextHex+i*4+0);
+        *(nextChar+i*2)= strtol(byte_chars, NULL, 16);
+        
+        //NSLog(@"%d",binChars[i]);
+               
+    }
+    
+    int lnMaxPoint = 1024;
+    
+    if (lnMaxPoint > lnWave_Len/2)
+    {
+        lnMaxPoint = lnWave_Len/2;
+    }
+    
+    int lnInterval = (lnWave_Len/2/lnMaxPoint);
+    
+    int lnRealData[lnMaxPoint];
+    
+//    for (int i=0;i< lnMaxPoint; i++)
+//    {
+//        
+//        for (int j=i; j<i+lnInterval; j++)
+//        {
+//            
+//        }
+//    }
+//    
+    
+    
+    for (int i=0; i<2048; i++)
+    {
+        double ldblValue = binChars[i]*1.0f/10.0f;
+        //NSLog(@"%f",ldblValue);
+        NSString *xp = [NSString stringWithFormat:@"%d",i];
+        NSString *yp = [NSString stringWithFormat:@"%f",(ldblValue)];
+        NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
+        [dataForPlot1 insertObject:point1 atIndex:0];
+    }
+	
+	if (listOfItems == nil)
+	{
+        //弹出网络错误对话框
+    }
+	else
+    {
+ 	}
+    [responseString release];
+    [connection release];
+    [graph reloadData];
+    
+}
+
 - (void) dataOpt
 {
     //[graph reloadData];
-    return;
+    //return;
     //添加随机数
     if ([dataSourceLinePlot.identifier isEqual:@"Green Plot"])
     {
         NSString *xp = [NSString stringWithFormat:@"%d",j];
-        double lfdata = sin((double)j/200.0*2*3.1415926)*50;
+        double lfdata = sin((double)j/1024.0*2*3.1415926)*50;
         NSString *yp = [NSString stringWithFormat:@"%f",(lfdata)];
         NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
         [dataForPlot1 insertObject:point1 atIndex:0];
@@ -150,6 +254,21 @@
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
     return [dataForPlot1 count];
+}
+
+- (void) LoadDataFromMiddleWare
+{
+    if(nil != responseData)
+    {
+        [responseData release];
+        responseData = nil;
+    }
+    responseData = [[NSMutableData data] retain];
+//    NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%@&factoryid=%@&plantid=%@&channid=%@",self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
+    NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%%E5%%A4%%A7%%E5%%BA%%86%%E7%%9F%%B3%%E5%%8C%%96&factoryid=%%E5%%8C%%96%%E5%%B7%%A5%%E4%%B8%%80%%E5%%8E%%82&plantid=EC1301&channid=1H%@",@""];
+    NSLog(@"%@",lpUrl);
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:lpUrl]];
+	[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index

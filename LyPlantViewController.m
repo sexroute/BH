@@ -18,6 +18,7 @@
 @implementation LyPlantViewController
 @synthesize m_oTableView;
 
+
 - (void)loadView {
     [super loadView];
      self.m_oTableView.delegate = self;
@@ -131,6 +132,7 @@
 
 - (void)viewDidUnload
 {
+    [self setM_oSearchBar:nil];
     [super viewDidUnload];
     _refreshHeaderView=nil;
     // Release any retained subviews of the main view.
@@ -333,6 +335,7 @@
     DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
                                                        instantiateViewControllerWithIdentifier: @"DetailView"];
     int i= indexPath.row;
+    
     detailViewController.m_pData = [listOfItems objectAtIndex:i];
     [self.navigationController pushViewController:detailViewController animated:YES];
     return;
@@ -363,6 +366,7 @@
 - (void)dealloc {
     _refreshHeaderView = nil;
     [m_oTableView release];
+
     [super dealloc];
     
 }

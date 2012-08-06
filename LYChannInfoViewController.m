@@ -7,7 +7,7 @@
 //
 
 #import "LYChannInfoViewController.h"
-
+#import "LYWaveViewController.h"
 
 @interface LYChannInfoViewController ()
 
@@ -15,6 +15,11 @@
 
 @implementation LYChannInfoViewController
 @synthesize m_pData;
+@synthesize m_pStrGroup;
+@synthesize m_pStrCompany;
+@synthesize m_pStrFactory;
+@synthesize m_pStrChann;
+@synthesize m_pStrPlant;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -126,6 +131,7 @@
                 case 0:
                     lpObj = [self.m_pData objectForKey:@"name"];
                     lpTitle = @"测 点 名";
+                    self.m_pStrChann = lpObj;
                     break;
                 case 1:
                     lpObj = [self.m_pData objectForKey:@"alias_name"];
@@ -322,6 +328,22 @@
 
     return;
 
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    //    NSString *Title;
+    NSLog(@"%@",[segue identifier]);
+    if ([[segue identifier] isEqualToString:@"PushToWave"])
+    {
+        LYWaveViewController * lpChannView = [segue destinationViewController];
+        lpChannView.m_pStrGroup = lpChannView.m_pStrGroup;
+        lpChannView.m_pStrCompany = lpChannView.m_pStrCompany;
+        lpChannView.m_pStrFactory = lpChannView.m_pStrFactory;
+        lpChannView.m_pStrChann = lpChannView.m_pStrChann;
+        lpChannView.m_pStrPlant = lpChannView.m_pStrPlant;
+        NSLog(@"%@",[segue identifier]);
+    }
+    
 }
 
 @end
