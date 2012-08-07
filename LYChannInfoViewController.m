@@ -60,7 +60,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+
     // Return the number of sections.
     return 2;
 }
@@ -82,7 +82,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+
 
     int lnReturnValue = 0;
     switch (section) {
@@ -119,7 +119,7 @@
     
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
         
     }
     id lpObj = nil;
@@ -336,12 +336,12 @@
     if ([[segue identifier] isEqualToString:@"PushToWave"])
     {
         LYWaveViewController * lpChannView = [segue destinationViewController];
-        lpChannView.m_pStrGroup = lpChannView.m_pStrGroup;
-        lpChannView.m_pStrCompany = lpChannView.m_pStrCompany;
-        lpChannView.m_pStrFactory = lpChannView.m_pStrFactory;
-        lpChannView.m_pStrChann = lpChannView.m_pStrChann;
-        lpChannView.m_pStrPlant = lpChannView.m_pStrPlant;
-        NSLog(@"%@",[segue identifier]);
+        lpChannView.m_pStrGroup = self.m_pStrGroup;
+        lpChannView.m_pStrCompany = self.m_pStrCompany;
+        lpChannView.m_pStrFactory = self.m_pStrFactory;
+        lpChannView.m_pStrChann = self.m_pStrChann;
+        lpChannView.m_pStrPlant = self.m_pStrPlant;
+        NSLog(@"%@",lpChannView.m_pStrGroup);
     }
     
 }

@@ -27,6 +27,8 @@
 @synthesize DynChanns;
 @synthesize ProcChanns;
 
+
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -49,6 +51,7 @@
     responseData = [[NSMutableData data] retain];
     NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/pointalarm/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&&operator=&password=&SERVER_TYPE=1&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
     NSLog(@"%@",lpUrl);
+    NSLog(@"%@",[self.m_pStrPlant class]);
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:lpUrl]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
     // Uncomment the following line to preserve selection between presentations.
@@ -73,28 +76,28 @@
 	
 	[self.m_pProgressBar stopAnimating];
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-	[responseData release];
+
     
 	//NSLog(@"%s",[responseString2 cString] );
 	NSError *error;
 	SBJSON *json = [[SBJSON new] autorelease];
 	self->listOfItems = [json objectWithString:responseString error:&error];
 
-    for (int i=0;i<[listOfItems count];i++)
-    {
-        id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
-        id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"];
-        id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
-        id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"];
-        NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
-        [lpStrGroupNo appendFormat:@"%@-%@-%@-%@",logroupid,locompanyid,lofactoryid,loplantid];
-        NSString * lpResult = [lpStrGroupNo substringFromIndex:0];
-        lpResult  = [[lpResult
-                      stringByReplacingOccurrencesOfString:@"+" withString:@" "]
-                     stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSLog(@"%@",lpResult);
-        
-    }
+//    for (int i=0;i<[listOfItems count];i++)
+//    {
+//        id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
+//        id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"];
+//        id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
+//        id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"];
+//        NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
+//        [lpStrGroupNo appendFormat:@"%@-%@-%@-%@",logroupid,locompanyid,lofactoryid,loplantid];
+//        NSString * lpResult = [lpStrGroupNo substringFromIndex:0];
+//        lpResult  = [[lpResult
+//                      stringByReplacingOccurrencesOfString:@"+" withString:@" "]
+//                     stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        NSLog(@"%@",lpResult);
+//        
+//    }
 	
 	if (listOfItems == nil)
 	{
@@ -108,7 +111,7 @@
 
             id loChannName = [[loDatas objectAtIndex:i] objectForKey:@"name"];
             id loChannType = [[loDatas objectAtIndex:i] objectForKey:@"chann_type"];
-            NSLog(@"%@|%@",loChannName,[loDatas objectAtIndex:i]);
+           // NSLog(@"%@|%@",loChannName,[loDatas objectAtIndex:i]);
            
             NSNumber *val = loChannType;
             int lnChannType = [val intValue];
@@ -141,8 +144,9 @@
            
         }
 	}
-   // [responseString release];
-   // [connection release];
+    [responseString release];
+    [responseData release];
+    [connection release];
     [self.tableView reloadData];
     
 }
@@ -186,14 +190,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+
     // Return the number of sections.
     return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+
     // Return the number of rows in the section.
     switch (section) {
         case 0:
@@ -218,8 +222,8 @@
     
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];   
-        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        //cell =
     }
     
     id lpText = nil;
@@ -296,7 +300,9 @@
     // Navigation logic may go here. Create and push another view controller.
 //    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
 //                                                             bundle: nil];
+    
     UIStoryboard *mainStoryboard = self.storyboard;
+
     LYChannInfoViewController *ChanninfoDetailViewController = (LYChannInfoViewController*)[mainStoryboard
                                                                          instantiateViewControllerWithIdentifier: @"ChannInfo"];
     int i= indexPath.row;
@@ -319,7 +325,7 @@
     ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
     ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
     ChanninfoDetailViewController.m_pData = loObj;
-    NSLog(@"test:123%@",self.m_pStrCompany);
+    
     [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
 }
 

@@ -83,20 +83,20 @@
         
         [responseString release];	
  #ifdef DEBUG       
-        for (int i=0;i<[listOfItems count];i++) 
-        {
-            id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
-            id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"]; 
-            id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
-            id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
-            NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
-            [lpStrGroupNo appendFormat:@"%@-%@-%@",logroupid,locompanyid,lofactoryid];
-            NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
-            lpResult  = [[lpResult
-                          stringByReplacingOccurrencesOfString:@"+" withString:@" "]
-                         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            NSLog(@"%@",lpResult);
-        }
+//        for (int i=0;i<[listOfItems count];i++) 
+//        {
+//            id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
+//            id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"]; 
+//            id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
+//            id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
+//            NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
+//            [lpStrGroupNo appendFormat:@"%@-%@-%@",logroupid,locompanyid,lofactoryid];
+//            NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
+//            lpResult  = [[lpResult
+//                          stringByReplacingOccurrencesOfString:@"+" withString:@" "]
+//                         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//            NSLog(@"%@",lpResult);
+//        }
 #endif
         
         [self.m_oTableView reloadData];
@@ -132,7 +132,7 @@
 
 - (void)viewDidUnload
 {
-    [self setM_oSearchBar:nil];
+
     [super viewDidUnload];
     _refreshHeaderView=nil;
     // Release any retained subviews of the main view.
@@ -238,7 +238,7 @@
                     NSString  * lpStopStatus = [self GetStringFromID:loStopStatus];
                     NSInteger lnStopStatus = [lpStopStatus integerValue];
                     #ifdef DEBUG 
-                    NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
+//                    NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
                     #endif
                     if (nil != lpAlarmStatus) {
                         if (2 == lnAlarmStatus) {

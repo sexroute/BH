@@ -8,7 +8,7 @@
 #import "CorePlot-CocoaTouch.h"
 #import "CPTGraphHostingView.h"
 
-@interface LYChartView : UITableViewController<CPTPlotDataSource>
+@interface LYChartView : UIView<CPTPlotDataSource>
 {
     CPTXYGraph                  *graph;             //画板
     CPTScatterPlot              *dataSourceLinePlot;//线

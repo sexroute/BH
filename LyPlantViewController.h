@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DetailViewController.h"
 #import "EGORefreshTableHeaderView.h"
-@interface LyPlantViewController : UITableViewController
+@interface LyPlantViewController : UITableViewController<EGORefreshTableHeaderDelegate>
 {
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;

@@ -35,15 +35,18 @@
 #pragma mark - Chart behavior
 -(void)initPlot {
     
-    self.hostView = [[LYChartView alloc] init];
-    
+    self.hostView = [[[LYChartView alloc] init]autorelease];
+    NSLog(@"%d",hostView.retainCount);
+
     //self.hostView.bounds = self.m_pChartViewParent.bounds;
     self.hostView.m_pStrCompany = self.m_pStrCompany;
     self.hostView.m_pStrFactory = self.m_pStrFactory;
     self.hostView.m_pStrPlant = self.m_pStrPlant;
-    self.hostView.m_pStrChann = self.m_pStrChann;
+    self.hostView.m_pStrChann = [self.m_pStrChann stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     self.hostView.m_pParent = self.view;
     [self.hostView initGraph];
+    NSLog(@"%d",hostView.retainCount);
+
     
 }
 
@@ -71,6 +74,7 @@
 
 - (void)dealloc {
 
+    NSLog(@"%d",hostView.retainCount);
     [hostView release];
     [m_pChartViewParent release];
     [super dealloc];

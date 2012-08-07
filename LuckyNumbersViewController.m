@@ -44,28 +44,29 @@
 	[connection release];
 	
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-	[responseData release];
+	
     
 	//NSLog(@"%s",[responseString2 cString] );
 	NSError *error;
 	SBJSON *json = [[SBJSON new] autorelease];
 	self->listOfItems = [json objectWithString:responseString error:&error];
-	[responseString release];	
+
     
-    for (int i=0;i<[listOfItems count];i++) 
-    {
-        id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
-        id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"]; 
-        id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
-        id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
-        NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
-        [lpStrGroupNo appendFormat:@"%@-%@-%@",logroupid,locompanyid,lofactoryid];
-        NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
-        lpResult  = [[lpResult
-                  stringByReplacingOccurrencesOfString:@"+" withString:@" "]
-                 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSLog(@"%@",lpResult);
-    }
+    
+//    for (int i=0;i<[listOfItems count];i++) 
+//    {
+//        id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
+//        id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"]; 
+//        id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
+//        id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
+//        NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
+//        [lpStrGroupNo appendFormat:@"%@-%@-%@",logroupid,locompanyid,lofactoryid];
+//        NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
+//        lpResult  = [[lpResult
+//                  stringByReplacingOccurrencesOfString:@"+" withString:@" "]
+//                 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        NSLog(@"%@",lpResult);
+//    }
 	
 	if (listOfItems == nil)
 	{
@@ -97,6 +98,8 @@
         }
 
 	}
+    [responseString release];
+    [responseData release];
 }
 
 
