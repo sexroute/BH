@@ -13,6 +13,7 @@
 @end
 
 @implementation LYWaveViewController
+@synthesize m_plotView;
 @synthesize hostView;
 @synthesize m_pChartViewParent;
 
@@ -33,7 +34,8 @@
 }
 
 #pragma mark - Chart behavior
--(void)initPlot {
+-(void)initPlot
+{
     
     self.hostView = [[[LYChartView alloc] init]autorelease];
     NSLog(@"%d",hostView.retainCount);
@@ -43,7 +45,10 @@
     self.hostView.m_pStrFactory = self.m_pStrFactory;
     self.hostView.m_pStrPlant = self.m_pStrPlant;
     self.hostView.m_pStrChann = [self.m_pStrChann stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    self.hostView.m_pParent = self.view;
+//    CGRect loRect =self.m_plotView.bounds;
+//    loRect =CGRectMake(0, 0, 320, 396);
+//    self.m_plotView.bounds = loRect;
+    self.hostView.m_pParent = self.m_plotView;
     [self.hostView initGraph];
     NSLog(@"%d",hostView.retainCount);
 
@@ -63,6 +68,7 @@
 {
     [self setHostView:nil];
     [self setM_pChartViewParent:nil];
+    [self setM_plotView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -77,6 +83,12 @@
     NSLog(@"%d",hostView.retainCount);
     [hostView release];
     [m_pChartViewParent release];
+    [m_plotView release];
     [super dealloc];
+}
+- (IBAction)onFreqPresseD:(UIBarButtonItem *)sender {
+}
+
+- (IBAction)OnWavePressed:(UIBarButtonItem *)sender {
 }
 @end

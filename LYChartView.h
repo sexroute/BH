@@ -11,7 +11,8 @@
 @interface LYChartView : UIView<CPTPlotDataSource>
 {
     CPTXYGraph                  *graph;             //画板
-    CPTScatterPlot              *dataSourceLinePlot;//线
+   CPTScatterPlot              *dataSourceLinePlot;//线
+    //CPTPlot                     *dataSourceLinePlot;
     NSMutableArray              *dataForPlot1;      //坐标数组
     NSTimer                     *timer1;            //定时器
     int                         j;

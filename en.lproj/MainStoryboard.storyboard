@@ -170,13 +170,13 @@
                                 <rect key="frame" x="0.0" y="372" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="波形 | 频谱" width="96" id="vAe-we-Njf"/>
-                                    <barButtonItem title="历史 | 实时" width="95" id="qwj-g9-hYP"/>
+                                    <barButtonItem title="波形" width="96" id="vAe-we-Njf"/>
+                                    <barButtonItem title="频谱" width="95" id="qwj-g9-hYP"/>
                                     <barButtonItem title="停止|刷新" width="92" id="z6q-mJ-WUi"/>
                                 </items>
                             </toolbar>
-                            <view contentMode="scaleToFill" id="2a8-96-jPV">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
+                            <view contentMode="scaleToFill" id="2a8-96-jPV" customClass="LYChartView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -186,6 +186,7 @@
                     <navigationItem key="navigationItem" id="nKo-wh-J0n"/>
                     <connections>
                         <outlet property="m_pChartViewParent" destination="2a8-96-jPV" id="hRD-PW-MLb"/>
+                        <outlet property="m_plotView" destination="2a8-96-jPV" id="jVC-tg-BVD"/>
                     </connections>
                 </viewController>
             </objects>
@@ -304,6 +305,9 @@
                 <relationship kind="outlet" name="m_pProgressBar" candidateClass="UIActivityIndicatorView"/>
             </relationships>
         </class>
+        <class className="LYChartView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChartView.h"/>
+        </class>
         <class className="LYNVController" superclassName="UINavigationController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYNVController.h"/>
         </class>
@@ -311,6 +315,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
+                <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>
         </class>
         <class className="LuckyNumbersViewController" superclassName="UIViewController">

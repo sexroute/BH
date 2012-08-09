@@ -16,6 +16,8 @@
     NSString * m_pStrChann;
     NSString * m_pStrPlant;
 }
+@property (retain, nonatomic) IBOutlet UIView *m_plotView;
+
 
 @property (retain, nonatomic)
   LYChartView  *hostView;

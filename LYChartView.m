@@ -19,6 +19,7 @@
 @synthesize dataForPlot1;
 int g_ResolutionXMax = 210;
 int g_ResolutionYMax = 960;
+int g_DrawMode = 0;//0:波形 1:频谱
 -(void) dealloc
 {
     NSLog(@"%d",self->graph.retainCount);
@@ -141,52 +142,21 @@ int g_ResolutionYMax = 960;
 	//弹出网络错误对话框
     NSLog(@"%@",error.description);
 }
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+- (void)DrawData:(id )wave_data wave_lenx:(int)wave_len maxPoint:(int)anMaxPoint axis_x_max:(double)adblAxisXMax axis_x_delta:(double)adblAxisXDelta
 {
-    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
-
-	//[self.m_pProgressBar stopAnimating];
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-	    
-	NSLog(@"%d",responseData.retainCount );
-	NSError *error;
-	SBJSON *json = [[SBJSON new] autorelease];
-	self->listOfItems = [json objectWithString:responseString error:&error];
-    [responseData release];
-
-    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
+    if (0!= wave_len )
     {
-        [responseString release];
-        [connection release];
-        return;
-    }else
-    {
-        NSLog(@"%@",[self->listOfItems class]);
-    }
-    
-    id wave_len = [((NSDictionary *)self->listOfItems) objectForKey:@"wave_len"];
-    
-    if (nil!= wave_len && [wave_len isKindOfClass:[NSNumber class]])
-    {
-        int lnWave_Len = [(NSNumber *)wave_len intValue];
-        if (lnWave_Len<=0)
-        {
-            [responseString release];
-            [connection release];
-            return;
-        }
-      //  g_ResolutionXMax = lnWave_Len;
-
+        int lnWave_Len = wave_len;
+        
         id wave = [((NSDictionary *)self->listOfItems) objectForKey:@"wave"];
         
         if (nil != wave && [wave isKindOfClass:[NSString class]])
         {
             short binChars [lnWave_Len];
             char *hexChars = (char *)[((NSString *)wave) UTF8String];
-            char *nextHex = hexChars;    
+            char *nextHex = hexChars;
             char byte_chars[5] = {'\0','\0','\0','\0','\0'};
-            int max=0;
+
             for (NSUInteger i = 0; i < lnWave_Len; i++)
             {
                 
@@ -196,17 +166,9 @@ int g_ResolutionYMax = 960;
                 byte_chars[1] = *(nextHex+i*4+3);
                 short lTest = strtol(byte_chars, NULL, 16);
                 binChars[i] = lTest;
-                if(binChars[i]>max)
-                {
-                    max = binChars[i];
-                }
-        
-               // NSLog(@"%d | %d | %s | %d",i,lTest,byte_chars,binChars[i]);
             }
-            
-            NSLog(@"%d ",max);
-            
-            int lnMaxPoint = g_ResolutionXMax;
+                        
+            int lnMaxPoint = anMaxPoint;
             int lnPointNumber = lnWave_Len;
             double ldblAxisMax = 0;
             double ldblAxisMin = 0;
@@ -217,66 +179,40 @@ int g_ResolutionYMax = 960;
             
             
             
-            id eigenvalue = [((NSDictionary *)self->listOfItems) objectForKey:@"eigenvalue"];
-            NSDictionary * lpEigenvalue = nil;
-            
-            if (nil!= eigenvalue && [eigenvalue isKindOfClass:[NSDictionary class]])
-            {
-                lpEigenvalue =(NSDictionary *)eigenvalue;
-            }
-            
-            id lIdSmpFreq = [lpEigenvalue objectForKey:@"SmpFreq"];
-            id lIdSmpNum  = [lpEigenvalue objectForKey:@"SmpNum"];
-            int lnSmpFreq = 0;
-            int lnSmpSum = 0;
-            
-            if (nil != lIdSmpFreq && [lIdSmpFreq isKindOfClass:[NSNumber class]])
-            {
-                lnSmpFreq = [(NSNumber*)lIdSmpFreq intValue];
-            }
-            
-            if (nil != lIdSmpNum && [lIdSmpNum isKindOfClass:[NSNumber class]])
-            {
-                lnSmpSum = [(NSNumber*)lIdSmpNum intValue];
-            }
-
-            double ldblTime = 0.0F;
-            double ldblDeltaTime = 0.0F;
-            if (0!=lnSmpSum)
-            {
-                ldblTime = lnSmpSum*1.0/lnSmpFreq*1.0;
-                ldblDeltaTime = ldblTime/lnMaxPoint;
-            }
-            
-//            if (0!=lnSmpSum)
-//            {
-//                ldblTime = lnSmpSum*1.0/lnSmpFreq*1.0;
-//                ldblDeltaTime = ldblTime/lnWave_Len;
-//            }
-//            Boolean lbOuterCheck = true;
-//            for (int i=0; i<lnWave_Len; i++)
-//            {
-//                double ldbData = binChars[i]*1.0/10.0;
-//                
-//                NSString *xp = [NSString stringWithFormat:@"%f",(i)*ldblDeltaTime];
-//                NSString *yp = [NSString stringWithFormat:@"%f",(ldbData)];
-//                              if (ldblAxisMax<ldbData || lbOuterCheck) {
-//                                  ldblAxisMax = ldbData;
-//                               }
-//                
-//                               if (ldblAxisMin>ldbData || lbOuterCheck) {
-//                                   ldblAxisMin = ldbData;
-//                                                   
-//                               }
-//                NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
-//                [dataForPlot1 insertObject:point1 atIndex:i];
-//                lbOuterCheck = false;
-//
-//            }
-//            
-//            NSLog(@"%f",ldblAxisMax);
-//             NSLog(@"%f",ldblAxisMin);
                         
+            double ldblXAxisMax = adblAxisXMax;
+            double ldblAxisXDelta = adblAxisXDelta;
+
+            
+            //            if (0!=lnSmpSum)
+            //            {
+            //                ldblTime = lnSmpSum*1.0/lnSmpFreq*1.0;
+            //                ldblDeltaTime = ldblTime/lnWave_Len;
+            //            }
+            //            Boolean lbOuterCheck = true;
+            //            for (int i=0; i<lnWave_Len; i++)
+            //            {
+            //                double ldbData = binChars[i]*1.0/10.0;
+            //
+            //                NSString *xp = [NSString stringWithFormat:@"%f",(i)*ldblDeltaTime];
+            //                NSString *yp = [NSString stringWithFormat:@"%f",(ldbData)];
+            //                              if (ldblAxisMax<ldbData || lbOuterCheck) {
+            //                                  ldblAxisMax = ldbData;
+            //                               }
+            //
+            //                               if (ldblAxisMin>ldbData || lbOuterCheck) {
+            //                                   ldblAxisMin = ldbData;
+            //
+            //                               }
+            //                NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
+            //                [dataForPlot1 insertObject:point1 atIndex:i];
+            //                lbOuterCheck = false;
+            //
+            //            }
+            //
+            //            NSLog(@"%f",ldblAxisMax);
+            //             NSLog(@"%f",ldblAxisMin);
+            
             Boolean lbOuterCheck = true;
             int lnInterval = lnPointNumber/lnMaxPoint;
             
@@ -303,13 +239,13 @@ int g_ResolutionYMax = 960;
                         lnMaxValIndex = k;
                     }
                     
-                   if (ldblMin>ldblValue || lbFirstCheck)
-                   {
-                       ldblMin = ldblValue;
-                       lnMinValIndex = k;
-                   }
+                    if (ldblMin>ldblValue || lbFirstCheck)
+                    {
+                        ldblMin = ldblValue;
+                        lnMinValIndex = k;
+                    }
                     lbFirstCheck = false;
-
+                    
                 }
                 
                 if (ldblAxisMax<ldblMax || lbOuterCheck) {
@@ -321,35 +257,35 @@ int g_ResolutionYMax = 960;
                     
                 }
                 lbOuterCheck = false;
-
+                
                 
                 //NSLog(@"%f",ldblValue);
                 if (lnMaxValIndex<lnMinValIndex)
                 {
-                    NSString *xp = [NSString stringWithFormat:@"%f",(i)*ldblDeltaTime];
+                    NSString *xp = [NSString stringWithFormat:@"%f",(i)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMax)];
                     
                     NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
                     [dataForPlot1 insertObject:point1 atIndex:i];
                     
-                    NSString *xp2 = [NSString stringWithFormat:@"%f",(i)*ldblDeltaTime];
+                    NSString *xp2 = [NSString stringWithFormat:@"%f",(i)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMin)];
-                    NSLog(@"%d %@ %@",i,xp,yp);
-                    NSLog(@"%d %@ %@",i,xp2,yp2);
+                    //                    NSLog(@"%d %@ %@",i,xp,yp);
+                    //                    NSLog(@"%d %@ %@",i,xp2,yp2);
                     NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
                     [dataForPlot1 insertObject:point2 atIndex:i];
                     
                 }else
                 {
-                    NSString *xp = [NSString stringWithFormat:@"%f",(i)*ldblDeltaTime];
+                    NSString *xp = [NSString stringWithFormat:@"%f",(i)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMin)];
                     NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
                     [dataForPlot1 insertObject:point1 atIndex:i];
-                   
-                    NSString *xp2 = [NSString stringWithFormat:@"%f",(i)*ldblDeltaTime];
+                    
+                    NSString *xp2 = [NSString stringWithFormat:@"%f",(i)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMax)];
-//                    NSLog(@"%d %@ %@",i,xp,yp);
-//                    NSLog(@"%d %@ %@",i,xp2,yp2);
+                    //                    NSLog(@"%d %@ %@",i,xp,yp);
+                    //                    NSLog(@"%d %@ %@",i,xp2,yp2);
                     NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
                     [dataForPlot1 insertObject:point2 atIndex:i];
                 }
@@ -357,7 +293,7 @@ int g_ResolutionYMax = 960;
             }
             
             int lnPointLeft = lnPointNumber%lnInterval;
-
+            
             
             if (lnPointLeft>0)
             {
@@ -385,36 +321,36 @@ int g_ResolutionYMax = 960;
                 
                 if (lnMaxValIndex<lnMinValIndex)
                 {
-                    NSString *xp = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblDeltaTime];
+                    NSString *xp = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMax)];
                     
                     NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
                     [dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
                     
-                    NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblDeltaTime];
+                    NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMin)];
-//                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
-//                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
+                    //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
+                    //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
                     NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
                     [dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
                     
                 }else
                 {
-                    NSString *xp = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblDeltaTime];
+                    NSString *xp = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMin)];
                     NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
                     [dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
                     
-                    NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblDeltaTime];
+                    NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMax)];
-//                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
-//                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
+                    //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
+                    //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
                     NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
                     [dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
                 }
             }
             
-
+            
             
             
             CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
@@ -422,16 +358,16 @@ int g_ResolutionYMax = 960;
             
             //plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(g_ResolutionXMax*1.1)];
             
-            plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(ldblTime)];
+            plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(ldblXAxisMax)];
             plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(ldblAxisMin*1.2) length:CPTDecimalFromFloat((ldblAxisMax-ldblAxisMin)*1.2)];
-
+            
             
             CPTXYAxisSet *axisSet = (CPTXYAxisSet *) graph.axisSet ;
             CPTXYAxis *x = axisSet.xAxis ;
             
             x. minorTickLineStyle = nil ;
             // 大刻度线间距： 50 单位
-            x. majorIntervalLength = CPTDecimalFromFloat(ldblTime/5);
+            x. majorIntervalLength = CPTDecimalFromFloat(ldblXAxisMax/5);
             // 坐标原点： 0
             x. orthogonalCoordinateDecimal = CPTDecimalFromString ( @"0" );
             
@@ -442,10 +378,82 @@ int g_ResolutionYMax = 960;
             y. majorIntervalLength = CPTDecimalFromDouble((ldblAxisMax-ldblAxisMin)*1.2/10) ;
             // 坐标原点： 0
             y. orthogonalCoordinateDecimal = CPTDecimalFromString (@"0");
-
+            
         }
-           
+        
     }
+
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
+
+	//[self.m_pProgressBar stopAnimating];
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	    
+	NSLog(@"%d",responseData.retainCount );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self->listOfItems = [json objectWithString:responseString error:&error];
+    [responseData release];
+
+    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
+    {
+        [responseString release];
+        [connection release];
+        return;
+    }else
+    {
+        NSLog(@"%@",[self->listOfItems class]);
+    }
+   
+    id wave_len = [((NSDictionary *)self->listOfItems) objectForKey:@"wave_len"];
+    id wave = [((NSDictionary *)self->listOfItems) objectForKey:@"wave"];
+    if (nil != wave && [wave isKindOfClass:[NSString class]])
+    {
+        int lnWave_Len = [(NSNumber *)wave_len intValue];
+        if (lnWave_Len<=0)
+        {
+            [responseString release];
+            [connection release];
+            return;
+        }
+        
+        id eigenvalue = [((NSDictionary *)self->listOfItems) objectForKey:@"eigenvalue"];
+        NSDictionary * lpEigenvalue = nil;
+        
+        if (nil!= eigenvalue && [eigenvalue isKindOfClass:[NSDictionary class]])
+        {
+            lpEigenvalue =(NSDictionary *)eigenvalue;
+        }
+        
+        id lIdSmpFreq = [lpEigenvalue objectForKey:@"SmpFreq"];
+        id lIdSmpNum  = [lpEigenvalue objectForKey:@"SmpNum"];
+        int lnSmpFreq = 0;
+        int lnSmpSum = 0;
+        
+        if (nil != lIdSmpFreq && [lIdSmpFreq isKindOfClass:[NSNumber class]])
+        {
+            lnSmpFreq = [(NSNumber*)lIdSmpFreq intValue];
+        }
+        
+        if (nil != lIdSmpNum && [lIdSmpNum isKindOfClass:[NSNumber class]])
+        {
+            lnSmpSum = [(NSNumber*)lIdSmpNum intValue];
+        }
+        double ldblXAxisMax = 0;
+        double  ldblAxisXDelta = 0;
+        if (0!=lnSmpSum)
+        {
+            ldblXAxisMax = lnSmpSum*1.0/lnSmpFreq*1.0;
+            ldblAxisXDelta = ldblXAxisMax/g_ResolutionXMax;
+        }
+        [self DrawData:wave wave_lenx:lnWave_Len maxPoint:g_ResolutionXMax axis_x_max:ldblXAxisMax axis_x_delta:ldblAxisXDelta];
+    }
+    
+
+    
     [responseString release];
   
     [connection release];
