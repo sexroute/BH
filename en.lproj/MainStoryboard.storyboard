@@ -347,9 +347,6 @@
         <class className="LYWaveViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
-                <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>

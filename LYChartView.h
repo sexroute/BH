@@ -16,8 +16,8 @@ typedef enum {
 @interface LYChartView : UIView<CPTPlotDataSource>
 {
     CPTXYGraph                  *graph;             //画板
-   CPTScatterPlot              *dataSourceLinePlot;//线
-    //CPTPlot                     *dataSourceLinePlot;
+    CPTScatterPlot              *dataSourceLinePlot;//线
+
     NSMutableArray              *dataForPlot1;      //坐标数组
     NSTimer                     *timer1;            //定时器
     int                         j;
@@ -34,7 +34,7 @@ typedef enum {
 }
 
 @property (retain, nonatomic) NSMutableArray *dataForPlot1;
-@property (retain, nonatomic) UIView *m_pParent;
+@property (retain, nonatomic) UIView   * m_pParent;
 @property (retain, nonatomic) NSString * m_pStrGroup;
 @property (retain, nonatomic) NSString * m_pStrCompany;
 @property (retain, nonatomic) NSString * m_pStrFactory;

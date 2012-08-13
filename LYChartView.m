@@ -22,10 +22,17 @@ int g_ResolutionYMax = 960;
 
 -(void) dealloc
 {
-    NSLog(@"%d",self->graph.retainCount);
-   
+    NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
+    //[self.m_pParent.subviews release];
     [self->graph release];
+    self.m_pParent = nil;
+    self.m_pStrChann = nil;
+    self.m_pStrCompany =  nil;
+    self.m_pStrFactory = nil;
+    self.m_pStrGroup = nil;
+    self.m_pStrPlant = nil;
     //[self->graph dealloc];
+    NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
     [super dealloc]; // 不要忘记调用父类代码
     
 }
@@ -35,7 +42,7 @@ int g_ResolutionYMax = 960;
 {
    
     NSLog(@"graph :%d",self->graph.retainCount);
-    graph = [[CPTXYGraph alloc] initWithFrame:self.m_pParent.bounds];
+    self->graph = [[CPTXYGraph alloc] initWithFrame:self.m_pParent.bounds];
     NSLog(@"graph :%d",self->graph.retainCount);
     //给画板添加一个主题
     CPTTheme *theme = [CPTTheme themeNamed:kCPTDarkGradientTheme];
@@ -49,9 +56,10 @@ int g_ResolutionYMax = 960;
     NSLog(@"graph :%d",self->graph.retainCount);
 
 	[self.m_pParent addSubview:hostingView];
-    NSLog(@"graph :%d",hostingView.retainCount);
+    NSLog(@"hostingView :%d",hostingView.retainCount);
+    [hostingView.hostedGraph release];
     [hostingView release];
-    
+    NSLog(@"graph :%d",self->graph.retainCount);
     //设置留白
     graph.paddingLeft = 0;
 	graph.paddingTop = 0;

@@ -73,7 +73,9 @@
 
 - (void)viewDidUnload
 {
+    [self.m_plotView.subviews release];
     [self setHostView:nil];
+    
     [self setM_pChartViewParent:nil];
     [self setM_plotView:nil];
     [super viewDidUnload];
@@ -82,13 +84,16 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 - (void)dealloc {
 
-    NSLog(@"%d",hostView.retainCount);
+    NSLog(@"hostView :%d",hostView.retainCount);
+//    [self.m_pChartViewParent.subviews release];
     [hostView release];
+    
     [m_pChartViewParent release];
     [m_plotView release];
     [super dealloc];
