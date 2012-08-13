@@ -170,9 +170,21 @@
                                 <rect key="frame" x="0.0" y="372" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="波形" width="96" id="vAe-we-Njf"/>
-                                    <barButtonItem title="频谱" width="95" id="qwj-g9-hYP"/>
-                                    <barButtonItem title="停止|刷新" width="92" id="z6q-mJ-WUi"/>
+                                    <barButtonItem title="波形" width="96" id="vAe-we-Njf">
+                                        <connections>
+                                            <action selector="OnWavePressed:" destination="eE5-jO-Msr" id="s8p-8M-HEo"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="频谱" width="95" id="qwj-g9-hYP">
+                                        <connections>
+                                            <action selector="onFreqPressed:" destination="eE5-jO-Msr" id="lvr-Rn-pNo"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="刷新" width="92" id="z6q-mJ-WUi">
+                                        <connections>
+                                            <action selector="OnRefreshPressed:" destination="eE5-jO-Msr" id="I2v-FH-83F"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" id="2a8-96-jPV" customClass="LYChartView">
@@ -183,7 +195,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="nKo-wh-J0n"/>
+                    <navigationItem key="navigationItem" id="nKo-wh-J0n">
+                        <barButtonItem key="rightBarButtonItem" title="趋势" id="Apr-lA-0L1">
+                            <connections>
+                                <segue destination="gMw-d5-iWb" kind="push" id="moR-8u-nl0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="m_pChartViewParent" destination="2a8-96-jPV" id="hRD-PW-MLb"/>
                         <outlet property="m_plotView" destination="2a8-96-jPV" id="jVC-tg-BVD"/>
@@ -191,6 +209,21 @@
                 </viewController>
             </objects>
             <point key="canvasLocation" x="2655" y="-312"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="6gD-GL-Ew3">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rV7-zE-ZeF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="gMw-d5-iWb" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Zjw-7K-kAs">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6bq-xD-anQ"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2655" y="-904"/>
         </scene>
         <!--Chann Info View Controller - ChannInfo-->
         <scene sceneID="S5f-Mt-XCI">
@@ -314,6 +347,9 @@
         <class className="LYWaveViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
+                <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>

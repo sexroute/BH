@@ -7,6 +7,11 @@
 //
 #import "CorePlot-CocoaTouch.h"
 #import "CPTGraphHostingView.h"
+typedef enum {
+    WAVE,
+    FREQUENCE,
+    TREND
+} DrawMode;
 
 @interface LYChartView : UIView<CPTPlotDataSource>
 {
@@ -25,6 +30,7 @@
     NSString * m_pStrChann;
     NSString * m_pStrPlant;
     NSMutableArray *listOfItems;
+    DrawMode                         m_nDrawDataMode;
 }
 
 @property (retain, nonatomic) NSMutableArray *dataForPlot1;
@@ -35,7 +41,11 @@
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) NSString * m_pStrPlant;
 -(void) initGraph;
+-(void) LoadDataFromMiddleWare;
 
 
+- (DrawMode)getDrawDataMode;
+
+- (void)setDrawDataMode:(DrawMode)newValue;
 
 @end

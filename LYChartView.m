@@ -19,7 +19,7 @@
 @synthesize dataForPlot1;
 int g_ResolutionXMax = 210;
 int g_ResolutionYMax = 960;
-int g_DrawMode = 0;//0:波形 1:频谱
+
 -(void) dealloc
 {
     NSLog(@"%d",self->graph.retainCount);
@@ -144,11 +144,12 @@ int g_DrawMode = 0;//0:波形 1:频谱
 }
 - (void)DrawData:(id )wave_data wave_lenx:(int)wave_len maxPoint:(int)anMaxPoint axis_x_max:(double)adblAxisXMax axis_x_delta:(double)adblAxisXDelta
 {
+    [dataForPlot1 removeAllObjects];
     if (0!= wave_len )
     {
         int lnWave_Len = wave_len;
         
-        id wave = [((NSDictionary *)self->listOfItems) objectForKey:@"wave"];
+        id wave = wave_data;
         
         if (nil != wave && [wave isKindOfClass:[NSString class]])
         {
@@ -384,30 +385,62 @@ int g_DrawMode = 0;//0:波形 1:频谱
     }
 
 }
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+- (int) DrawFreq
 {
-    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
-
-	//[self.m_pProgressBar stopAnimating];
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-	    
-	NSLog(@"%d",responseData.retainCount );
-	NSError *error;
-	SBJSON *json = [[SBJSON new] autorelease];
-	self->listOfItems = [json objectWithString:responseString error:&error];
-    [responseData release];
-
-    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
+    id wave_len = [((NSDictionary *)self->listOfItems) objectForKey:@"freq_len"];
+    id wave = [((NSDictionary *)self->listOfItems) objectForKey:@"freq"];
+    if (nil != wave && [wave isKindOfClass:[NSString class]])
     {
-        [responseString release];
-        [connection release];
-        return;
-    }else
-    {
-        NSLog(@"%@",[self->listOfItems class]);
+        int lnWave_Len = [(NSNumber *)wave_len intValue];
+        if (lnWave_Len<=0)
+        {
+            return 0;
+        }
+        
+        id loDf = [((NSDictionary *)self->listOfItems) objectForKey:@"df"];
+        
+        double ldblDf = [(NSNumber *)loDf doubleValue];
+        
+        id eigenvalue = [((NSDictionary *)self->listOfItems) objectForKey:@"eigenvalue"];
+        NSDictionary * lpEigenvalue = nil;
+        
+        if (nil!= eigenvalue && [eigenvalue isKindOfClass:[NSDictionary class]])
+        {
+            lpEigenvalue =(NSDictionary *)eigenvalue;
+        }
+        
+        id lIdSmpFreq = [lpEigenvalue objectForKey:@"SmpFreq"];
+        id lIdSmpNum  = [lpEigenvalue objectForKey:@"SmpNum"];
+        int lnSmpFreq = 0;
+        int lnSmpSum = 0;
+        
+        if (nil != lIdSmpFreq && [lIdSmpFreq isKindOfClass:[NSNumber class]])
+        {
+            lnSmpFreq = [(NSNumber*)lIdSmpFreq intValue];
+        }
+        
+        if (nil != lIdSmpNum && [lIdSmpNum isKindOfClass:[NSNumber class]])
+        {
+            lnSmpSum = [(NSNumber*)lIdSmpNum intValue];
+        }
+        double ldblXAxisMax = 0;
+        double  ldblAxisXDelta = 0;
+        if (0!=lnSmpSum)
+        {
+            ldblXAxisMax = lnWave_Len*ldblDf;
+            ldblAxisXDelta = ldblXAxisMax/g_ResolutionXMax;
+        }
+        
+        [self DrawData:wave wave_lenx:lnWave_Len maxPoint:g_ResolutionXMax axis_x_max:ldblXAxisMax axis_x_delta:ldblAxisXDelta];
+        
+        return 1;
     }
+    
+    return 0;
    
+}
+- (int) DrawWave
+{
     id wave_len = [((NSDictionary *)self->listOfItems) objectForKey:@"wave_len"];
     id wave = [((NSDictionary *)self->listOfItems) objectForKey:@"wave"];
     if (nil != wave && [wave isKindOfClass:[NSString class]])
@@ -415,9 +448,7 @@ int g_DrawMode = 0;//0:波形 1:频谱
         int lnWave_Len = [(NSNumber *)wave_len intValue];
         if (lnWave_Len<=0)
         {
-            [responseString release];
-            [connection release];
-            return;
+            return 0;
         }
         
         id eigenvalue = [((NSDictionary *)self->listOfItems) objectForKey:@"eigenvalue"];
@@ -449,16 +480,57 @@ int g_DrawMode = 0;//0:波形 1:频谱
             ldblXAxisMax = lnSmpSum*1.0/lnSmpFreq*1.0;
             ldblAxisXDelta = ldblXAxisMax/g_ResolutionXMax;
         }
+        
         [self DrawData:wave wave_lenx:lnWave_Len maxPoint:g_ResolutionXMax axis_x_max:ldblXAxisMax axis_x_delta:ldblAxisXDelta];
+        
+        return 1;
     }
     
+    return 0;
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
 
+	//[self.m_pProgressBar stopAnimating];
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	    
+	NSLog(@"%d",responseData.retainCount );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self->listOfItems = [json objectWithString:responseString error:&error];
+    //[responseData release];
+    [responseData dealloc];
+    self->responseData = nil;
+
+    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
+    {
+        [responseString release];
+        [connection release];
+        return;
+    }else
+    {
+        NSLog(@"%@",[self->listOfItems class]);
+    }
+    int lnDrawResult = 0;
+    switch ([self getDrawDataMode])
+    {
+        case WAVE:
+            lnDrawResult = [self DrawWave];
+            break;
+        case FREQUENCE:
+            lnDrawResult = [self DrawFreq];
+            break;
+        default:
+            break;
+    }
     
-    [responseString release];
-  
+    [responseString release];  
     [connection release];
-    [graph reloadData];
-       
+    if (lnDrawResult)
+    {
+        [graph reloadData];
+    }
     
 }
 
@@ -498,8 +570,8 @@ int g_DrawMode = 0;//0:波形 1:频谱
 {
     if(nil != responseData)
     {
-        [responseData release];
-        responseData = nil;
+//        [responseData release];
+//        responseData = nil;
     }
     responseData = [[NSMutableData data] retain];
    NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%@&factoryid=%@&plantid=%@&channid=%@",self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
@@ -531,6 +603,14 @@ int g_DrawMode = 0;//0:波形 1:频谱
 	[dataSourceLinePlot addAnimation:fadeInAnimation forKey:@"animateOpacity"];
     //NSLog(@"%f",[num floatValue]);
     return num;
+}
+
+- (DrawMode)getDrawDataMode {
+    return m_nDrawDataMode;
+}
+
+- (void)setDrawDataMode:(DrawMode)newValue {
+    m_nDrawDataMode = newValue;
 }
 
 @end

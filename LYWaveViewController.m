@@ -34,25 +34,32 @@
 }
 
 #pragma mark - Chart behavior
--(void)initPlot
+-(void)initPlot:(DrawMode) nDrawMode
 {
-    
-    self.hostView = [[[LYChartView alloc] init]autorelease];
-    NSLog(@"%d",hostView.retainCount);
+    if (nil == self.hostView)
+    {
+        self.hostView = [[[LYChartView alloc] init]autorelease];
+        NSLog(@"%d",hostView.retainCount);
+        
+        //self.hostView.bounds = self.m_pChartViewParent.bounds;
+        self.hostView.m_pStrCompany = self.m_pStrCompany;
+        self.hostView.m_pStrFactory = self.m_pStrFactory;
+        self.hostView.m_pStrPlant = self.m_pStrPlant;
+        self.hostView.m_pStrChann = [self.m_pStrChann stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        //    CGRect loRect =self.m_plotView.bounds;
+        //    loRect =CGRectMake(0, 0, 320, 396);
+        //    self.m_plotView.bounds = loRect;
+        self.hostView.m_pParent = self.m_plotView;
+        [self.hostView setDrawDataMode:nDrawMode];
+        [self.hostView initGraph];
 
-    //self.hostView.bounds = self.m_pChartViewParent.bounds;
-    self.hostView.m_pStrCompany = self.m_pStrCompany;
-    self.hostView.m_pStrFactory = self.m_pStrFactory;
-    self.hostView.m_pStrPlant = self.m_pStrPlant;
-    self.hostView.m_pStrChann = [self.m_pStrChann stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    CGRect loRect =self.m_plotView.bounds;
-//    loRect =CGRectMake(0, 0, 320, 396);
-//    self.m_plotView.bounds = loRect;
-    self.hostView.m_pParent = self.m_plotView;
-    [self.hostView initGraph];
-    NSLog(@"%d",hostView.retainCount);
-
-    
+    }else
+    {
+        [self.hostView setDrawDataMode:nDrawMode];
+        [self.hostView LoadDataFromMiddleWare];
+    }
+       
+    NSLog(@"%d",hostView.retainCount);    
 }
 
 
@@ -61,7 +68,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self initPlot];
+    [self initPlot:WAVE];
 }
 
 - (void)viewDidUnload
@@ -86,9 +93,18 @@
     [m_plotView release];
     [super dealloc];
 }
-- (IBAction)onFreqPresseD:(UIBarButtonItem *)sender {
+- (IBAction)onFreqPressed:(UIBarButtonItem *)sender
+{
+    [self initPlot:FREQUENCE];
 }
 
-- (IBAction)OnWavePressed:(UIBarButtonItem *)sender {
+- (IBAction)OnWavePressed:(UIBarButtonItem *)sender
+{
+    [self initPlot:WAVE];
+}
+
+-(IBAction)OnRefreshPressed:(UIBarButtonItem *)sender
+{
+    [self initPlot:[self.hostView getDrawDataMode]];
 }
 @end
