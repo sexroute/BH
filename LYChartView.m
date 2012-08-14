@@ -22,9 +22,9 @@ int g_ResolutionYMax = 960;
 
 -(void) dealloc
 {
-    NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
+    NSLog(@"LYChartView dealloc graph.retainCount %d",self->graph.retainCount);
     //[self.m_pParent.subviews release];
-    [self->graph release];
+    //[self->graph release];
     self.m_pParent = nil;
     self.m_pStrChann = nil;
     self.m_pStrCompany =  nil;
@@ -32,7 +32,7 @@ int g_ResolutionYMax = 960;
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
     //[self->graph dealloc];
-    NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
+   // NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
     [super dealloc]; // 不要忘记调用父类代码
     
 }
@@ -40,6 +40,7 @@ int g_ResolutionYMax = 960;
 // I added the NSLog to see if these get called, but they don't seem to get called!
 - (void)initGraph
 {
+    
    
     NSLog(@"graph :%d",self->graph.retainCount);
     self->graph = [[CPTXYGraph alloc] initWithFrame:self.m_pParent.bounds];
@@ -128,7 +129,7 @@ int g_ResolutionYMax = 960;
     //timer1 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(dataOpt) userInfo:nil repeats:YES];
     //[timer1 fire];
     [self initData];
-    [self LoadDataFromMiddleWare];
+    
     [graph reloadData];
      NSLog(@"graph :%d",self->graph.retainCount);
 }
@@ -137,7 +138,7 @@ int g_ResolutionYMax = 960;
     return;
 
 }
-
+#pragma mark - NSURLConnection
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[responseData setLength:0];
 }
@@ -149,7 +150,58 @@ int g_ResolutionYMax = 960;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	//弹出网络错误对话框
     NSLog(@"%@",error.description);
+
 }
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+
+    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
+    
+	//[self.m_pProgressBar stopAnimating];
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+	NSLog(@"%d",responseData.retainCount );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self->listOfItems = [json objectWithString:responseString error:&error];
+    //[responseData release];
+    [responseData dealloc];
+    self->responseData = nil;
+    
+    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
+    {
+        [responseString release];
+        [connection release];
+        return;
+    }else
+    {
+        NSLog(@"%@",[self->listOfItems class]);
+    }
+    int lnDrawResult = 0;
+    switch ([self getDrawDataMode])
+    {
+        case WAVE:
+            lnDrawResult = [self DrawWave];
+            break;
+        case FREQUENCE:
+            lnDrawResult = [self DrawFreq];
+            break;
+        default:
+            break;
+    }
+    
+    [responseString release];
+    [connection release];
+    if (lnDrawResult)
+    {
+        [graph reloadData];
+    }
+    
+}
+
+#pragma mark -
+
 - (void)DrawData:(id )wave_data wave_lenx:(int)wave_len maxPoint:(int)anMaxPoint axis_x_max:(double)adblAxisXMax axis_x_delta:(double)adblAxisXDelta
 {
     [dataForPlot1 removeAllObjects];
@@ -496,51 +548,6 @@ int g_ResolutionYMax = 960;
     
     return 0;
 }
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
-
-	//[self.m_pProgressBar stopAnimating];
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-	    
-	NSLog(@"%d",responseData.retainCount );
-	NSError *error;
-	SBJSON *json = [[SBJSON new] autorelease];
-	self->listOfItems = [json objectWithString:responseString error:&error];
-    //[responseData release];
-    [responseData dealloc];
-    self->responseData = nil;
-
-    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
-    {
-        [responseString release];
-        [connection release];
-        return;
-    }else
-    {
-        NSLog(@"%@",[self->listOfItems class]);
-    }
-    int lnDrawResult = 0;
-    switch ([self getDrawDataMode])
-    {
-        case WAVE:
-            lnDrawResult = [self DrawWave];
-            break;
-        case FREQUENCE:
-            lnDrawResult = [self DrawFreq];
-            break;
-        default:
-            break;
-    }
-    
-    [responseString release];  
-    [connection release];
-    if (lnDrawResult)
-    {
-        [graph reloadData];
-    }
-    
-}
 
 - (void) dataOpt
 {
@@ -567,7 +574,8 @@ int g_ResolutionYMax = 960;
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
-#pragma mark - dataSourceOpt
+#pragma mark -
+#pragma mark dataSourceOpt
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
@@ -576,13 +584,15 @@ int g_ResolutionYMax = 960;
 
 - (void) LoadDataFromMiddleWare
 {
+
+    
     if(nil != responseData)
     {
 //        [responseData release];
 //        responseData = nil;
     }
     responseData = [[NSMutableData data] retain];
-   NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%@&factoryid=%@&plantid=%@&channid=%@",self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
+    NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%@&factoryid=%@&plantid=%@&channid=%@",self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
 //  lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%%E5%%A4%%A7%%E5%%BA%%86%%E7%%9F%%B3%%E5%%8C%%96&factoryid=%%E5%%8C%%96%%E5%%B7%%A5%%E4%%B8%%80%%E5%%8E%%82&plantid=EC1301&channid=1H%@",@""];
     
     NSLog(@"%@",lpUrl);
@@ -620,5 +630,6 @@ int g_ResolutionYMax = 960;
 - (void)setDrawDataMode:(DrawMode)newValue {
     m_nDrawDataMode = newValue;
 }
+
 
 @end

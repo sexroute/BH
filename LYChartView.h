@@ -7,6 +7,7 @@
 //
 #import "CorePlot-CocoaTouch.h"
 #import "CPTGraphHostingView.h"
+#import "MBProgressHUD.h"
 typedef enum {
     WAVE,
     FREQUENCE,
@@ -17,6 +18,11 @@ typedef enum {
 {
     CPTXYGraph                  *graph;             //画板
     CPTScatterPlot              *dataSourceLinePlot;//线
+
+    
+    @protected
+	long long expectedLength;
+	long long currentLength;
 
     NSMutableArray              *dataForPlot1;      //坐标数组
     NSTimer                     *timer1;            //定时器
@@ -42,9 +48,13 @@ typedef enum {
 @property (retain, nonatomic) NSString * m_pStrPlant;
 -(void) initGraph;
 -(void) LoadDataFromMiddleWare;
+-(void)OnHudCallBack;
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection;
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response ;
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 
-
-- (DrawMode)getDrawDataMode;
+-(DrawMode)getDrawDataMode;
 
 - (void)setDrawDataMode:(DrawMode)newValue;
 

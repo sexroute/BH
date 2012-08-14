@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JSON/JSON.h"
 #import "ChannInfo.h"
+
 @interface LYChannViewController : UITableViewController
 {
     NSString * m_pStrGroup;

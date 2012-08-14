@@ -5,50 +5,52 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1498"/>
     </dependencies>
     <scenes>
-        <!--Ly Plant View Controller - 设备列表-->
+        <!--Ly Plant View Controller - PlantView-->
         <scene sceneID="r4E-2N-pna">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dBC-f5-NNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController modalTransitionStyle="flipHorizontal" id="Jq2-v1-unc" customClass="LyPlantViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="oJe-74-gSC">
+                <tableViewController storyboardIdentifier="PlantView" title="PlantView" modalTransitionStyle="flipHorizontal" id="Jq2-v1-unc" customClass="LyPlantViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mtB-Cw-chx">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <tableView key="tableFooterView" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Di4-2W-CIg">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="417"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <prototypes>
-                                <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="9W0-AA-YXl" detailTextLabel="lVg-49-Iob" style="IBUITableViewCellStyleValue1" id="Q0l-21-STd">
-                                    <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                        <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9W0-AA-YXl">
-                                                <rect key="frame" x="10" y="11" width="35" height="21"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            </label>
-                                            <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lVg-49-Iob">
-                                                <rect key="frame" x="233" y="11" width="44" height="21"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.2196078431372549" green="0.32941176470588235" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </tableViewCell>
-                            </prototypes>
-                        </tableView>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" showsReorderControl="YES" indentationWidth="10" id="kzG-cp-EP0">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="SUB-eS-fjc">
+                                            <rect key="frame" x="161" y="3" width="37" height="37"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </activityIndicatorView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Jq2-v1-unc" id="eH7-VO-zye"/>
+                            <outlet property="delegate" destination="Jq2-v1-unc" id="dJ9-Sc-Snz"/>
+                        </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="设备列表" id="wc9-Bx-2kB"/>
+                    <navigationItem key="navigationItem" title="设备列表" id="wc9-Bx-2kB">
+                        <barButtonItem key="leftBarButtonItem" systemItem="search" id="kCv-lu-n3v">
+                            <connections>
+                                <action selector="OnSearchButtonPressed:" destination="Jq2-v1-unc" id="s2n-4D-e9Y"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="gs5-Ea-vyP">
+                            <connections>
+                                <action selector="OnRefreshButtonPressed:" destination="Jq2-v1-unc" id="Qft-6S-T3g"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="m_oActiveIndicator" destination="SUB-eS-fjc" id="bnf-1l-Phh"/>
+                        <outlet property="m_oTableView" destination="mtB-Cw-chx" id="v3Y-k7-Oz7"/>
                         <outlet property="searchDisplayController" destination="1oq-xY-pnt" id="md2-FM-bS6"/>
                     </connections>
                 </tableViewController>
@@ -347,6 +349,9 @@
         <class className="LYWaveViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
+                <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>
@@ -363,7 +368,15 @@
         <class className="LyPlantViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LyPlantViewController.h"/>
             <relationships>
+                <relationship kind="action" name="OnRefreshButtonPressed:"/>
+                <relationship kind="action" name="OnSearchButtonPressed:"/>
+                <relationship kind="outlet" name="m_oActiveIndicator" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="m_pButtonAlarm" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonAll" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonDanger" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonNormal" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonStop" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
     </classes>

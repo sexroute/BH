@@ -76,24 +76,33 @@
 	else
     {
 		
-
-        
+   
         self.m_oActivityProgressbar.hidesWhenStopped = TRUE;
         label.text = @"";
-        [self.m_oActivityProgressbar stopAnimating];
-        
-
-        
+        [self.m_oActivityProgressbar stopAnimating];        
         //2. load view
         if (nil == self->m_pPlantViewController) 
         {
+            UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                                                     bundle: nil];
             
-            self->m_pPlantViewController = [[[LyPlantViewController alloc] init]autorelease];            
+            LyPlantViewController *detailViewController = (LyPlantViewController*)[mainStoryboard
+                                                                                 instantiateViewControllerWithIdentifier: @"PlantView"];
+            self->m_pPlantViewController = detailViewController;
             self.m_pNavViewController = [[[LYNVController alloc]init] autorelease];
             self->m_pPlantViewController->listOfItems = self->listOfItems;
             [self->m_pPlantViewController->listOfItems retain];
+            [self->m_pPlantViewController PreparePlantsData];
             [self presentViewController:self.m_pNavViewController animated:YES completion:nil];
             [self.m_pNavViewController pushViewController:self->m_pPlantViewController animated:YES];
+            return;
+            
+//            self->m_pPlantViewController = [[[LyPlantViewController alloc] init]autorelease];            
+//            self.m_pNavViewController = [[[LYNVController alloc]init] autorelease];
+//            self->m_pPlantViewController->listOfItems = self->listOfItems;
+//            [self->m_pPlantViewController->listOfItems retain];
+//            [self presentViewController:self.m_pNavViewController animated:YES completion:nil];
+//            [self.m_pNavViewController pushViewController:self->m_pPlantViewController animated:YES];
              
         }
 

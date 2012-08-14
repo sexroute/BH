@@ -78,28 +78,12 @@
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 
     
-	//NSLog(@"%s",[responseString2 cString] );
+//	NSLog(@"%@",responseString );
 	NSError *error;
 	SBJSON *json = [[SBJSON new] autorelease];
 	self->listOfItems = [json objectWithString:responseString error:&error];
-
-//    for (int i=0;i<[listOfItems count];i++)
-//    {
-//        id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
-//        id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"];
-//        id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
-//        id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"];
-//        NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
-//        [lpStrGroupNo appendFormat:@"%@-%@-%@-%@",logroupid,locompanyid,lofactoryid,loplantid];
-//        NSString * lpResult = [lpStrGroupNo substringFromIndex:0];
-//        lpResult  = [[lpResult
-//                      stringByReplacingOccurrencesOfString:@"+" withString:@" "]
-//                     stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//        NSLog(@"%@",lpResult);
-//        
-//    }
 	
-	if (listOfItems == nil)
+	if (listOfItems == nil || [listOfItems count] == 0)
 	{
         //弹出网络错误对话框
     }
@@ -109,7 +93,7 @@
         for (int i=0;i<[loDatas count];i++)
         {
 
-            id loChannName = [[loDatas objectAtIndex:i] objectForKey:@"name"];
+           // id loChannName = [[loDatas objectAtIndex:i] objectForKey:@"name"];
             id loChannType = [[loDatas objectAtIndex:i] objectForKey:@"chann_type"];
            // NSLog(@"%@|%@",loChannName,[loDatas objectAtIndex:i]);
            
@@ -250,7 +234,8 @@
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %6.2f%@",lpName,lfValue ,lpUnit];
 
     }
-        return cell;
+    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    return cell;
 
 }
 
@@ -294,6 +279,36 @@
 */
 
 #pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    UIStoryboard *mainStoryboard = self.storyboard;
+    
+    LYChannInfoViewController *ChanninfoDetailViewController = (LYChannInfoViewController*)[mainStoryboard
+                                                                                            instantiateViewControllerWithIdentifier: @"ChannInfo"];
+    int i= indexPath.row;
+    int lnSection = indexPath.section;
+    id loObj = nil;
+    switch (lnSection) {
+        case 0:
+            loObj = [self.VibChanns objectAtIndex:i];
+            break;
+        case 1:
+            loObj = [self.DynChanns objectAtIndex:i];
+            break;
+        case 2:
+            loObj = [self.ProcChanns objectAtIndex:i];
+            break;
+        default:
+            break;
+    }
+    ChanninfoDetailViewController.m_pStrCompany = self.m_pStrCompany;
+    ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
+    ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
+    ChanninfoDetailViewController.m_pData = loObj;
+    
+    [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

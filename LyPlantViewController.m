@@ -16,106 +16,56 @@
 @end
 
 @implementation LyPlantViewController
+
+
+@synthesize m_oActiveIndicator;
 @synthesize m_oTableView;
 
+@synthesize m_pButtonAlarm;
+@synthesize m_pButtonAll;
+@synthesize m_pButtonDanger;
+@synthesize m_pButtonStop;
+@synthesize m_pButtonNormal;
+
+@synthesize m_oAlarmPlants;
+@synthesize m_oDangerPlants;
+@synthesize m_oStopPlants;
+@synthesize m_oNormalPlants;
+
+@synthesize responseData;
 
 - (void)loadView {
     [super loadView];
      self.m_oTableView.delegate = self;
      self.m_oTableView.dataSource = self;
- 
+    if (nil == self.m_oAlarmPlants) {
+        self.m_oDangerPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+        self.m_oAlarmPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+        self.m_oStopPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+        self.m_oNormalPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+    }
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
     }
     return self;
 }
 
-- (void) doLoadData
-{
-    responseData = [[NSMutableData data] retain];		
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bhxz808.3322.org:8090/xapi/alarm/gethierarchy/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%E5%A4%A7%E5%BA%86%E7%9F%B3%E5%8C%96&factoryid=%E5%8C%96%E5%B7%A5%E4%B8%80%E5%8E%82&setid=&plantid=EC1301&pointname=2H&confirmtype=1&password="]];
-	[[NSURLConnection alloc] initWithRequest:request delegate:self];			
-}
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	[responseData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[responseData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    
-    [self doneLoadingTableViewData];  
-}
-
-
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {		
-	[connection release];
-	
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-	[responseData release];
-    
-	//NSLog(@"%s",[responseString2 cString] );
-	NSError *error;
-	SBJSON *json = [[SBJSON new] autorelease];
-    
-    NSMutableArray * lpListOfItems = [json objectWithString:responseString error:&error];
-    
-    if (nil!=lpListOfItems) 
-    {
-        if (nil!=self->listOfItems) 
-        {
-            [self->listOfItems release];
-        }
-        
-        
-        self->listOfItems = lpListOfItems;
-        
-        [self->listOfItems retain];
-        
-        [responseString release];	
- #ifdef DEBUG       
-//        for (int i=0;i<[listOfItems count];i++) 
-//        {
-//            id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
-//            id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"]; 
-//            id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
-//            id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
-//            NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
-//            [lpStrGroupNo appendFormat:@"%@-%@-%@",logroupid,locompanyid,lofactoryid];
-//            NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
-//            lpResult  = [[lpResult
-//                          stringByReplacingOccurrencesOfString:@"+" withString:@" "]
-//                         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//            NSLog(@"%@",lpResult);
-//        }
-#endif
-        
-        [self.m_oTableView reloadData];
-    }
-    
-    [self doneLoadingTableViewData];  
-}
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    if (_refreshHeaderView == nil) {
+    [self.m_oActiveIndicator stopAnimating];
+    if (_refreshHeaderView == nil)
+    {
         
         EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
         view.delegate = self;
@@ -128,13 +78,52 @@
     //  update the last update date
     [_refreshHeaderView refreshLastUpdatedDate];
     self.navigationItem.title = @"全部设备列表";
-}
+    [self.navigationController setToolbarHidden:FALSE animated:TRUE];
+    
+    self.m_pButtonAll = [[ UIBarButtonItem alloc ] initWithTitle:   @"全部"
+                                                                     style: UIBarButtonItemStyleDone
+                                                                    target: self
+                                                                    action: @selector(onButtonAllDeviceSelected:) ];
+    
+    self->m_nFilterStatus = ALL;
+    
+    self.m_pButtonAlarm  = [[ UIBarButtonItem alloc ] initWithTitle: @"报警"
+                                                                      style: UIBarButtonItemStylePlain
+                                                                     target: self
+                                                                     action: @selector(onButtonAlarmDeviceSelected:) ];
+    self.m_pButtonDanger = [[ UIBarButtonItem alloc ] initWithTitle: @"危险"
+                                                                     style: UIBarButtonItemStylePlain
+                                                                    target: self
+                                                                    action: @selector(onButtonDangerDeviceSelected:) ];
+    
+    self.m_pButtonStop = [[ UIBarButtonItem alloc ] initWithTitle: @"停车"
+                                                                      style: UIBarButtonItemStylePlain
+                                                                     target: self
+                                                                     action: @selector(onButtonStopDeviceSelected:) ];
+    
+    self.m_pButtonNormal = [[ UIBarButtonItem alloc ] initWithTitle: @"正常"
+                                                            style: UIBarButtonItemStylePlain
+                                                           target: self
+                                                           action: @selector(onButtonNormalDeviceSelected:) ];
 
+     UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [self setToolbarItems:[NSArray arrayWithObjects:flexItem, self.m_pButtonAll, flexItem, self.m_pButtonDanger , flexItem, self.m_pButtonAlarm, flexItem,self.m_pButtonNormal,flexItem, self.m_pButtonStop, flexItem, nil]];
+   }
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.navigationController setToolbarHidden:FALSE animated:TRUE];
+}
 - (void)viewDidUnload
 {
 
+    
+    [self setM_oTableView:nil];
+    [self setM_oActiveIndicator:nil];
     [super viewDidUnload];
     _refreshHeaderView=nil;
+    self.m_oAlarmPlants = nil;
+    self.m_oDangerPlants = nil;
+    self.m_oStopPlants = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -154,17 +143,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
+    
     // Return the number of rows in the section.
-    return [self->listOfItems count];;
+    NSMutableArray * lpPlants =  [self GetCurrentDataSource];   
+    int lnCount = [lpPlants count];
+    return lnCount;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-       
+{   
     return 100;
-        
-
 }
 
 -(NSString *) GetStringFromID:(id)apData
@@ -190,15 +177,16 @@
     LYCellviewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     // Configure the cell...
+    NSMutableArray * lpPlants =  [self GetCurrentDataSource];
     int i= indexPath.row;
-    id logroupid = [[listOfItems objectAtIndex:i] objectForKey:@"groupid"];
-    id locompanyid = [[listOfItems objectAtIndex:i] objectForKey:@"companyid"]; 
-    id lofactoryid = [[listOfItems objectAtIndex:i] objectForKey:@"factoryid"];
-    id losetid = [[listOfItems objectAtIndex:i] objectForKey:@"setid"];
-    id loplantid = [[listOfItems objectAtIndex:i] objectForKey:@"plantid"]; 
-    id loRpm =[[listOfItems objectAtIndex:i] objectForKey:@"rev"]; 
-    id loAlarmStatus = [[listOfItems objectAtIndex:i] objectForKey:@"alarm_status"];
-    id loStopStatus = [[listOfItems objectAtIndex:i] objectForKey:@"stop_status"];
+    id logroupid = [[lpPlants objectAtIndex:i] objectForKey:@"groupid"];
+    id locompanyid = [[lpPlants objectAtIndex:i] objectForKey:@"companyid"]; 
+    id lofactoryid = [[lpPlants objectAtIndex:i] objectForKey:@"factoryid"];
+    id losetid = [[lpPlants objectAtIndex:i] objectForKey:@"setid"];
+    id loplantid = [[lpPlants objectAtIndex:i] objectForKey:@"plantid"]; 
+    id loRpm =[[lpPlants objectAtIndex:i] objectForKey:@"rev"]; 
+    id loAlarmStatus = [[lpPlants objectAtIndex:i] objectForKey:@"alarm_status"];
+    id loStopStatus = [[lpPlants objectAtIndex:i] objectForKey:@"stop_status"];
     NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@""];
     [lpStrGroupNo appendFormat:@"%@-%@-%@-%@",logroupid,locompanyid,lofactoryid,losetid];
     NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
@@ -267,99 +255,127 @@
     return cell;
 }
 
-
-
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+-(NSMutableArray *)GetCurrentDataSource
 {
-
-//    NSInteger row = indexPath.row;
-//    DetailViewController * detailViewController = [[DetailViewController alloc] initWithNibName:nil  bundle:nil];
-//    
-//    int i= indexPath.row;
-//    
-//    detailViewController.m_pData = [listOfItems objectAtIndex:i];
-//
-//	[self.navigationController pushViewController:detailViewController animated:YES]; 	
+    NSMutableArray * lpPlants =  nil;
+    switch (self->m_nFilterStatus)
+    {
+        case ALL:
+            lpPlants = self->listOfItems;
+            break;
+        case ALARM:
+            lpPlants = self.m_oAlarmPlants;
+            break;
+        case DANGER:
+            lpPlants = self.m_oDangerPlants;
+            break;
+        case STOPPED:
+            lpPlants = self.m_oStopPlants;
+            break;
+        case NORMAL:
+            lpPlants = self.m_oNormalPlants;
+            break;
+        default:
+            lpPlants = self->listOfItems;
+            break;
+    }
+    
+    return lpPlants;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-//    [self performSegueWithIdentifier: @"1" sender: self];
-//    return;
-//1.load from storyboard
+    
+    //1.load from storyboard
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                              bundle: nil];
     
     DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
-                                                       instantiateViewControllerWithIdentifier: @"DetailView"];
+                                                                         instantiateViewControllerWithIdentifier: @"DetailView"];
     int i= indexPath.row;
     
-    detailViewController.m_pData = [listOfItems objectAtIndex:i];
+    detailViewController.m_pData = [[self GetCurrentDataSource] objectAtIndex:i];
+    [self.navigationController setToolbarHidden:YES animated:TRUE] ;
     [self.navigationController pushViewController:detailViewController animated:YES];
     return;
-//2.load from xib
-//    DetailViewController *detailViewController
-//    = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
-//    int i= indexPath.row;    
-//    detailViewController.m_pData = [listOfItems objectAtIndex:i];
-//    [self.navigationController pushViewController:detailViewController animated:YES];
+    //2.load from xib
+    //    DetailViewController *detailViewController
+    //    = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
+    //    int i= indexPath.row;
+    //    detailViewController.m_pData = [listOfItems objectAtIndex:i];
+    //    [self.navigationController pushViewController:detailViewController animated:YES];
+    //
+    //    [detailViewController release];
+    //    return;
+    //3.load by manual
+    //    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
+    //
+    //    int i= indexPath.row;
+    //
+    //     detailViewController.m_pData = [listOfItems objectAtIndex:i];
+    //     // ...
+    //     // Pass the selected object to the new view controller.
+    //     [self.navigationController pushViewController:detailViewController animated:YES];
+    //     [detailViewController release];
+    
+}
+
+
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                                             bundle: nil];
+    
+    DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
+                                                                         instantiateViewControllerWithIdentifier: @"DetailView"];
+    int i= indexPath.row;
+    
+    [self.navigationController setToolbarHidden:YES animated:TRUE] ;
+    detailViewController.m_pData = [[self GetCurrentDataSource] objectAtIndex:i];
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    return;
+
+}
+
+
+#pragma mark - Table view delegate
+
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//
+////1.load from storyboard
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+//                                                             bundle: nil];
 //    
-//    [detailViewController release];
-//    return;
-//3.load by manual
-//    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
-//     
+//    DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
+//                                                       instantiateViewControllerWithIdentifier: @"DetailView"];
 //    int i= indexPath.row;
 //    
-//     detailViewController.m_pData = [listOfItems objectAtIndex:i];
-//     // ...
-//     // Pass the selected object to the new view controller.
-//     [self.navigationController pushViewController:detailViewController animated:YES];
-//     [detailViewController release];
-     
-}
+//    detailViewController.m_pData = [listOfItems objectAtIndex:i];
+//    [self.navigationController setToolbarHidden:YES animated:TRUE] ;
+//    [self.navigationController pushViewController:detailViewController animated:YES];
+//    return;
+////2.load from xib
+////    DetailViewController *detailViewController
+////    = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
+////    int i= indexPath.row;    
+////    detailViewController.m_pData = [listOfItems objectAtIndex:i];
+////    [self.navigationController pushViewController:detailViewController animated:YES];
+////    
+////    [detailViewController release];
+////    return;
+////3.load by manual
+////    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
+////     
+////    int i= indexPath.row;
+////    
+////     detailViewController.m_pData = [listOfItems objectAtIndex:i];
+////     // ...
+////     // Pass the selected object to the new view controller.
+////     [self.navigationController pushViewController:detailViewController animated:YES];
+////     [detailViewController release];
+//     
+//}
 
 
 
@@ -367,6 +383,7 @@
     _refreshHeaderView = nil;
     [m_oTableView release];
 
+    [m_oActiveIndicator release];
     [super dealloc];
     
 }
@@ -375,12 +392,16 @@
     
     //  should be calling your tableviews data source model to reload
     //  put here just for demo
-    [self doLoadData];
-    _reloading = YES;
+
+        [self doLoadData];
+        _reloading = YES;
+   
+
     
 }
 
-- (void)doneLoadingTableViewData{
+- (void)doneLoadingTableViewData
+{
     
     //  model should call this when its done loading
     
@@ -433,5 +454,241 @@
     {        
         NSLog(@"%@",[segue identifier]);
     }
+}
+#pragma mark -
+#pragma mark TableViewFilter Methods
+
+-(void) PreparePlantsData
+{
+    self.m_oDangerPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+    self.m_oAlarmPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+    self.m_oStopPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+    self.m_oNormalPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+    if (nil != self->listOfItems)
+    {
+        int lnSize = [self->listOfItems count];
+        for (int i=0; i<lnSize; i++)
+        {
+            id loObj = [listOfItems objectAtIndex:i];
+            if (nil == loObj) {
+                continue;
+            }
+            id loAlarmStatus = [loObj objectForKey:@"alarm_status"];
+           id loStopStatus = [loObj objectForKey:@"stop_status"];
+            if (nil!= loAlarmStatus && nil!= loStopStatus)
+            {
+                NSNumber *val = loAlarmStatus;
+                int lnAlarmStatus = [val intValue];
+                int lnStopStatus = [(NSNumber *)loStopStatus intValue];
+//                NSLog((@"Alarmstatus:%d | %d"),lnAlarmStatus,lnStopStatus);
+                if (lnAlarmStatus>0|| (lnAlarmStatus==0 && lnStopStatus<=0))
+                {
+                    switch (lnAlarmStatus)
+                    {
+
+                        case 1:
+                            [self.m_oAlarmPlants addObject:loObj];
+                            break;
+                        case 2:
+                            [self.m_oDangerPlants addObject:loObj];
+                            break;
+                            
+                        default:
+                            [self.m_oNormalPlants addObject:loObj];
+                            break;
+                    }
+                }else if(lnStopStatus>0)
+                {
+                    [self.m_oStopPlants addObject:loObj];
+                    
+                }
+
+            }
+        }
+    }
+    
+//NSLog(@"%d %d %d %d",[self.m_oAlarmPlants count],[self.m_oDangerPlants count],[self.m_oStopPlants count],[self.m_oNormalPlants count]);
+}
+
+
+
+#pragma mark -
+#pragma mark NSURLRequest Methods
+- (void) doLoadData
+{
+    self.responseData = [[NSMutableData alloc]initWithCapacity:10];
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bhxz808.3322.org:8090/xapi/alarm/gethierarchy/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%E5%A4%A7%E5%BA%86%E7%9F%B3%E5%8C%96&factoryid=%E5%8C%96%E5%B7%A5%E4%B8%80%E5%8E%82&setid=&plantid=EC1301&pointname=2H&confirmtype=1&password="]];
+	[[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+	[self.responseData setLength:0];
+    expectedLength = [response expectedContentLength];
+	currentLength = 0;
+    if (nil != HUD && expectedLength >0)
+    {
+       HUD.mode = MBProgressHUDModeDeterminate;
+	}
+}
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+	[self.responseData appendData:data];
+    if (nil!= HUD)
+    {
+        HUD.progress = currentLength / (float)expectedLength;
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    
+    [self doneLoadingTableViewData];
+    self.responseData = nil;
+    if (nil!=HUD)
+    {
+         [HUD hide:YES];
+    }
+   
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	[connection release];
+	
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	
+    self.responseData = nil;
+    
+	//NSLog(@"%s",[responseString2 cString] );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+    
+    NSMutableArray * lpListOfItems = [json objectWithString:responseString error:&error];
+    
+    if (nil!=lpListOfItems && [lpListOfItems count] != 0)
+    {
+        if (nil!=self->listOfItems)
+        {
+            [self->listOfItems release];
+        }
+        
+        self->listOfItems = lpListOfItems;
+        
+        [self->listOfItems retain];
+        [responseString release];
+        [self.m_oTableView reloadData];
+    }
+    [self PreparePlantsData];
+    [self doneLoadingTableViewData];
+    [self.m_oActiveIndicator stopAnimating];
+    
+    if (nil != HUD)
+    {
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"完成";
+        [HUD hide:YES afterDelay:2];
+    }
+
+}
+#pragma mark -
+#pragma mark ButtonPressed Methods
+- (IBAction)OnRefreshButtonPressed:(id)sender
+{
+    //[self.m_oActiveIndicator startAnimating];
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    HUD.mode = MBProgressHUDModeIndeterminate;
+
+	[self.navigationController.view addSubview:HUD];
+    
+	HUD.dimBackground = YES;
+    HUD.labelText = @"刷新中";
+	// Regiser for HUD callbacks so we can remove it from the window at the right time
+	HUD.delegate = self;	
+	// Show the HUD while the provided method executes in a new thread
+	[HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
+    [self doLoadData];
+    
+}
+
+- (IBAction)OnSearchButtonPressed:(id)sender {
+   
+}
+
+
+
+-(void)onButtonAllDeviceSelected:(UIBarButtonItem *)sender
+{
+    self.m_pButtonAlarm.style = UIBarButtonItemStylePlain;
+    self.m_pButtonDanger.style = UIBarButtonItemStylePlain;
+    self.m_pButtonStop.style = UIBarButtonItemStylePlain;
+    self.m_pButtonAll.style = UIBarButtonItemStyleDone;
+    self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
+    self->m_nFilterStatus = ALL;
+    
+    [self.m_oTableView reloadData];
+}
+
+-(void)onButtonAlarmDeviceSelected:(UIBarButtonItem *)sender
+{
+    self.m_pButtonAlarm.style =UIBarButtonItemStyleDone ;
+    self.m_pButtonDanger.style = UIBarButtonItemStylePlain;
+    self.m_pButtonStop.style = UIBarButtonItemStylePlain;
+    self.m_pButtonAll.style = UIBarButtonItemStylePlain;
+    self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
+    self->m_nFilterStatus = ALARM;
+    
+    [self.m_oTableView reloadData];
+}
+
+-(void)onButtonDangerDeviceSelected:(UIBarButtonItem *)sender
+{
+    self.m_pButtonAlarm.style = UIBarButtonItemStylePlain;
+    self.m_pButtonDanger.style = UIBarButtonItemStyleDone;
+    self.m_pButtonStop.style = UIBarButtonItemStylePlain;
+    self.m_pButtonAll.style =UIBarButtonItemStylePlain ;
+    self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
+    self->m_nFilterStatus = DANGER;
+    [self.m_oTableView reloadData];
+}
+
+-(void)onButtonStopDeviceSelected:(UIBarButtonItem *)sender
+{
+    self.m_pButtonAlarm.style = UIBarButtonItemStylePlain;
+    self.m_pButtonDanger.style = UIBarButtonItemStylePlain;
+    self.m_pButtonStop.style =UIBarButtonItemStyleDone ;
+    self.m_pButtonAll.style = UIBarButtonItemStylePlain;
+    self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
+    self->m_nFilterStatus = STOPPED;
+    [self.m_oTableView reloadData];
+}
+
+
+-(void)onButtonNormalDeviceSelected:(UIBarButtonItem *)sender
+{
+    self.m_pButtonAlarm.style = UIBarButtonItemStylePlain;
+    self.m_pButtonDanger.style = UIBarButtonItemStylePlain;
+    self.m_pButtonStop.style =UIBarButtonItemStylePlain ;
+    self.m_pButtonAll.style = UIBarButtonItemStylePlain;
+    self.m_pButtonNormal.style = UIBarButtonItemStyleDone;
+    self->m_nFilterStatus = NORMAL;
+    [self.m_oTableView reloadData];
+}
+
+#pragma mark -
+#pragma mark MBProgressHUDDelegate methods
+
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+	// Remove HUD from screen when the HUD was hidded
+	[HUD removeFromSuperview];
+	[HUD release];
+     HUD = nil;
+}
+
+- (void)OnHudCallBack
+{
+	// Do something usefull in here instead of sleeping ...
+	sleep(1);
 }
 @end

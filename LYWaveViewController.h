@@ -8,13 +8,15 @@
 #import "LYChartView.h"
 #import <UIKit/UIKit.h>
 
-@interface LYWaveViewController : UIViewController
+@interface LYWaveViewController : UIViewController<MBProgressHUDDelegate>
 {
     NSString * m_pStrGroup;
     NSString * m_pStrCompany;
     NSString * m_pStrFactory;
     NSString * m_pStrChann;
     NSString * m_pStrPlant;
+    MBProgressHUD *HUD;
+    
 }
 @property (retain, nonatomic) IBOutlet UIView *m_plotView;
 
