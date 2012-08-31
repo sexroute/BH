@@ -626,7 +626,7 @@
     self.m_pButtonAll.style = UIBarButtonItemStyleDone;
     self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
     self->m_nFilterStatus = ALL;
-    
+   
     [self.m_oTableView reloadData];
 }
 
@@ -673,6 +673,7 @@
     self.m_pButtonAll.style = UIBarButtonItemStylePlain;
     self.m_pButtonNormal.style = UIBarButtonItemStyleDone;
     self->m_nFilterStatus = NORMAL;
+    
     [self.m_oTableView reloadData];
 }
 

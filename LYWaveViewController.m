@@ -110,11 +110,6 @@
    // [hostView release];
     [super dealloc];
 }
-- (IBAction)onFreqPressed:(UIBarButtonItem *)sender
-{
-    [self PopUpIndicator];
-    [self initPlot:FREQUENCE];
-}
 
 -(void)PopUpIndicator
 {
@@ -160,6 +155,13 @@
     [self PopUpIndicator];
     [self initPlot:[self.hostView getDrawDataMode]];
 }
+
+- (IBAction)onFreqPressed:(UIBarButtonItem *)sender
+{
+    [self PopUpIndicator];
+    [self initPlot:FREQUENCE];
+}
+
 
 #pragma mark - NSURLConnection
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
