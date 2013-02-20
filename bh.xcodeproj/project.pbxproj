@@ -148,7 +148,7 @@
 		4CC7851E16D471190019B95C /* NSCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCoderExtensions.h; sourceTree = "<group>"; };
 		4CC7851F16D471190019B95C /* NSDecimalNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumberExtensions.h; sourceTree = "<group>"; };
 		4CC7852016D471190019B95C /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
-		4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		4CF5C18B15CDFE6B00DA6510 /* LYChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYChartView.h; sourceTree = "<group>"; };
 		4CF5C18C15CDFE6B00DA6510 /* LYChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYChartView.m; sourceTree = "<group>"; };
 		4CF5C18E15CE986C00DA6510 /* LYWaveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYWaveViewController.h; sourceTree = "<group>"; };
@@ -373,6 +373,7 @@
 		A46A586F154FDF7400EDA973 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */,
 				A4AABB47154EF66A007647DC /* icons.png */,
 				A4AABB45154EF623007647DC /* icon.png */,
 				A4AABB4B154EF6D5007647DC /* Default@2x.png */,
@@ -396,7 +397,6 @@
 			children = (
 				4CC784D416D46E930019B95C /* inc */,
 				4CC784D116D46E420019B95C /* lib */,
-				4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */,
 				A46A586F154FDF7400EDA973 /* Resources */,
 				A46A5869154FDF6900EDA973 /* Classes */,
 				A4D10824154ED4EC00E73642 /* bh */,
