@@ -573,7 +573,7 @@ int g_ResolutionYMax = 960;
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSString *key = (fieldEnum == CPTScatterPlotFieldX ? @"x" : @"y");
-    NSNumber *num;
+    NSNumber *num =0;
     //让视图偏移
 	if ( [(NSString *)plot.identifier isEqualToString:@"Green Plot"] ) {
         num = [[dataForPlot1 objectAtIndex:index] valueForKey:key];
