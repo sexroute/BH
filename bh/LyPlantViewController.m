@@ -179,6 +179,9 @@
     
     // Configure the cell...
     NSMutableArray * lpPlants =  [self GetCurrentDataSource];
+    if (nil == lpPlants || [lpPlants count] ==0) {
+        return nil;
+    }
     int i= indexPath.row;
     id logroupid = [[lpPlants objectAtIndex:i] objectForKey:@"groupid"];
     id locompanyid = [[lpPlants objectAtIndex:i] objectForKey:@"companyid"]; 
@@ -578,14 +581,13 @@
             [self->listOfItems release];
         }
         
-        self->listOfItems = lpListOfItems;
-        
+        self->listOfItems = lpListOfItems;        
         [self->listOfItems retain];
-        
+        [self PreparePlantsData];
         [self.m_oTableView reloadData];
     }
     [responseString release];
-    [self PreparePlantsData];
+    
     [self doneLoadingTableViewData];
     [self.m_oActiveIndicator stopAnimating];
     
@@ -605,7 +607,7 @@
    [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                   target: self
                                                 selector:@selector(OnRefresh)
-                                                userInfo: nil repeats:YES];
+                                                userInfo: nil repeats:NO];
 }
 - (void)OnRefresh
 {
