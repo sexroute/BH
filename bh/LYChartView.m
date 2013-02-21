@@ -550,8 +550,8 @@ int g_ResolutionYMax = 960;
     
     if(nil != responseData)
     {
-//        [responseData release];
-//        responseData = nil;
+        [responseData release];
+        responseData = nil;
     }
     responseData = [[NSMutableData data] retain];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/api/alarm/wave/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];

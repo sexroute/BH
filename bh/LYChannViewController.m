@@ -118,6 +118,10 @@
 //	NSLog(@"%@",responseString );
 	NSError *error;
 	SBJSON *json = [[SBJSON new] autorelease];
+    if (nil!= self->listOfItems) {
+        [self->listOfItems release];
+        self->listOfItems = nil;
+    }
 	self->listOfItems = [json objectWithString:responseString error:&error];
 	
 	if (listOfItems == nil || [listOfItems count] == 0)
@@ -166,7 +170,8 @@
         }
 	}
     [responseString release];
-    [responseData release];
+    [self->responseData release];
+     self->responseData = nil;
     [connection release];
     [self.tableView reloadData];
     
@@ -381,7 +386,19 @@
 }
 
 - (void)dealloc {
+    if (nil!=self->responseData) {
+        [self->responseData release];
+        self->responseData = nil;
+    }
 
+    self.m_pStrCompany = nil;
+    self.m_pStrFactory = nil;
+    self.m_pStrGroup = nil;
+    self.m_pStrPlant = nil;
+    self.m_pStrSet = nil;
+    self.VibChanns = nil;
+    self.DynChanns = nil;
+    self.ProcChanns = nil;
     [m_pProgressBar release];
     [super dealloc];
 }
