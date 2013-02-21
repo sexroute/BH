@@ -104,7 +104,7 @@
     self.m_pStrFactory = nil;
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
-    self.hostView = nil;
+   // self.hostView = nil;
     [m_pChartViewParent release];
     [m_plotView release];
    // [hostView release];
@@ -122,24 +122,24 @@
 	self->HUD.delegate = self;
 	// Show the HUD while the provided method executes in a new thread
 	[self->HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
-    [self retain];
-    [self retain];
+//    [self retain];
+//    [self retain];
 }
 #pragma mark -
 #pragma mark MBProgressHUDDelegate methods
 
 - (void)hudWasHidden:(MBProgressHUD *)hud {
 	// Remove HUD from screen when the HUD was hidded
-     NSLog(@"hudWasHidden self :%d",self.retainCount);
+    NSLog(@"hudWasHidden self :%d",self.retainCount);
 	[self->HUD removeFromSuperview];
 	[self->HUD release];
-    [self release];    
+
      self->HUD = nil;
 }
 - (void)OnHudCallBack
 {
 	// Do something usefull in here instead of sleeping ...
-	sleep(3);
+	//sleep(3);
 }
 #pragma mark -
 #pragma mark ButtonPress methods
@@ -184,13 +184,13 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    [self.hostView connectionDidFinishLoading:connection];
+       [self.hostView connectionDidFinishLoading:connection];
        if (nil != HUD)
        {
-           HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+         //  HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
            HUD.mode = MBProgressHUDModeCustomView;
-           HUD.labelText = @"完成";
-          [HUD hide:YES afterDelay:1];
+           HUD.labelText = @"";
+          [HUD hide:YES afterDelay:0];
        }
 }
 

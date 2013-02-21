@@ -58,4 +58,6 @@ typedef enum {
 
 - (void)setDrawDataMode:(DrawMode)newValue;
 
+- (id)init;
+
 @end

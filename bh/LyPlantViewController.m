@@ -593,10 +593,10 @@
     
     if (nil != HUD)
     {
-        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+       // HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
         HUD.mode = MBProgressHUDModeCustomView;
-        HUD.labelText = @"完成";
-        [HUD hide:YES afterDelay:2];
+        HUD.labelText = @"";
+        [HUD hide:YES afterDelay:0];
     }
 
 }

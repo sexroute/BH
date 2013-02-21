@@ -21,22 +21,7 @@
 int g_ResolutionXMax = 210;
 int g_ResolutionYMax = 960;
 
--(void) dealloc
-{
-    NSLog(@"LYChartView dealloc graph.retainCount %d",self->graph.retainCount);
-    //[self.m_pParent.subviews release];
-    //[self->graph release];
-    self.m_pParent = nil;
-    self.m_pStrChann = nil;
-    self.m_pStrCompany =  nil;
-    self.m_pStrFactory = nil;
-    self.m_pStrGroup = nil;
-    self.m_pStrPlant = nil;
-    //[self->graph dealloc];
-   // NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
-    [super dealloc]; // 不要忘记调用父类代码
-    
-}
+
 
 // I added the NSLog to see if these get called, but they don't seem to get called!
 - (void)initGraph
@@ -153,6 +138,8 @@ int g_ResolutionYMax = 960;
 
 }
 
+
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 
@@ -216,7 +203,12 @@ int g_ResolutionYMax = 960;
             short binChars [lnWave_Len];
             char byte_chars[5] = {'\0','\0','\0','\0','\0'};
             NSString * lpWave = (NSString *)wave;
-
+           
+            int lnWaveRealLength = [lpWave length];
+            if (lnWaveRealLength<=lnWave_Len*4) {
+                lnWave_Len = lnWaveRealLength/4;
+            }
+            
             for (NSUInteger i = 0; i < lnWave_Len; i++)
             {                
                 byte_chars[2] = [lpWave characterAtIndex:(i*4)];
@@ -605,5 +597,32 @@ int g_ResolutionYMax = 960;
     m_nDrawDataMode = newValue;
 }
 
+int gCount = 0;
+- (id) init
+{
+    NSLog(@"LYChartView init Count:%d",++gCount);
+    self = [super init];
+    return  self;
+    
+}
+
+-(void) dealloc
+{
+    NSLog(@"LYChartView  dealloc Count:%d",--gCount);
+
+    NSLog(@"LYChartView dealloc graph.retainCount %d",self->graph.retainCount);
+    //[self.m_pParent.subviews release];
+    //[self->graph release];
+    self.m_pParent = nil;
+    self.m_pStrChann = nil;
+    self.m_pStrCompany =  nil;
+    self.m_pStrFactory = nil;
+    self.m_pStrGroup = nil;
+    self.m_pStrPlant = nil;
+    //[self->graph dealloc];
+    // NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
+    [super dealloc]; // 不要忘记调用父类代码
+    
+}
 
 @end
