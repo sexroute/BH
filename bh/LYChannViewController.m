@@ -9,6 +9,7 @@
 #import "LYChannViewController.h"
 #import "LYChannInfoViewController.h"
 #import "ChannInfo.h"
+#import "LYGlobalSettings.h"
 @interface LYChannViewController ()
 
 
@@ -39,26 +40,35 @@
     return self;
 }
 
-- (void)viewDidLoad
+-(void)loadData
 {
-    
-    [super viewDidLoad];
     [self.m_pProgressBar startAnimating];
     self.ProcChanns = [[NSMutableArray alloc]initWithCapacity:10];
     self.VibChanns = [[NSMutableArray alloc]initWithCapacity:10];
     self.DynChanns = [[NSMutableArray alloc]initWithCapacity:10];
-
+    
     responseData = [[NSMutableData data] retain];
-    NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/pointalarm/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&&operator=&password=&SERVER_TYPE=1&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/api/alarm/pointalarm/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
+
     NSLog(@"%@",lpUrl);
     NSLog(@"%@",[self.m_pStrPlant class]);
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:lpUrl]];
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
+                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                       timeoutInterval:10.0];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewDidLoad
+{
+    
+    [super viewDidLoad];
+    [self loadData];
+
 }
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[responseData setLength:0];
@@ -68,8 +78,34 @@
 	[responseData appendData:data];
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+- (void) alertLoadFailed:(NSString * )apstrError
+{
+    NSString * lpStr = [NSString stringWithFormat:@"无法获取数据:%@\r\n重试?",apstrError];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
+												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    [self.m_pProgressBar stopAnimating];
+    [alert show];
+    [alert release];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    
 	//弹出网络错误对话框
+    [self alertLoadFailed:[error localizedDescription]];
+}
+
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // the user clicked one of the OK/Cancel buttons
+    if (buttonIndex == 0)
+    {
+        
+    }
+    else
+    {
+        [self loadData];
+    }
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {

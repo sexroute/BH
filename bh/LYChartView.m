@@ -8,6 +8,7 @@
 
 #import "LYChartView.h"
 #import "JSON/JSON.h"
+#import "LYGlobalSettings.h"
 @implementation LYChartView
 @synthesize m_pParent;
 @synthesize m_pStrGroup;
@@ -561,11 +562,15 @@ int g_ResolutionYMax = 960;
 //        responseData = nil;
     }
     responseData = [[NSMutableData data] retain];
-    NSString * lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%@&factoryid=%@&plantid=%@&channid=%@",self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
-//  lpUrl = [NSString stringWithFormat:@"http://bhxz808.3322.org:8090/xapi/alarm/wave/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%%E5%%A4%%A7%%E5%%BA%%86%%E7%%9F%%B3%%E5%%8C%%96&factoryid=%%E5%%8C%%96%%E5%%B7%%A5%%E4%%B8%%80%%E5%%8E%%82&plantid=EC1301&channid=1H%@",@""];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/api/alarm/wave/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
+                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                       timeoutInterval:10.0];
     
-    NSLog(@"%@",lpUrl);
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:lpUrl]];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 }

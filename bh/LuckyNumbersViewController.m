@@ -8,7 +8,7 @@
 
 #import "LuckyNumbersViewController.h"
 #import "JSON/JSON.h"
-
+#import "LYGlobalSettings.h"
 
 
 
@@ -31,9 +31,14 @@
         [self->responseData release];        
     }
     responseData = [[NSMutableData data] retain];
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bhxz808.3322.org:8090/xapi/alarm/gethierarchy/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%E5%A4%A7%E5%BA%86%E7%9F%B3%E5%8C%96&factoryid=%E5%8C%96%E5%B7%A5%E4%B8%80%E5%8E%82&setid=&plantid=EC1301&pointname=2H&confirmtype=1&password="] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     
+    NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/api/alarm/gethierarchy/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:lpServerAddress] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
+
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {

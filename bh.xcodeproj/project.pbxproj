@@ -10,6 +10,7 @@
 		4C17527515D91B9D004D0A35 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C17527415D91B9D004D0A35 /* MBProgressHUD.m */; };
 		4C17527C15D91C4F004D0A35 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */; };
 		4C17527D15D91C4F004D0A35 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */; };
+		4C770D2816D5B608005743DE /* LYGlobalSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C770D2716D5B608005743DE /* LYGlobalSettings.m */; };
 		4CC784D316D46E5B0019B95C /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */; };
 		4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */; };
 		4CF5C18D15CDFE6B00DA6510 /* LYChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF5C18C15CDFE6B00DA6510 /* LYChartView.m */; };
@@ -73,6 +74,8 @@
 		4C17527415D91B9D004D0A35 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../bh/MBProgressHUD.m; sourceTree = "<group>"; };
 		4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
+		4C770D2616D5B608005743DE /* LYGlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYGlobalSettings.h; path = BhApp/LYGlobalSettings.h; sourceTree = "<group>"; };
+		4C770D2716D5B608005743DE /* LYGlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYGlobalSettings.m; path = BhApp/LYGlobalSettings.m; sourceTree = "<group>"; };
 		4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "lib/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		4CC784D716D471190019B95C /* CorePlot-CocoaTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CorePlot-CocoaTouch.h"; sourceTree = "<group>"; };
 		4CC784D816D471190019B95C /* CPTAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnnotation.h; sourceTree = "<group>"; };
@@ -245,6 +248,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C770D2516D5B56D005743DE /* BhApp */ = {
+			isa = PBXGroup;
+			children = (
+				4C770D2616D5B608005743DE /* LYGlobalSettings.h */,
+				4C770D2716D5B608005743DE /* LYGlobalSettings.m */,
+			);
+			name = BhApp;
+			sourceTree = "<group>";
+		};
 		4CC784D116D46E420019B95C /* lib */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +268,7 @@
 		4CC784D416D46E930019B95C /* inc */ = {
 			isa = PBXGroup;
 			children = (
+				4C770D2516D5B56D005743DE /* BhApp */,
 				4CC784D616D471190019B95C /* CorePlotHeaders */,
 			);
 			name = inc;
@@ -373,6 +386,7 @@
 		A46A586F154FDF7400EDA973 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A4D10830154ED4EC00E73642 /* MainStoryboard.storyboard */,
 				4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */,
 				A4AABB47154EF66A007647DC /* icons.png */,
 				A4AABB45154EF623007647DC /* icon.png */,
@@ -451,7 +465,6 @@
 				4CF5C18B15CDFE6B00DA6510 /* LYChartView.h */,
 				4CF5C18C15CDFE6B00DA6510 /* LYChartView.m */,
 				A4D10853154ED53C00E73642 /* JSON */,
-				A4D10830154ED4EC00E73642 /* MainStoryboard.storyboard */,
 				A4D10825154ED4EC00E73642 /* Supporting Files */,
 				A4D10872154EDCCE00E73642 /* LYNVController.h */,
 				A4D10873154EDCCE00E73642 /* LYNVController.m */,
@@ -656,6 +669,7 @@
 				4CF5C18D15CDFE6B00DA6510 /* LYChartView.m in Sources */,
 				4CF5C19015CE986C00DA6510 /* LYWaveViewController.m in Sources */,
 				4C17527515D91B9D004D0A35 /* MBProgressHUD.m in Sources */,
+				4C770D2816D5B608005743DE /* LYGlobalSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,6 +706,7 @@
 				A4D10831154ED4EC00E73642 /* en */,
 			);
 			name = MainStoryboard.storyboard;
+			path = ../bh;
 			sourceTree = "<group>";
 		};
 		A4D10845154ED4ED00E73642 /* InfoPlist.strings */ = {
