@@ -77,7 +77,7 @@
 
 - (void)viewDidUnload
 {
-    [self.m_plotView.subviews release];
+ //   [self.m_plotView.subviews release];
     [self setHostView:nil];
     
     [self setM_pChartViewParent:nil];

@@ -138,7 +138,7 @@
                     lpTitle = @"测点别名";
                     break;
                 case 2:
-                    lpTitle = @"测点类型";
+                    
                     lpObj = [self.m_pData objectForKey:@"chann_type"];
                     NSNumber * lpVal = lpObj;
                     int lnChanType = [lpVal intValue];

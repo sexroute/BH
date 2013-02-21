@@ -43,9 +43,10 @@
 -(void)loadData
 {
     [self.m_pProgressBar startAnimating];
-    self.ProcChanns = [[NSMutableArray alloc]initWithCapacity:10];
-    self.VibChanns = [[NSMutableArray alloc]initWithCapacity:10];
-    self.DynChanns = [[NSMutableArray alloc]initWithCapacity:10];
+  
+    self.ProcChanns = [[[NSMutableArray alloc]initWithCapacity:10] autorelease];
+    self.VibChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
+    self.DynChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     
     responseData = [[NSMutableData data] retain];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/api/alarm/pointalarm/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
@@ -242,8 +243,7 @@
     
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        //cell =
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier]autorelease];
     }
     
     id lpText = nil;
@@ -381,6 +381,7 @@
 }
 
 - (void)dealloc {
+
     [m_pProgressBar release];
     [super dealloc];
 }

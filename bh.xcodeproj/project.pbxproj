@@ -359,6 +359,7 @@
 		4CC7852116D477110019B95C /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
+				A46A586A154FDF6900EDA973 /* View */,
 				4C17527315D91B9D004D0A35 /* MBProgressHUD.h */,
 				4C17527415D91B9D004D0A35 /* MBProgressHUD.m */,
 			);
@@ -368,8 +369,8 @@
 		A46A5869154FDF6900EDA973 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A4D10824154ED4EC00E73642 /* bh */,
 				4CC7852116D477110019B95C /* Thirdparty */,
-				A46A586A154FDF6900EDA973 /* View */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -413,7 +414,6 @@
 				4CC784D116D46E420019B95C /* lib */,
 				A46A586F154FDF7400EDA973 /* Resources */,
 				A46A5869154FDF6900EDA973 /* Classes */,
-				A4D10824154ED4EC00E73642 /* bh */,
 				A4D10842154ED4ED00E73642 /* bhTests */,
 				A4D1081D154ED4EC00E73642 /* Frameworks */,
 				A4D1081B154ED4EC00E73642 /* Products */,
@@ -472,7 +472,8 @@
 				4CFC52E515CBC0EC006AD344 /* DetailView.xib */,
 				4CFC52F015CC28EA006AD344 /* ChannInfo.h */,
 			);
-			path = bh;
+			name = bh;
+			path = ../bh;
 			sourceTree = "<group>";
 		};
 		A4D10825154ED4EC00E73642 /* Supporting Files */ = {
@@ -781,9 +782,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Downloads/CorePlot_1.0/Binaries/iOS\"",
-					"\"$(SRCROOT)/../../CorePlot_1.1/Binaries/iOS\"",
-					"\"$(SRCROOT)/../../CorePlotSample\"",
 					"\"$(SRCROOT)/lib\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -792,7 +790,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = BH;
-				"USER_HEADER_SEARCH_PATHS[arch=*]" = "\"/Users/zhaodali/Downloads/CorePlot_1.0/Source/framework\"/**";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -807,9 +806,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Downloads/CorePlot_1.0/Binaries/iOS\"",
-					"\"$(SRCROOT)/../../CorePlot_1.1/Binaries/iOS\"",
-					"\"$(SRCROOT)/../../CorePlotSample\"",
 					"\"$(SRCROOT)/lib\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -818,7 +814,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = BH;
-				"USER_HEADER_SEARCH_PATHS[arch=*]" = "\"/Users/zhaodali/Downloads/CorePlot_1.0/Source/framework\"/**";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

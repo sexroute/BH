@@ -10,6 +10,7 @@
 #import "DetailViewController.h"
 #include "LYCellviewCell.h"
 #import "JSON/JSON.h"
+#import "LYGlobalSettings.h"
 
 @interface LyPlantViewController ()
 
@@ -106,7 +107,7 @@
                                                            target: self
                                                            action: @selector(onButtonNormalDeviceSelected:) ];
 
-     UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+     UIBarButtonItem *flexItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]autorelease];
     [self setToolbarItems:[NSArray arrayWithObjects:flexItem, self.m_pButtonAll, flexItem, self.m_pButtonDanger , flexItem, self.m_pButtonAlarm, flexItem,self.m_pButtonNormal,flexItem, self.m_pButtonStop, flexItem, nil]];
    }
 - (void)viewDidAppear:(BOOL)animated
@@ -157,7 +158,7 @@
 -(NSString *) GetStringFromID:(id)apData
 {
     
-    NSString * lpRet = [[NSString alloc]initWithString:(@"")];
+    NSString * lpRet = [NSString stringWithFormat:@""];
     
     if(nil!= apData)
     {
@@ -214,7 +215,7 @@
                     NSString * lpStreRpm = [self GetStringFromID:loRpm];
                     int lnValueRpm = [lpStreRpm integerValue];
                     if (lnValueRpm<0) {
-                        lpStreRpm = [[NSString alloc] initWithUTF8String:"0"];
+                        lpStreRpm = [[[NSString alloc] initWithUTF8String:"0"]autorelease];
                         cell.m_plblRpm.text = lpStreRpm;
                     }else {
                         cell.m_plblRpm.text = [self GetStringFromID:loRpm];
@@ -230,18 +231,18 @@
                     #endif
                     if (nil != lpAlarmStatus) {
                         if (2 == lnAlarmStatus) {
-                            cell.m_pImgStatus.backgroundColor = [[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1];
+                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1]autorelease];
                         }else if (1 == lnAlarmStatus) {
-                            cell.m_pImgStatus.backgroundColor = [[UIColor alloc] initWithRed:1 green:1 blue:0 alpha:1];
+                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:1 blue:0 alpha:1]autorelease];
                         } if (1 == lnStopStatus) 
                         {
-                            cell.m_pImgStatus.backgroundColor = [[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1];
+                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1]autorelease];
                         }
                             
                     }else {
                         if (1 == lnStopStatus ) 
                         {
-                            cell.m_pImgStatus.backgroundColor = [[UIColor alloc] initWithRed:200 green:200 blue:200 alpha:1];
+                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:200 green:200 blue:200 alpha:1]autorelease];
                         } 
                     }
                     break;
@@ -512,12 +513,16 @@
 
 
 
-#pragma mark -
+#pragma mark 
 #pragma mark NSURLRequest Methods
 - (void) doLoadData
 {
-    self.responseData = [[NSMutableData alloc]initWithCapacity:10];
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bhxz808.3322.org:8090/xapi/alarm/gethierarchy/?MIDDLE_WARE_IP=222.199.224.145&MIDDLE_WARE_PORT=7005&SERVER_TYPE=1&companyid=%E5%A4%A7%E5%BA%86%E7%9F%B3%E5%8C%96&factoryid=%E5%8C%96%E5%B7%A5%E4%B8%80%E5%8E%82&setid=&plantid=EC1301&pointname=2H&confirmtype=1&password="]];
+    self.responseData = [[[NSMutableData alloc]initWithCapacity:10]autorelease];
+    NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/api/alarm/gethierarchy/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:lpServerAddress] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
@@ -576,9 +581,10 @@
         self->listOfItems = lpListOfItems;
         
         [self->listOfItems retain];
-        [responseString release];
+        
         [self.m_oTableView reloadData];
     }
+    [responseString release];
     [self PreparePlantsData];
     [self doneLoadingTableViewData];
     [self.m_oActiveIndicator stopAnimating];
@@ -594,21 +600,34 @@
 }
 #pragma mark -
 #pragma mark ButtonPressed Methods
-- (IBAction)OnRefreshButtonPressed:(id)sender
+- (void)startTimer
 {
-    //[self.m_oActiveIndicator startAnimating];
+   [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                                  target: self
+                                                selector:@selector(OnRefresh)
+                                                userInfo: nil repeats:YES];
+}
+- (void)OnRefresh
+{
+
     HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     HUD.mode = MBProgressHUDModeIndeterminate;
-
+    
 	[self.navigationController.view addSubview:HUD];
     
 	HUD.dimBackground = YES;
     HUD.labelText = @"刷新中";
 	// Regiser for HUD callbacks so we can remove it from the window at the right time
-	HUD.delegate = self;	
+	HUD.delegate = self;
 	// Show the HUD while the provided method executes in a new thread
 	[HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
     [self doLoadData];
+
+}
+- (IBAction)OnRefreshButtonPressed:(id)sender
+{
+    [self startTimer];
+    //[self.m_oActiveIndicator startAnimating];
     
 }
 

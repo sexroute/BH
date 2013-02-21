@@ -59,7 +59,7 @@ static NSMutableDictionary * g_pSettingsDic = nil;
 }
 - (id)init
 {
-    [super init];
+    self = [super init];
    
     return self;
 }

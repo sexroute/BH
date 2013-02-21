@@ -58,7 +58,7 @@ int g_ResolutionYMax = 960;
 
 	[self.m_pParent addSubview:hostingView];
     NSLog(@"hostingView :%d",hostingView.retainCount);
-    [hostingView.hostedGraph release];
+//    [hostingView.hostedGraph release];
     [hostingView release];
     NSLog(@"graph :%d",self->graph.retainCount);
     //设置留白
@@ -296,28 +296,28 @@ int g_ResolutionYMax = 960;
                     NSString *xp = [NSString stringWithFormat:@"%f",(i*2)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMax)];
                     
-                    NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
+                    NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point1 atIndex:i*2];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(i*2+1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMin)];
                     //                    NSLog(@"%d %@ %@",i,xp,yp);
                     //                    NSLog(@"%d %@ %@",i,xp2,yp2);
-                    NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
+                    NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point2 atIndex:i*2+1];
                     
                 }else
                 {
                     NSString *xp = [NSString stringWithFormat:@"%f",(i*2)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMin)];
-                    NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
+                    NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point1 atIndex:i*2];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(i*2+1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMax)];
                     //                    NSLog(@"%d %@ %@",i,xp,yp);
                     //                    NSLog(@"%d %@ %@",i,xp2,yp2);
-                    NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
+                    NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point2 atIndex:i*2+1];
                 }
                 
@@ -336,7 +336,7 @@ int g_ResolutionYMax = 960;
                 
                 for (int i=lnPointNumber-1; i>=lnPointNumber-lnPointLeft; i--)
                 {
-                    double ldblValue = binChars[i]*1.0f/10.0f;
+                    double ldblValue = (binChars[i]*1.0)/10.0f;
                     if (ldblMax<ldblValue || lbOuterCheck) {
                         ldblMax = ldblValue;
                         lnMaxValIndex = i;
@@ -355,28 +355,28 @@ int g_ResolutionYMax = 960;
                     NSString *xp = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMax)];
                     
-                    NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
+                    NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMin)];
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
-                    NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
+                    NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
                     
                 }else
                 {
                     NSString *xp = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMin)];
-                    NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
+                    NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMax)];
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
-                    NSMutableDictionary *point2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil];
+                    NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
                     [dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
                 }
             }
