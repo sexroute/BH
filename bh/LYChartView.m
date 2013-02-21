@@ -116,7 +116,7 @@ int g_ResolutionYMax = 960;
     // 渐变角度： -90 度（顺时针旋转）
     areaGradient.angle = -90.0f ;
     // 创建一个颜色填充：以颜色渐变进行填充
-    CPTFill *areaGradientFill = [ CPTFill fillWithGradient :areaGradient];
+//    CPTFill *areaGradientFill = [ CPTFill fillWithGradient :areaGradient];
     // 为图形设置渐变区
 //    dataSourceLinePlot. areaFill = areaGradientFill;
 //    dataSourceLinePlot. areaBaseValue = CPTDecimalFromString ( @"0.0" );

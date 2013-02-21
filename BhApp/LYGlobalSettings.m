@@ -10,23 +10,19 @@
 
 @implementation LYGlobalSettings
 
-static LYGlobalSettings *g_pGlobalSettings = nil;
+
 static NSMutableDictionary * g_pSettingsDic = nil;
-+ (LYGlobalSettings *)GetInstance
++ (void)InitSetting
 {
     @synchronized(self)
     {
         if (nil == g_pSettingsDic) {
             g_pSettingsDic = [[NSMutableDictionary alloc] init];
-        }
-        if (nil == g_pGlobalSettings) {
-            g_pGlobalSettings = [[LYGlobalSettings alloc] init];
-            [g_pGlobalSettings initDict];
-        }
-     
+            [LYGlobalSettings initDict];
+        }    
 
     }
-    return g_pGlobalSettings;
+   
 }
 
 +(NSString *) GetSetting:(NSString *) apKey
@@ -36,8 +32,8 @@ static NSMutableDictionary * g_pSettingsDic = nil;
     {
         @synchronized(self)
         {
-            if (nil == g_pGlobalSettings) {
-                [LYGlobalSettings GetInstance];
+            if (nil == g_pSettingsDic) {
+                [LYGlobalSettings InitSetting];
             }
             id lpDataInDic = [g_pSettingsDic objectForKey:apKey];
             if (nil != lpDataInDic && ([lpDataInDic isKindOfClass :[NSString class]]))
@@ -52,7 +48,7 @@ static NSMutableDictionary * g_pSettingsDic = nil;
     }
     return  lpRetValue;
 }
-- (void) initDict
++ (void) initDict
 {
     [g_pSettingsDic setObject:@"http://192.168.12.100:8080" forKey:(SETTING_KEY_SERVER_ADDRESS)];
     [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];

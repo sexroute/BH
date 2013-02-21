@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface LYGlobalSettings : NSObject
-+ (LYGlobalSettings *)GetInstance;
+
 + (NSString *) GetSetting:(NSString *) apKey;
 + (NSString *) GetPostDataPrefix;
 @end
