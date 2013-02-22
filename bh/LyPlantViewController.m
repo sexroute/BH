@@ -7,7 +7,7 @@
 //
 
 #import "LyPlantViewController.h"
-#import "DetailViewController.h"
+#import "LYDetailViewController.h"
 #include "LYCellviewCell.h"
 #import "JSON/JSON.h"
 #import "LYGlobalSettings.h"
@@ -294,7 +294,7 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                              bundle: nil];
     
-    DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
+    LYDetailViewController *detailViewController = (LYDetailViewController*)[mainStoryboard
                                                                          instantiateViewControllerWithIdentifier: @"DetailView"];
     int i= indexPath.row;
     
@@ -330,7 +330,7 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                              bundle: nil];
     
-    DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
+    LYDetailViewController *detailViewController = (LYDetailViewController*)[mainStoryboard
                                                                          instantiateViewControllerWithIdentifier: @"DetailView"];
     int i= indexPath.row;
     

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailViewController : UITableViewController
+@interface LYDetailViewController : UITableViewController
 {
     NSMutableDictionary * m_pData;
 }

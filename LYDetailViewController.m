@@ -6,16 +6,16 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "DetailViewController.h"
+#import "LYDetailViewController.h"
 #import "LYChannViewController.h"
 
-@interface DetailViewController ()
+@interface LYDetailViewController ()
 
 @end
 
 
 
-@implementation DetailViewController
+@implementation LYDetailViewController
 
 
 @synthesize m_pData;

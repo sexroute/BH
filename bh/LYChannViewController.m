@@ -113,10 +113,7 @@
 	
 	[self.m_pProgressBar stopAnimating];
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-
-    
-//	NSLog(@"%@",responseString );
-	NSError *error;
+	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
     if (nil!= self->listOfItems) {
         [self->listOfItems release];

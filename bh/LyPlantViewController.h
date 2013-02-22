@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DetailViewController.h"
+#import "LYDetailViewController.h"
 #import "EGORefreshTableHeaderView.h"
 #import "MBProgressHUD.h"
 typedef enum

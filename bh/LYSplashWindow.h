@@ -12,7 +12,7 @@
 
 
 
-@interface LuckyNumbersViewController : UIViewController<UIAlertViewDelegate> {
+@interface LYSplashWindow : UIViewController<UIAlertViewDelegate> {
 	IBOutlet UILabel *label;
 	NSMutableData *responseData;
     NSMutableArray *listOfItems;

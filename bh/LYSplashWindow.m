@@ -6,14 +6,14 @@
 //  Copyright __MyCompanyName__ 2009. All rights reserved.
 //
 
-#import "LuckyNumbersViewController.h"
+#import "LYSplashWindow.h"
 #import "JSON/JSON.h"
 #import "LYGlobalSettings.h"
 
 
 
 
-@implementation LuckyNumbersViewController
+@implementation LYSplashWindow
 @synthesize m_oActivityProgressbar;
 @synthesize m_oTableView;
 @synthesize m_pNavViewController;
