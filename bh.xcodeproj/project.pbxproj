@@ -53,10 +53,10 @@
 		A4D10864154ED53C00E73642 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1085C154ED53C00E73642 /* SBJsonBase.m */; };
 		A4D10865154ED53C00E73642 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1085E154ED53C00E73642 /* SBJsonParser.m */; };
 		A4D10866154ED53C00E73642 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10860154ED53C00E73642 /* SBJsonWriter.m */; };
-		A4D1086B154ED5A600E73642 /* LuckyNumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10868154ED5A600E73642 /* LuckyNumbersViewController.m */; };
+		A4D1086B154ED5A600E73642 /* LYSplashWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10868154ED5A600E73642 /* LYSplashWindow.m */; };
 		A4D1086C154ED5A600E73642 /* LyPlantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1086A154ED5A600E73642 /* LyPlantViewController.m */; };
 		A4D10874154EDCCE00E73642 /* LYNVController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10873154EDCCE00E73642 /* LYNVController.m */; };
-		A4D10877154EE21C00E73642 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10876154EE21C00E73642 /* DetailViewController.m */; };
+		A4D10877154EE21C00E73642 /* LYDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10876154EE21C00E73642 /* LYDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,14 +212,14 @@
 		A4D1085E154ED53C00E73642 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		A4D1085F154ED53C00E73642 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		A4D10860154ED53C00E73642 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		A4D10867154ED5A600E73642 /* LuckyNumbersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuckyNumbersViewController.h; path = bh/LuckyNumbersViewController.h; sourceTree = SOURCE_ROOT; };
-		A4D10868154ED5A600E73642 /* LuckyNumbersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LuckyNumbersViewController.m; path = bh/LuckyNumbersViewController.m; sourceTree = SOURCE_ROOT; };
+		A4D10867154ED5A600E73642 /* LYSplashWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYSplashWindow.h; path = bh/LYSplashWindow.h; sourceTree = SOURCE_ROOT; };
+		A4D10868154ED5A600E73642 /* LYSplashWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYSplashWindow.m; path = bh/LYSplashWindow.m; sourceTree = SOURCE_ROOT; };
 		A4D10869154ED5A600E73642 /* LyPlantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LyPlantViewController.h; path = bh/LyPlantViewController.h; sourceTree = SOURCE_ROOT; };
 		A4D1086A154ED5A600E73642 /* LyPlantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LyPlantViewController.m; path = bh/LyPlantViewController.m; sourceTree = SOURCE_ROOT; };
 		A4D10872154EDCCE00E73642 /* LYNVController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYNVController.h; sourceTree = "<group>"; };
 		A4D10873154EDCCE00E73642 /* LYNVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYNVController.m; sourceTree = "<group>"; };
-		A4D10875154EE21C00E73642 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ../DetailViewController.h; sourceTree = "<group>"; };
-		A4D10876154EE21C00E73642 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ../DetailViewController.m; sourceTree = "<group>"; };
+		A4D10875154EE21C00E73642 /* LYDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYDetailViewController.h; path = ../LYDetailViewController.h; sourceTree = "<group>"; };
+		A4D10876154EE21C00E73642 /* LYDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYDetailViewController.m; path = ../LYDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -446,10 +446,10 @@
 			children = (
 				A4AABB6C154FCA6D007647DC /* LYCellviewCell.h */,
 				A4AABB6D154FCA6D007647DC /* LYCellviewCell.m */,
-				A4D10875154EE21C00E73642 /* DetailViewController.h */,
-				A4D10876154EE21C00E73642 /* DetailViewController.m */,
-				A4D10867154ED5A600E73642 /* LuckyNumbersViewController.h */,
-				A4D10868154ED5A600E73642 /* LuckyNumbersViewController.m */,
+				A4D10875154EE21C00E73642 /* LYDetailViewController.h */,
+				A4D10876154EE21C00E73642 /* LYDetailViewController.m */,
+				A4D10867154ED5A600E73642 /* LYSplashWindow.h */,
+				A4D10868154ED5A600E73642 /* LYSplashWindow.m */,
 				A4D10869154ED5A600E73642 /* LyPlantViewController.h */,
 				A4D1086A154ED5A600E73642 /* LyPlantViewController.m */,
 				4CFC52E715CBCA79006AD344 /* LYChannViewController.h */,
@@ -659,10 +659,10 @@
 				A4D10864154ED53C00E73642 /* SBJsonBase.m in Sources */,
 				A4D10865154ED53C00E73642 /* SBJsonParser.m in Sources */,
 				A4D10866154ED53C00E73642 /* SBJsonWriter.m in Sources */,
-				A4D1086B154ED5A600E73642 /* LuckyNumbersViewController.m in Sources */,
+				A4D1086B154ED5A600E73642 /* LYSplashWindow.m in Sources */,
 				A4D1086C154ED5A600E73642 /* LyPlantViewController.m in Sources */,
 				A4D10874154EDCCE00E73642 /* LYNVController.m in Sources */,
-				A4D10877154EE21C00E73642 /* DetailViewController.m in Sources */,
+				A4D10877154EE21C00E73642 /* LYDetailViewController.m in Sources */,
 				A4AABB6E154FCA6D007647DC /* LYCellviewCell.m in Sources */,
 				A46A586D154FDF6900EDA973 /* EGORefreshTableHeaderView.m in Sources */,
 				4CFC52E915CBCA7A006AD344 /* LYChannViewController.m in Sources */,
