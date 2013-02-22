@@ -53,7 +53,7 @@
         <!--DetailViewController-->
         <scene sceneID="Lfc-E0-kB7">
             <objects>
-                <tableViewController storyboardIdentifier="DetailView" title="DetailView" id="N98-1c-TBu" userLabel="DetailViewController" customClass="DetailViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DetailView" title="DetailView" id="N98-1c-TBu" userLabel="DetailViewController" customClass="LYDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="tx0-X6-gq3">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,7 +182,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="nKo-wh-J0n">
-                        <barButtonItem key="rightBarButtonItem" title="趋势" id="Apr-lA-0L1">
+                        <barButtonItem key="rightBarButtonItem" title="历史趋势" id="Apr-lA-0L1">
                             <connections>
                                 <segue destination="gMw-d5-iWb" kind="push" id="moR-8u-nl0"/>
                             </connections>
@@ -206,7 +206,17 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6bq-xD-anQ"/>
+                    <navigationItem key="navigationItem" id="6bq-xD-anQ">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="Vhv-3m-hfH">
+                            <rect key="frame" x="96" y="7" width="128" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                        </segmentedControl>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rV7-zE-ZeF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -263,10 +273,10 @@
             </objects>
             <point key="canvasLocation" x="216" y="-317"/>
         </scene>
-        <!--Lucky Numbers View Controller-->
+        <!--Splash Window-->
         <scene sceneID="72D-x5-rHy">
             <objects>
-                <viewController id="S93-Zd-DNF" customClass="LuckyNumbersViewController" sceneMemberID="viewController">
+                <viewController id="S93-Zd-DNF" customClass="LYSplashWindow" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="E3l-Nd-BLC">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -312,6 +322,59 @@
     <resources>
         <image name="Default.png" width="267" height="400"/>
     </resources>
+    <classes>
+        <class className="LYChannInfoViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChannInfoViewController.h"/>
+        </class>
+        <class className="LYChannViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChannViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="m_pProgressBar" candidateClass="UIActivityIndicatorView"/>
+            </relationships>
+        </class>
+        <class className="LYChartView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChartView.h"/>
+        </class>
+        <class className="LYDetailViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYDetailViewController.h"/>
+        </class>
+        <class className="LYNVController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYNVController.h"/>
+        </class>
+        <class className="LYSplashWindow" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYSplashWindow.h"/>
+            <relationships>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_oActivityProgressbar" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="m_pNavViewController" candidateClass="LYNVController"/>
+            </relationships>
+        </class>
+        <class className="LYWaveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
+                <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="LyPlantViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LyPlantViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="OnRefreshButtonPressed:"/>
+                <relationship kind="action" name="OnSearchButtonPressed:"/>
+                <relationship kind="outlet" name="m_oActiveIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="m_pButtonAlarm" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonAll" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonDanger" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonNormal" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonStop" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
