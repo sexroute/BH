@@ -19,7 +19,7 @@ typedef enum
     NORMAL
 } PLANT_FILTER_STATUS;
 
-@interface LyPlantViewController : UITableViewController<EGORefreshTableHeaderDelegate,MBProgressHUDDelegate>
+@interface LYPlantViewController : UITableViewController<EGORefreshTableHeaderDelegate,MBProgressHUDDelegate>
 {
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;

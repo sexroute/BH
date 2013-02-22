@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LyPlantViewController.h"
+#import "LYPlantViewController.h"
 #import "LYNVController.h"
 
 
@@ -16,7 +16,7 @@
 	IBOutlet UILabel *label;
 	NSMutableData *responseData;
     NSMutableArray *listOfItems;
-    LyPlantViewController * m_pPlantViewController;
+    LYPlantViewController * m_pPlantViewController;
     LYNVController *m_pNavViewController;
 }
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *m_oActivityProgressbar;

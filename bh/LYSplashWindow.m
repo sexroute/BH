@@ -102,7 +102,7 @@
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                                  bundle: nil];
         
-        LyPlantViewController *detailViewController = (LyPlantViewController*)[mainStoryboard
+        LYPlantViewController *detailViewController = (LYPlantViewController*)[mainStoryboard
                                                                                instantiateViewControllerWithIdentifier: @"PlantView"];
         self->m_pPlantViewController = detailViewController;
         self.m_pNavViewController = [[[LYNVController alloc]init] autorelease];

@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
-        <!--Ly Plant View Controller - PlantView-->
+        <!--Plant View Controller - PlantView-->
         <scene sceneID="r4E-2N-pna">
             <objects>
-                <tableViewController storyboardIdentifier="PlantView" title="PlantView" modalTransitionStyle="flipHorizontal" id="Jq2-v1-unc" customClass="LyPlantViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PlantView" title="PlantView" modalTransitionStyle="flipHorizontal" id="Jq2-v1-unc" customClass="LYPlantViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mtB-Cw-chx">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -358,20 +358,6 @@
                 <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="LyPlantViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LyPlantViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="OnRefreshButtonPressed:"/>
-                <relationship kind="action" name="OnSearchButtonPressed:"/>
-                <relationship kind="outlet" name="m_oActiveIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="m_oTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="m_pButtonAlarm" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="m_pButtonAll" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="m_pButtonDanger" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="m_pButtonNormal" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="m_pButtonStop" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
     </classes>

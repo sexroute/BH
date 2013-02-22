@@ -6,17 +6,17 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "LyPlantViewController.h"
+#import "LYPlantViewController.h"
 #import "LYDetailViewController.h"
 #include "LYCellviewCell.h"
 #import "JSON/JSON.h"
 #import "LYGlobalSettings.h"
 
-@interface LyPlantViewController ()
+@interface LYPlantViewController ()
 
 @end
 
-@implementation LyPlantViewController
+@implementation LYPlantViewController
 
 
 @synthesize m_oActiveIndicator;
