@@ -130,6 +130,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "BH"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

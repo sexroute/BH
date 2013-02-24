@@ -17,9 +17,26 @@
 @synthesize m_oActivityProgressbar;
 @synthesize m_oTableView;
 @synthesize m_pNavViewController;
+@synthesize m_oImageView;
 
 - (void)viewDidLoad {	
-	[super viewDidLoad];
+
+    int lnHeight = [[UIScreen mainScreen] bounds].size.height ;
+    int lnWeight = [[UIScreen mainScreen] bounds].size.width;
+    self.m_oImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0,0.0,lnWeight,lnHeight)]autorelease];
+    
+    if (lnHeight == 568)
+    {
+         self.m_oImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
+          
+     }
+    else
+    {
+        self.m_oImageView.image = [UIImage imageNamed:@"default.png"];
+    }
+    
+    [self.view insertSubview:self.m_oImageView atIndex:0];
+    [super viewDidLoad];
     [self LoadData];
 
 }
@@ -149,12 +166,17 @@
 - (void)dealloc {
     [m_oTableView release];
     [m_oActivityProgressbar release];
+    self.m_oImageView = nil;
+
     [super dealloc];
 }
 
 - (void)viewDidUnload {
     [self setM_oTableView:nil];
     [self setM_oActivityProgressbar:nil];
+    self.m_oImageView = nil;
+    [self setM_oImageView:nil];
+    [self setM_oImageView:nil];
     [super viewDidUnload];
 }
 @end

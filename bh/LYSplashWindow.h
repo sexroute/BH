@@ -17,9 +17,12 @@
 	NSMutableData *responseData;
     NSMutableArray *listOfItems;
     LYPlantViewController * m_pPlantViewController;
+   
     LYNVController *m_pNavViewController;
 }
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *m_oActivityProgressbar;
+
+@property (retain, nonatomic) IBOutlet UIImageView *m_oImageView;
 
 @property (retain, nonatomic) IBOutlet UITableView *m_oTableView;
 @property (retain, nonatomic) IBOutlet LYNVController *m_pNavViewController;
