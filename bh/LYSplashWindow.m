@@ -28,8 +28,7 @@
     if (lnHeight == 568)
     {
          self.m_oImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
-          
-     }
+    }
     else
     {
         self.m_oImageView.image = [UIImage imageNamed:@"default.png"];
