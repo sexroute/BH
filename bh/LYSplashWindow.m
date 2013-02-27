@@ -31,7 +31,7 @@
     }
     else
     {
-        self.m_oImageView.image = [UIImage imageNamed:@"default.png"];
+        self.m_oImageView.image = [UIImage imageNamed:@"Default@2x.png"];
     }
     
     [self.view insertSubview:self.m_oImageView atIndex:0];

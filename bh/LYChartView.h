@@ -37,6 +37,7 @@ typedef enum {
     NSString * m_pStrPlant;
     NSMutableArray *listOfItems;
     DrawMode                         m_nDrawDataMode;
+   
 }
 
 @property (retain, nonatomic) NSMutableArray *dataForPlot1;
@@ -47,8 +48,8 @@ typedef enum {
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) NSString * m_pStrPlant;
 -(void) initGraph;
--(void) LoadDataFromMiddleWare;
--(void)OnHudCallBack;
+
+
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection;
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response ;
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
@@ -59,5 +60,7 @@ typedef enum {
 - (void)setDrawDataMode:(DrawMode)newValue;
 
 - (id)init;
+
+- (void) initData;
 
 @end

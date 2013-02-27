@@ -302,25 +302,7 @@
     [self.navigationController setToolbarHidden:YES animated:TRUE] ;
     [self.navigationController pushViewController:detailViewController animated:YES];
     return;
-    //2.load from xib
-    //    DetailViewController *detailViewController
-    //    = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
-    //    int i= indexPath.row;
-    //    detailViewController.m_pData = [listOfItems objectAtIndex:i];
-    //    [self.navigationController pushViewController:detailViewController animated:YES];
-    //
-    //    [detailViewController release];
-    //    return;
-    //3.load by manual
-    //    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
-    //
-    //    int i= indexPath.row;
-    //
-    //     detailViewController.m_pData = [listOfItems objectAtIndex:i];
-    //     // ...
-    //     // Pass the selected object to the new view controller.
-    //     [self.navigationController pushViewController:detailViewController animated:YES];
-    //     [detailViewController release];
+
     
 }
 
@@ -342,44 +324,7 @@
 }
 
 
-#pragma mark - Table view delegate
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//
-////1.load from storyboard
-//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-//                                                             bundle: nil];
-//    
-//    DetailViewController *detailViewController = (DetailViewController*)[mainStoryboard
-//                                                       instantiateViewControllerWithIdentifier: @"DetailView"];
-//    int i= indexPath.row;
-//    
-//    detailViewController.m_pData = [listOfItems objectAtIndex:i];
-//    [self.navigationController setToolbarHidden:YES animated:TRUE] ;
-//    [self.navigationController pushViewController:detailViewController animated:YES];
-//    return;
-////2.load from xib
-////    DetailViewController *detailViewController
-////    = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
-////    int i= indexPath.row;    
-////    detailViewController.m_pData = [listOfItems objectAtIndex:i];
-////    [self.navigationController pushViewController:detailViewController animated:YES];
-////    
-////    [detailViewController release];
-////    return;
-////3.load by manual
-////    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
-////     
-////    int i= indexPath.row;
-////    
-////     detailViewController.m_pData = [listOfItems objectAtIndex:i];
-////     // ...
-////     // Pass the selected object to the new view controller.
-////     [self.navigationController pushViewController:detailViewController animated:YES];
-////     [detailViewController release];
-//     
-//}
 
 
 
@@ -542,10 +487,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
 	[self.responseData appendData:data];
-    if (nil!= HUD)
-    {
-        HUD.progress = currentLength / (float)expectedLength;
-    }
+   
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -554,7 +496,7 @@
     self.responseData = nil;
     if (nil!=HUD)
     {
-         [HUD hide:YES];
+      [HUD hide:YES];
     }
    
 }
@@ -593,10 +535,7 @@
     
     if (nil != HUD)
     {
-       // HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
-        HUD.mode = MBProgressHUDModeCustomView;
-        HUD.labelText = @"";
-        [HUD hide:YES afterDelay:0];
+       [HUD hide:YES afterDelay:0];
     }
 
 }
@@ -604,32 +543,18 @@
 #pragma mark ButtonPressed Methods
 - (void)startTimer
 {
-   [NSTimer scheduledTimerWithTimeInterval: 1.0
-                                                  target: self
-                                                selector:@selector(OnRefresh)
-                                                userInfo: nil repeats:NO];
+    [self OnRefresh];
 }
 - (void)OnRefresh
 {
-
-    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    HUD.mode = MBProgressHUDModeIndeterminate;
-    
-	[self.navigationController.view addSubview:HUD];
-    
-	HUD.dimBackground = YES;
-    HUD.labelText = @"刷新中";
-	// Regiser for HUD callbacks so we can remove it from the window at the right time
-	HUD.delegate = self;
-	// Show the HUD while the provided method executes in a new thread
-	[HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
+    [self PopulateIndicator];
     [self doLoadData];
 
 }
 - (IBAction)OnRefreshButtonPressed:(id)sender
 {
     [self startTimer];
-    //[self.m_oActiveIndicator startAnimating];
+   
     
 }
 
@@ -701,16 +626,32 @@
 #pragma mark -
 #pragma mark MBProgressHUDDelegate methods
 
-- (void)hudWasHidden:(MBProgressHUD *)hud {
+- (void)hudWasHidden:(MBProgressHUD *)apHud {
 	// Remove HUD from screen when the HUD was hidded
-	[HUD removeFromSuperview];
-	[HUD release];
-     HUD = nil;
+	[apHud removeFromSuperview];
+	[apHud release];
+     
+}
+
+- (void)PopulateIndicator
+{
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    HUD.mode = MBProgressHUDModeIndeterminate;
+    
+	[self.navigationController.view addSubview:HUD];
+    
+	HUD.dimBackground = YES;
+    HUD.labelText = @"刷新中";
+	// Regiser for HUD callbacks so we can remove it from the window at the right time
+	HUD.delegate = self;
+	// Show the HUD while the provided method executes in a new thread
+	[HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
+    [self.navigationController.view bringSubviewToFront:HUD];
 }
 
 - (void)OnHudCallBack
 {
 	// Do something usefull in here instead of sleeping ...
-	sleep(1);
+	sleep(3600);
 }
 @end

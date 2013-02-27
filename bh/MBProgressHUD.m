@@ -337,20 +337,23 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 }
 
 - (void)done {
-	isFinished = YES;
-	self.alpha = 0.0f;
-	if ([delegate respondsToSelector:@selector(hudWasHidden:)]) {
-		[delegate performSelector:@selector(hudWasHidden:) withObject:self];
-	}
+    if (!isFinished) {
+        isFinished = YES;
+        self.alpha = 0.0f;
+        if ([delegate respondsToSelector:@selector(hudWasHidden:)]) {
+            [delegate performSelector:@selector(hudWasHidden:) withObject:self];
+        }
 #if NS_BLOCKS_AVAILABLE
-	if (self.completionBlock) {
-		self.completionBlock();
-		self.completionBlock = NULL;
-	}
+        if (self.completionBlock) {
+            self.completionBlock();
+            self.completionBlock = NULL;
+        }
 #endif
-	if (removeFromSuperViewOnHide) {
-		[self removeFromSuperview];
-	}
+        if (removeFromSuperViewOnHide) {
+            [self removeFromSuperview];
+        }
+    }
+
 }
 
 #pragma mark - Threading

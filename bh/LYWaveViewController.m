@@ -28,7 +28,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
+         self->HUD = nil;
+        self.hostView = nil;
+        self.m_pStrChann = nil;
+        self.m_pStrCompany =  nil;
+        self.m_pStrFactory = nil;
+        self.m_pStrGroup = nil;
+        self.m_pStrPlant = nil;
+        self.hostView = nil;
+
     }
     return self;
 }
@@ -38,7 +46,6 @@
 {
     if (nil == self.hostView)
     {
-        
         self.hostView = [[[LYChartView alloc] init]autorelease];
         NSLog(@"%d",hostView.retainCount);
         
@@ -47,9 +54,6 @@
         self.hostView.m_pStrFactory = self.m_pStrFactory;
         self.hostView.m_pStrPlant = self.m_pStrPlant;
         self.hostView.m_pStrChann = [self.m_pStrChann stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        //    CGRect loRect =self.m_plotView.bounds;
-        //    loRect =CGRectMake(0, 0, 320, 396);
-        //    self.m_plotView.bounds = loRect;
         self.hostView.m_pParent = self.m_plotView;
         [self.hostView setDrawDataMode:nDrawMode];
         [self.hostView initGraph];
@@ -97,20 +101,20 @@
 
     NSLog(@"dealloc self :%d",self.retainCount);
     NSLog(@"dealloc hostview :%d",self.hostView.retainCount);
-//    [self.m_pChartViewParent.subviews release];
-    //
+
     self.m_pStrChann = nil;
     self.m_pStrCompany =  nil;
     self.m_pStrFactory = nil;
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
-   // self.hostView = nil;
+     self.hostView = nil;
     [m_pChartViewParent release];
     [m_plotView release];
-   // [hostView release];
+   
     [super dealloc];
 }
 
+#pragma mark HUD指示器
 -(void)PopUpIndicator
 {
     self->HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -122,26 +126,30 @@
 	self->HUD.delegate = self;
 	// Show the HUD while the provided method executes in a new thread
 	[self->HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
-//    [self retain];
-//    [self retain];
 }
-#pragma mark -
-#pragma mark MBProgressHUDDelegate methods
 
-- (void)hudWasHidden:(MBProgressHUD *)hud {
-	// Remove HUD from screen when the HUD was hidded
-    NSLog(@"hudWasHidden self :%d",self.retainCount);
-	[self->HUD removeFromSuperview];
-	[self->HUD release];
-
-     self->HUD = nil;
+-(void) HiddeIndicator
+{
+    if (nil!=self->HUD)
+    {
+        [self->HUD hide:YES];
+    }
 }
+
 - (void)OnHudCallBack
 {
-	// Do something usefull in here instead of sleeping ...
-	//sleep(3);
+    sleep(3600);
 }
-#pragma mark -
+
+- (void)hudWasHidden:(MBProgressHUD *)aphud {
+    if (nil!=aphud)
+    {
+        NSLog(@"hudWasHidden self :%d",aphud.retainCount);
+        [aphud removeFromSuperview];
+        [aphud release];
+    }
+}
+
 #pragma mark ButtonPress methods
 - (IBAction)OnWavePressed:(UIBarButtonItem *)sender
 {
@@ -169,34 +177,27 @@
 	[self.hostView connection:connection didReceiveResponse:response];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
 	[self.hostView connection:connection didReceiveData:data];
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
 	//弹出网络错误对话框
-    NSLog(@"%@",error.description);
-    if (nil!=HUD)
-    {
-     [HUD hide:YES];
-    }
+  
+
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-       [self.hostView connectionDidFinishLoading:connection];
-       if (nil != HUD)
-       {
-         //  HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
-           HUD.mode = MBProgressHUDModeCustomView;
-           HUD.labelText = @"";
-          [HUD hide:YES afterDelay:0];
-       }
+    [self HiddeIndicator];
+    [self.hostView connectionDidFinishLoading:connection];
 }
 
 - (void) LoadDataFromMiddleWare
 {
-    [self.hostView LoadDataFromMiddleWare];
+    [self.hostView initData];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/api/alarm/wave/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
     NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
@@ -207,5 +208,6 @@
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
 }
 @end

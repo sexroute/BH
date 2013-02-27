@@ -24,26 +24,99 @@ int g_ResolutionYMax = 960;
 
 
 // I added the NSLog to see if these get called, but they don't seem to get called!
+
+
+#pragma mark - NSURLConnection 数据获取事件
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+	[responseData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+	//弹出网络错误对话框
+    NSLog(@"%@",error.description);
+
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+
+    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
+    
+	//[self.m_pProgressBar stopAnimating];
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    if (self->responseData!=nil) {
+        [ self->responseData release];
+        self->responseData = nil;
+    }
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self->listOfItems = [json objectWithString:responseString error:&error];
+    
+    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
+    {
+        [responseString release];
+        [connection release];
+        return;
+    }else
+    {
+        NSLog(@"%@",[self->listOfItems class]);
+    }
+    int lnDrawResult = 0;
+    switch ([self getDrawDataMode])
+    {
+        case WAVE:
+            lnDrawResult = [self DrawWave];
+            break;
+        case FREQUENCE:
+            lnDrawResult = [self DrawFreq];
+            break;
+        default:
+            break;
+    }
+    [self->responseData release];
+    self->responseData = nil;
+    [responseString release];
+    [connection release];
+    if (lnDrawResult)
+    {
+        [graph reloadData];
+    }
+    
+}
+
+
+
+#pragma mark - 绘图开始
 - (void)initGraph
 {
     
-   
+    
     NSLog(@"graph :%d",self->graph.retainCount);
+    if(nil!=self->graph)
+    {
+        [self->graph release];
+        self->graph = nil;
+    }
     self->graph = [[CPTXYGraph alloc] initWithFrame:self.m_pParent.bounds];
     NSLog(@"graph :%d",self->graph.retainCount);
     //给画板添加一个主题
     CPTTheme *theme = [CPTTheme themeNamed:kCPTDarkGradientTheme];
- 
+    
     [graph applyTheme:theme];
     NSLog(@"graph :%d",self->graph.retainCount);
     //创建主画板视图添加画板
     CPTGraphHostingView *hostingView = [[CPTGraphHostingView alloc] initWithFrame:self.m_pParent.bounds];
     hostingView.hostedGraph = graph;
     NSLog(@"graph :%d",self->graph.retainCount);
-
+    
 	[self.m_pParent addSubview:hostingView];
     NSLog(@"hostingView :%d",hostingView.retainCount);
-//    [hostingView.hostedGraph release];
+    //    [hostingView.hostedGraph release];
     [hostingView release];
     NSLog(@"graph :%d",self->graph.retainCount);
     //设置留白
@@ -101,94 +174,18 @@ int g_ResolutionYMax = 960;
     // 渐变角度： -90 度（顺时针旋转）
     areaGradient.angle = -90.0f ;
     // 创建一个颜色填充：以颜色渐变进行填充
-//    CPTFill *areaGradientFill = [ CPTFill fillWithGradient :areaGradient];
+    //    CPTFill *areaGradientFill = [ CPTFill fillWithGradient :areaGradient];
     // 为图形设置渐变区
-//    dataSourceLinePlot. areaFill = areaGradientFill;
-//    dataSourceLinePlot. areaBaseValue = CPTDecimalFromString ( @"0.0" );
+    //    dataSourceLinePlot. areaFill = areaGradientFill;
+    //    dataSourceLinePlot. areaBaseValue = CPTDecimalFromString ( @"0.0" );
     //dataSourceLinePlot.interpolation = CPTScatterPlotInterpolationLinear ;
     
     
     dataForPlot1 = [[NSMutableArray alloc] init];
     j = 200;
     r = 0;
-    //timer1 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(dataOpt) userInfo:nil repeats:YES];
-    //[timer1 fire];
-    //[self initData];
-    
-    //[graph reloadData];
-    // NSLog(@"graph :%d",self->graph.retainCount);
-}
-- (void) initData
-{
-    return;
-
-}
-#pragma mark - NSURLConnection
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	[responseData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[responseData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	//弹出网络错误对话框
-    NSLog(@"%@",error.description);
-
-}
-
-
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-
-    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
-    
-	//[self.m_pProgressBar stopAnimating];
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-    
-	NSLog(@"%d",responseData.retainCount );
-	NSError *error;
-	SBJSON *json = [[SBJSON new] autorelease];
-	self->listOfItems = [json objectWithString:responseString error:&error];
-    //[responseData release];
-    [responseData dealloc];
-    self->responseData = nil;
-    
-    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
-    {
-        [responseString release];
-        [connection release];
-        return;
-    }else
-    {
-        NSLog(@"%@",[self->listOfItems class]);
-    }
-    int lnDrawResult = 0;
-    switch ([self getDrawDataMode])
-    {
-        case WAVE:
-            lnDrawResult = [self DrawWave];
-            break;
-        case FREQUENCE:
-            lnDrawResult = [self DrawFreq];
-            break;
-        default:
-            break;
-    }
-    
-    [responseString release];
-    [connection release];
-    if (lnDrawResult)
-    {
-        [graph reloadData];
-    }
     
 }
-
-#pragma mark -
-
 - (void)DrawData:(id )wave_data wave_lenx:(int)wave_len maxPoint:(int)anMaxPoint axis_x_max:(double)adblAxisXMax axis_x_delta:(double)adblAxisXDelta
 {
     [dataForPlot1 removeAllObjects];
@@ -511,61 +508,7 @@ int g_ResolutionYMax = 960;
     return 0;
 }
 
-- (void) dataOpt
-{
-//    //[graph reloadData];
-//    //return;
-//    //添加随机数
-//    if ([dataSourceLinePlot.identifier isEqual:@"Green Plot"])
-//    {
-//        NSString *xp = [NSString stringWithFormat:@"%d",j];
-//        double lfdata = sin((double)j/1024.0*2*3.1415926)*50;
-//        NSString *yp = [NSString stringWithFormat:@"%f",(lfdata)];
-//        NSMutableDictionary *point1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil];
-//        [dataForPlot1 insertObject:point1 atIndex:0];
-//    }
-//    //刷新画板
-//    [graph reloadData];
-//    j = j + 20;
-//    r = r + 20;
-}
 
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
-#pragma mark -
-#pragma mark dataSourceOpt
-
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
-{
-    return [dataForPlot1 count];
-}
-
-- (void) LoadDataFromMiddleWare
-{
-
-    
-    if(nil != responseData)
-    {
-        [responseData release];
-        responseData = nil;
-    }
-    responseData = [[NSMutableData data] retain];
-    NSString * lpUrl = [NSString stringWithFormat:@"%@/api/alarm/wave/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
-    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
-    NSURL *aUrl = [NSURL URLWithString:lpUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
-                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                       timeoutInterval:10.0];
-    
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
-	[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    
-}
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
@@ -589,30 +532,67 @@ int g_ResolutionYMax = 960;
     return num;
 }
 
-- (DrawMode)getDrawDataMode {
+- (DrawMode)getDrawDataMode
+{
     return m_nDrawDataMode;
 }
 
-- (void)setDrawDataMode:(DrawMode)newValue {
+- (void)setDrawDataMode:(DrawMode)newValue
+{
     m_nDrawDataMode = newValue;
 }
 
+-(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+{
+    return [dataForPlot1 count];
+}
+
+#pragma 传感器事件
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+
+
+
 int gCount = 0;
+#pragma mark 初始化
 - (id) init
 {
     NSLog(@"LYChartView init Count:%d",++gCount);
     self = [super init];
+    self->graph = nil;
+    self->listOfItems = nil;
+   
+    self.m_pParent = nil;
+    self.m_pStrChann = nil;
+    self.m_pStrCompany =  nil;
+    self.m_pStrFactory = nil;
+    self.m_pStrGroup = nil;
+    self.m_pStrPlant = nil;
     return  self;
     
 }
+- (void) initData
+{
+    if(nil != responseData)
+    {
+        [responseData release];
+        responseData = nil;
+    }
+    responseData = [[NSMutableData data] retain];
+    return;
+    
+}
+#pragma mark 析构
 
 -(void) dealloc
 {
     NSLog(@"LYChartView  dealloc Count:%d",--gCount);
 
     NSLog(@"LYChartView dealloc graph.retainCount %d",self->graph.retainCount);
-    //[self.m_pParent.subviews release];
-    //[self->graph release];
     self.m_pParent = nil;
     self.m_pStrChann = nil;
     self.m_pStrCompany =  nil;

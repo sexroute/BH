@@ -73,11 +73,6 @@
             isEnabled = "YES">
          </AdditionalOption>
          <AdditionalOption
-            key = "DYLD_INSERT_LIBRARIES"
-            value = "/usr/lib/libgmalloc.dylib"
-            isEnabled = "YES">
-         </AdditionalOption>
-         <AdditionalOption
             key = "OBJC_PRINT_EXCEPTIONS"
             value = "YES"
             isEnabled = "YES">
@@ -88,11 +83,6 @@
             isEnabled = "YES">
          </AdditionalOption>
          <AdditionalOption
-            key = "MallocGuardEdges"
-            value = ""
-            isEnabled = "YES">
-         </AdditionalOption>
-         <AdditionalOption
             key = "AUTO_LOG_ALL"
             value = ""
             isEnabled = "YES">
@@ -100,11 +90,6 @@
          <AdditionalOption
             key = "MallocStackLogging"
             value = ""
-            isEnabled = "YES">
-         </AdditionalOption>
-         <AdditionalOption
-            key = "NSZombieEnabled"
-            value = "YES"
             isEnabled = "YES">
          </AdditionalOption>
       </AdditionalOptions>
