@@ -12,8 +12,8 @@
 		4C17527D15D91C4F004D0A35 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */; };
 		4C61891116DF4365004FEE93 /* LYLoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61891016DF4364004FEE93 /* LYLoginCell.m */; };
 		4C61891316DF47E6004FEE93 /* loginCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C61891216DF47E6004FEE93 /* loginCell.xib */; };
+		4C61891516DF56B7004FEE93 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C61891416DF56B7004FEE93 /* libsqlite3.dylib */; };
 		4C770D2816D5B608005743DE /* LYGlobalSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C770D2716D5B608005743DE /* LYGlobalSettings.m */; };
-		4CC784D316D46E5B0019B95C /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */; };
 		4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */; };
 		4CCF789516DC5DD1001E6413 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789416DC5DD1001E6413 /* Icon.png */; };
 		4CCF789716DC5DD5001E6413 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789616DC5DD5001E6413 /* Icon@2x.png */; };
@@ -79,6 +79,7 @@
 		4C61890F16DF4364004FEE93 /* LYLoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYLoginCell.h; sourceTree = "<group>"; };
 		4C61891016DF4364004FEE93 /* LYLoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYLoginCell.m; sourceTree = "<group>"; };
 		4C61891216DF47E6004FEE93 /* loginCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = loginCell.xib; sourceTree = "<group>"; };
+		4C61891416DF56B7004FEE93 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		4C770D2616D5B608005743DE /* LYGlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYGlobalSettings.h; path = BhApp/LYGlobalSettings.h; sourceTree = "<group>"; };
 		4C770D2716D5B608005743DE /* LYGlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYGlobalSettings.m; path = BhApp/LYGlobalSettings.m; sourceTree = "<group>"; };
 		4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "lib/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
@@ -232,11 +233,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C61891516DF56B7004FEE93 /* libsqlite3.dylib in Frameworks */,
 				A46A5881154FE07400EDA973 /* QuartzCore.framework in Frameworks */,
 				A4D1081F154ED4EC00E73642 /* UIKit.framework in Frameworks */,
 				A4D10821154ED4EC00E73642 /* Foundation.framework in Frameworks */,
 				A4D10823154ED4EC00E73642 /* CoreGraphics.framework in Frameworks */,
-				4CC784D316D46E5B0019B95C /* libCorePlot-CocoaTouch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +415,7 @@
 		A4D1080F154ED4EC00E73642 = {
 			isa = PBXGroup;
 			children = (
+				4C61891416DF56B7004FEE93 /* libsqlite3.dylib */,
 				4CCF789616DC5DD5001E6413 /* Icon@2x.png */,
 				4CCF789416DC5DD1001E6413 /* Icon.png */,
 				4CC784D416D46E930019B95C /* inc */,
