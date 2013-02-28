@@ -10,6 +10,8 @@
 		4C17527515D91B9D004D0A35 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C17527415D91B9D004D0A35 /* MBProgressHUD.m */; };
 		4C17527C15D91C4F004D0A35 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */; };
 		4C17527D15D91C4F004D0A35 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */; };
+		4C61891116DF4365004FEE93 /* LYLoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61891016DF4364004FEE93 /* LYLoginCell.m */; };
+		4C61891316DF47E6004FEE93 /* loginCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C61891216DF47E6004FEE93 /* loginCell.xib */; };
 		4C770D2816D5B608005743DE /* LYGlobalSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C770D2716D5B608005743DE /* LYGlobalSettings.m */; };
 		4CC784D316D46E5B0019B95C /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */; };
 		4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */; };
@@ -74,6 +76,9 @@
 		4C17527415D91B9D004D0A35 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../bh/MBProgressHUD.m; sourceTree = "<group>"; };
 		4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
+		4C61890F16DF4364004FEE93 /* LYLoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYLoginCell.h; sourceTree = "<group>"; };
+		4C61891016DF4364004FEE93 /* LYLoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYLoginCell.m; sourceTree = "<group>"; };
+		4C61891216DF47E6004FEE93 /* loginCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = loginCell.xib; sourceTree = "<group>"; };
 		4C770D2616D5B608005743DE /* LYGlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYGlobalSettings.h; path = BhApp/LYGlobalSettings.h; sourceTree = "<group>"; };
 		4C770D2716D5B608005743DE /* LYGlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYGlobalSettings.m; path = BhApp/LYGlobalSettings.m; sourceTree = "<group>"; };
 		4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "lib/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
@@ -401,6 +406,7 @@
 				A46A5875154FDF7400EDA973 /* grayArrow@2x.png */,
 				A46A5876154FDF7400EDA973 /* whiteArrow.png */,
 				A46A5877154FDF7400EDA973 /* whiteArrow@2x.png */,
+				4C61891216DF47E6004FEE93 /* loginCell.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -444,33 +450,35 @@
 		A4D10824154ED4EC00E73642 /* bh */ = {
 			isa = PBXGroup;
 			children = (
-				A4AABB6C154FCA6D007647DC /* LYCellviewCell.h */,
-				A4AABB6D154FCA6D007647DC /* LYCellviewCell.m */,
-				A4D10875154EE21C00E73642 /* LYDetailViewController.h */,
-				A4D10876154EE21C00E73642 /* LYDetailViewController.m */,
+				A4D1082D154ED4EC00E73642 /* LYAppDelegate.h */,
+				A4D1082E154ED4EC00E73642 /* LYAppDelegate.m */,
 				A4D10867154ED5A600E73642 /* LYSplashWindow.h */,
 				A4D10868154ED5A600E73642 /* LYSplashWindow.m */,
 				A4D10869154ED5A600E73642 /* LyPlantViewController.h */,
 				A4D1086A154ED5A600E73642 /* LyPlantViewController.m */,
+				A4AABB6C154FCA6D007647DC /* LYCellviewCell.h */,
+				A4AABB6D154FCA6D007647DC /* LYCellviewCell.m */,
+				A4D10875154EE21C00E73642 /* LYDetailViewController.h */,
+				A4D10876154EE21C00E73642 /* LYDetailViewController.m */,
 				4CFC52E715CBCA79006AD344 /* LYChannViewController.h */,
 				4CFC52E815CBCA79006AD344 /* LYChannViewController.m */,
 				4CFC52ED15CC22D2006AD344 /* LYChannInfoViewController.h */,
 				4CFC52EE15CC22D2006AD344 /* LYChannInfoViewController.m */,
-				A4D1082D154ED4EC00E73642 /* LYAppDelegate.h */,
-				A4D1082E154ED4EC00E73642 /* LYAppDelegate.m */,
 				A4D10833154ED4EC00E73642 /* LYViewController.h */,
 				A4D10834154ED4EC00E73642 /* LYViewController.m */,
 				4CF5C18E15CE986C00DA6510 /* LYWaveViewController.h */,
 				4CF5C18F15CE986C00DA6510 /* LYWaveViewController.m */,
 				4CF5C18B15CDFE6B00DA6510 /* LYChartView.h */,
 				4CF5C18C15CDFE6B00DA6510 /* LYChartView.m */,
-				A4D10853154ED53C00E73642 /* JSON */,
-				A4D10825154ED4EC00E73642 /* Supporting Files */,
 				A4D10872154EDCCE00E73642 /* LYNVController.h */,
 				A4D10873154EDCCE00E73642 /* LYNVController.m */,
+				4CFC52F015CC28EA006AD344 /* ChannInfo.h */,
 				A4AABB69154FC607007647DC /* cell.xib */,
 				4CFC52E515CBC0EC006AD344 /* DetailView.xib */,
-				4CFC52F015CC28EA006AD344 /* ChannInfo.h */,
+				A4D10853154ED53C00E73642 /* JSON */,
+				A4D10825154ED4EC00E73642 /* Supporting Files */,
+				4C61890F16DF4364004FEE93 /* LYLoginCell.h */,
+				4C61891016DF4364004FEE93 /* LYLoginCell.m */,
 			);
 			name = bh;
 			path = ../bh;
@@ -616,6 +624,7 @@
 				4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */,
 				4CCF789516DC5DD1001E6413 /* Icon.png in Resources */,
 				4CCF789716DC5DD5001E6413 /* Icon@2x.png in Resources */,
+				4C61891316DF47E6004FEE93 /* loginCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +680,7 @@
 				4CF5C19015CE986C00DA6510 /* LYWaveViewController.m in Sources */,
 				4C17527515D91B9D004D0A35 /* MBProgressHUD.m in Sources */,
 				4C770D2816D5B608005743DE /* LYGlobalSettings.m in Sources */,
+				4C61891116DF4365004FEE93 /* LYLoginCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

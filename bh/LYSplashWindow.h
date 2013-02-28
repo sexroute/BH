@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "LYPlantViewController.h"
 #import "LYNVController.h"
+#import "LYLoginCell.h"
 
 
 
-@interface LYSplashWindow : UIViewController<UIAlertViewDelegate> {
+@interface LYSplashWindow : UIViewController<UIAlertViewDelegate,UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate> {
 	IBOutlet UILabel *label;
 	NSMutableData *responseData;
     NSMutableArray *listOfItems;
@@ -24,7 +25,10 @@
 
 @property (retain, nonatomic) IBOutlet UIImageView *m_oImageView;
 
-@property (retain, nonatomic) IBOutlet UITableView *m_oTableView;
+@property (retain, nonatomic) IBOutlet UITableView *m_oLoginTableView;
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+
 @property (retain, nonatomic) IBOutlet LYNVController *m_pNavViewController;
 @end
 

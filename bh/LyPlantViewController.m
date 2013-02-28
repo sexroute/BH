@@ -299,7 +299,7 @@
     int i= indexPath.row;
     
     detailViewController.m_pData = [[self GetCurrentDataSource] objectAtIndex:i];
-    [self.navigationController setToolbarHidden:YES animated:TRUE] ;
+   [self.navigationController setToolbarHidden:YES animated:FALSE] ;
     [self.navigationController pushViewController:detailViewController animated:YES];
     return;
 

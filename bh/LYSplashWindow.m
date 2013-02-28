@@ -15,12 +15,110 @@
 
 @implementation LYSplashWindow
 @synthesize m_oActivityProgressbar;
-@synthesize m_oTableView;
+
 @synthesize m_pNavViewController;
 @synthesize m_oImageView;
 
-- (void)viewDidLoad {	
+UITextField * g_pTextUserName = nil;
+UITextField * g_pTextPassword = nil;
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.0;
+}
+
+
+
+- (BOOL) textFieldShouldReturn:(UITextField *)tf
+{
+    switch (tf.tag) {
+        case 0:
+             [g_pTextPassword becomeFirstResponder];
+            break;
+        case 1:
+            break;
+         default:
+            [tf resignFirstResponder];
+            break;
+    }
+    return YES;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *kCellIdentifier = @"Cell";
+    UITableViewCell *cell = [self.m_oLoginTableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                       reuseIdentifier:kCellIdentifier] autorelease];
+     
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        if ([indexPath section] == 0) {
+            UITextField *playerTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 8, 185, 30)];
+            playerTextField.adjustsFontSizeToFitWidth = YES;
+            playerTextField.textColor = [UIColor blackColor];
+            if ([indexPath row] == 0) {
+                playerTextField.placeholder = @"用户名";
+                playerTextField.returnKeyType = UIReturnKeyNext;
+                playerTextField.tag = 0;
+                g_pTextUserName = playerTextField;
+            }
+            else {
+                playerTextField.placeholder = @"密码";
+                playerTextField.keyboardType = UIKeyboardTypeDefault;
+                playerTextField.returnKeyType = UIReturnKeyGo;
+                playerTextField.secureTextEntry = YES;
+                playerTextField.tag = 1;
+                g_pTextPassword = playerTextField;
+                
+            }
+            playerTextField.backgroundColor = [UIColor whiteColor];
+            playerTextField.autocorrectionType = UITextAutocorrectionTypeNo; // no auto correction support
+            playerTextField.autocapitalizationType = UITextAutocapitalizationTypeNone; // no auto capitalization support
+            playerTextField.textAlignment = UITextAlignmentLeft;
+           
+            playerTextField.delegate = self;
+            
+            playerTextField.clearButtonMode = UITextFieldViewModeWhileEditing; // no clear 'x' button to the right
+            [playerTextField setEnabled: YES];
+           
+            [cell.contentView addSubview:playerTextField];
+            
+            [playerTextField release];
+        }
+    }
+    if ([indexPath section] == 0)
+    {
+    }
+    else
+    {
+        
+    }
+    return cell;    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    // Return the number of rows in the section.
+
+    return 2;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 35;
+}
+
+- (void)viewDidLoad {	
+  
     int lnHeight = [[UIScreen mainScreen] bounds].size.height ;
     int lnWeight = [[UIScreen mainScreen] bounds].size.width;
     self.m_oImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0,0.0,lnWeight,lnHeight)]autorelease];
@@ -36,7 +134,10 @@
     
     [self.view insertSubview:self.m_oImageView atIndex:0];
     [super viewDidLoad];
-    [self LoadData];
+    self.m_oLoginTableView.delegate = self;
+    self.m_oLoginTableView.dataSource = self;
+    self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 70);
+    //[self LoadData];
 
 }
 
@@ -160,22 +261,28 @@
     [responseData release];
 }
 
-
+#pragma mark 析构
 
 - (void)dealloc {
-    [m_oTableView release];
+
     [m_oActivityProgressbar release];
     self.m_oImageView = nil;
 
+   
+ 
+    [_m_oLoginTableView release];
     [super dealloc];
 }
 
 - (void)viewDidUnload {
-    [self setM_oTableView:nil];
+
     [self setM_oActivityProgressbar:nil];
     self.m_oImageView = nil;
     [self setM_oImageView:nil];
     [self setM_oImageView:nil];
+    
+
+    [self setM_oLoginTableView:nil];
     [super viewDidUnload];
 }
 @end
