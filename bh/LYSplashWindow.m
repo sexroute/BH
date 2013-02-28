@@ -22,12 +22,11 @@
 UITextField * g_pTextUserName = nil;
 UITextField * g_pTextPassword = nil;
 
+#pragma mark 登陆框UI处理
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 0.0;
 }
-
-
 
 - (BOOL) textFieldShouldReturn:(UITextField *)tf
 {
@@ -117,7 +116,9 @@ UITextField * g_pTextPassword = nil;
     return 35;
 }
 
-- (void)viewDidLoad {	
+#pragma mark 视图初始化
+- (void)viewDidLoad
+{
   
     int lnHeight = [[UIScreen mainScreen] bounds].size.height ;
     int lnWeight = [[UIScreen mainScreen] bounds].size.width;
@@ -141,6 +142,8 @@ UITextField * g_pTextPassword = nil;
 
 }
 
+#pragma mark 数据加载
+
 - (void)LoadData
 {
     if(nil !=  responseData)
@@ -158,14 +161,6 @@ UITextField * g_pTextPassword = nil;
 
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	[responseData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[responseData appendData:data];
-}
-
 - (void) alertLoadFailed
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:@"无法获取数据, 重试?"
@@ -174,6 +169,42 @@ UITextField * g_pTextPassword = nil;
     [alert release];
 }
 
+
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+	[responseData appendData:data];
+}
+
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+	[connection release];
+	
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	
+    
+	//NSLog(@"%s",[responseString2 cString] );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self->listOfItems = [json objectWithString:responseString error:&error];
+    
+	if (listOfItems == nil)
+	{
+        
+        label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
+        [self alertLoadFailed];
+    }
+	else
+    {
+        [self navigateToPlantView];
+	}
+    [responseString release];
+    [responseData release];
+}
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
@@ -208,6 +239,8 @@ UITextField * g_pTextPassword = nil;
 
 }
 
+#pragma mark 导航到设备
+
 - (void) navigateToPlantView
 {
     self.m_oActivityProgressbar.hidesWhenStopped = TRUE;
@@ -236,30 +269,7 @@ UITextField * g_pTextPassword = nil;
 }
 
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	[connection release];
-	
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-	
-    
-	//NSLog(@"%s",[responseString2 cString] );
-	NSError *error;
-	SBJSON *json = [[SBJSON new] autorelease];
-	self->listOfItems = [json objectWithString:responseString error:&error];
 
-	if (listOfItems == nil)
-	{
-        
-        label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
-        [self alertLoadFailed];
-    }
-	else
-    {		
-        [self navigateToPlantView];
-	}
-    [responseString release];
-    [responseData release];
-}
 
 #pragma mark 析构
 
@@ -273,6 +283,8 @@ UITextField * g_pTextPassword = nil;
     [_m_oLoginTableView release];
     [super dealloc];
 }
+
+
 
 - (void)viewDidUnload {
 
