@@ -15,6 +15,7 @@ static NSMutableDictionary * g_pSettingsDic = nil;
 static NSArray *dirPaths = nil;
 static NSString *docsDir = nil;
 static NSString * databasePath = nil;
+
 + (void)InitSetting
 {
     @synchronized(self)
@@ -22,50 +23,144 @@ static NSString * databasePath = nil;
         if (nil == g_pSettingsDic) {
             g_pSettingsDic = [[NSMutableDictionary alloc] init];
             [LYGlobalSettings initDict];
-        }    
-
+        }
+        
     }
-   
+    
+}
+#pragma mark 数据库操作
++(BOOL) SetVal2Database:(NSString*) apKey :(NSString* )apVal
+{
+    @synchronized(self)
+    {
+        BOOL lbRet = NO;
+        if (( (nil==apKey || ![apKey isKindOfClass:[NSString class]])) || ( (nil==apVal || ![apVal isKindOfClass:[NSString class]])))
+        {
+            return lbRet;
+        }
+        
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement = nil;
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+        {
+            NSString *lstrInsertQuerySQL = [NSString stringWithFormat:@"INSERT OR REPLACE INTO SETTING (ID,VAL) VALUES(\"%@\",\"%@\")",apKey,apVal];
+            
+            const char *insert_stmt = [lstrInsertQuerySQL UTF8String];
+            sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+            if (sqlite3_step(statement)==SQLITE_DONE)
+            {
+                lbRet = YES;
+            }
+        }
+        
+        return  lbRet;
+    }
+    
 }
 
-+ (void)InitDatabase
++(NSString*) GetValFromDatabase:(NSString*) apKey
 {
-      
-    // Get the documents directory
-    dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString * lpRet = [NSString stringWithFormat:@""];
     
-    docsDir = [dirPaths objectAtIndex:0];
+    if(nil==apKey || !([apKey isKindOfClass:[NSString class]]))
+    {
+        return lpRet;
+    }
     
-    // Build the path to the database file
-    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"contacts.db"]];
-    
-    NSFileManager *filemgr = [NSFileManager defaultManager];
-    
-    if ([filemgr fileExistsAtPath:databasePath] == NO)
+    @synchronized(self)
     {
         const char *dbpath = [databasePath UTF8String];
-        if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK)
+        sqlite3_stmt *statement = nil;
+        
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
-            char *errMsg;
-            const char *sql_stmt = "CREATE TABLE IF NOT EXISTS SETTING(ID TEXT PRIMARY KEY , VAL TEXT)";
-            if (sqlite3_exec(contactDB, sql_stmt, NULL, NULL, &errMsg)!=SQLITE_OK) {
-                NSLog(@"创建表失败\n");
+            NSString *querySQL = [NSString stringWithFormat:@"SELECT ID,VAL FROM SETTING WHERE ID=\"%@\"",apKey];
+            const char *query_stmt = [querySQL UTF8String];
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    lpRet = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)]autorelease];
+                    
+                }
+                
+                sqlite3_finalize(statement);
             }
             
             sqlite3_close(contactDB);
         }
-        else
-        {
-            NSLog(@"创建/打开数据库失败"); ;
-        }
+        
     }
+    
+    return lpRet;
+    
+    
+}
 
++ (void)InitDatabase
+{
+    
+    @synchronized(self)
+    {
+        
+        // Get the documents directory
+        dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        
+        docsDir = [dirPaths objectAtIndex:0];
+        
+        // Build the path to the database file
+        databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"Settings.db"]];
+        NSLog(@"Database path:%@",docsDir);
+        NSFileManager *filemgr = [NSFileManager defaultManager];
+        
+        if ([filemgr fileExistsAtPath:databasePath] == NO)
+        {
+            const char *dbpath = [databasePath UTF8String];
+            if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK)
+            {
+                char *errMsg;
+                const char *sql_stmt = "CREATE TABLE IF NOT EXISTS SETTING(ID TEXT PRIMARY KEY , VAL TEXT)";
+                if (sqlite3_exec(contactDB, sql_stmt, NULL, NULL, &errMsg)!=SQLITE_OK) {
+                    NSLog(@"创建表失败\n");
+                }
+                
+                sqlite3_close(contactDB);
+            }
+            else
+            {
+                NSLog(@"创建/打开数据库失败"); ;
+            }
+        }
+        
+    }
+    
+}
+
+#pragma mark 内存操作
++(BOOL) SetSetting:(NSString*)apKey apVal:(NSString*)apVal
+{
+    @synchronized(self)
+    {
+        if (nil == g_pSettingsDic)
+        {
+            [LYGlobalSettings InitSetting];
+        }
+        BOOL lbRet = [LYGlobalSettings SetVal2Database:apKey :apVal];
+        assert(lbRet);
+        if (lbRet)
+        {
+            [g_pSettingsDic setObject:apVal forKey:(apKey)];
+        }
+        
+        return  lbRet;
+        
+    }
 }
 
 +(NSString *) GetSetting:(NSString *) apKey
 {
     NSString * lpRetValue = nil;
-    if (nil!= apKey)
+    if (nil!= apKey && ([apKey isKindOfClass:[NSString class]]))
     {
         @synchronized(self)
         {
@@ -89,31 +184,42 @@ static NSString * databasePath = nil;
 {
     @synchronized(self)
     {
+        //1.初始化数据库
+        [LYGlobalSettings InitDatabase];
         
-      [LYGlobalSettings InitDatabase];
-      [g_pSettingsDic setObject:@"http://bhxz808.3322.org:8090" forKey:(SETTING_KEY_SERVER_ADDRESS)];
-      [g_pSettingsDic setObject:@"222.199.224.145" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
-      [g_pSettingsDic setObject:@"7005" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
-
-      [g_pSettingsDic setObject:@"http://192.168.12.100:8080" forKey:(SETTING_KEY_SERVER_ADDRESS)];
-      [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
-      [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
-    
-    
-      [g_pSettingsDic setObject:@"" forKey:(SETTING_KEY_USER)];
-      [g_pSettingsDic setObject:@"" forKey:(SETTING_KEY_PASSWORD)];
-      [g_pSettingsDic setObject:@"1" forKey:(SETTING_KEY_SERVERTYPE)];
+        //2.初始化远程连接地址
+        [g_pSettingsDic setObject:@"http://bhxz808.3322.org:8090" forKey:(SETTING_KEY_SERVER_ADDRESS)];
+        [g_pSettingsDic setObject:@"222.199.224.145" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
+        [g_pSettingsDic setObject:@"7005" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
+        
+        [g_pSettingsDic setObject:@"http://192.168.12.100:8080" forKey:(SETTING_KEY_SERVER_ADDRESS)];
+        [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
+        [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
+        
+        //3.初始化用户名密码
+        NSString * lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_USER];
+        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_USER)];
+        
+        lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_PASSWORD];
+        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_PASSWORD)];
+        
+        lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_LOGIN];
+        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_LOGIN)];
+        
+        [g_pSettingsDic setObject:@"1" forKey:(SETTING_KEY_SERVERTYPE)];
     }
 }
+
+
 - (id)init
 {
     self = [super init];
-   
+    
     return self;
 }
 + (NSString *) GetPostDataPrefix
 {
- 
+    
     NSString * lpPostDataPreFix = [NSString stringWithFormat:@"MIDDLE_WARE_IP=%@&MIDDLE_WARE_PORT=%@&SERVER_TYPE=%@&operator=%@&password=%@",[LYGlobalSettings GetSetting:SETTING_KEY_MIDDLE_WARE_IP ],[LYGlobalSettings GetSetting:SETTING_KEY_MIDDLE_WARE_PORT],[LYGlobalSettings GetSetting:SETTING_KEY_SERVERTYPE],[LYGlobalSettings GetSetting:SETTING_KEY_USER],[LYGlobalSettings GetSetting:SETTING_KEY_PASSWORD]];
     return lpPostDataPreFix;
 }

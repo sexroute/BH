@@ -10,7 +10,7 @@
 #import "LYPlantViewController.h"
 #import "LYNVController.h"
 #import "LYLoginCell.h"
-
+#import "LYGlobalSettings.h"
 
 
 @interface LYSplashWindow : UIViewController<UIAlertViewDelegate,UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate> {

@@ -11,6 +11,7 @@
 @interface LYGlobalSettings : NSObject
 
 + (NSString *) GetSetting:(NSString *) apKey;
++(BOOL) SetSetting:(NSString*)apKey apVal:(NSString*)apVal;
 + (NSString *) GetPostDataPrefix;
 @end
 
@@ -22,4 +23,5 @@
 #define SETTING_KEY_USER             @"USERNAME"
 #define SETTING_KEY_PASSWORD         @"PASSWORD"
 #define SETTING_KEY_SERVERTYPE       @"SERVER_TYPE"
+#define SETTING_KEY_LOGIN            @"LOGIN"
 #endif

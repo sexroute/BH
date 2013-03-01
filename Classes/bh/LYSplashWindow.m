@@ -32,11 +32,15 @@ UITextField * g_pTextPassword = nil;
 {
     switch (tf.tag) {
         case 0:
-             [g_pTextPassword becomeFirstResponder];
+            [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:tf.text];
+            [g_pTextPassword becomeFirstResponder];
             break;
         case 1:
+            [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:tf.text];
+            [self.m_oLoginTableView setHidden:YES];
+            [self LoadData];
             break;
-         default:
+        default:
             [tf resignFirstResponder];
             break;
     }
@@ -49,38 +53,50 @@ UITextField * g_pTextPassword = nil;
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:kCellIdentifier] autorelease];
-     
+        
         cell.accessoryType = UITableViewCellAccessoryNone;
         
         if ([indexPath section] == 0) {
             UITextField *playerTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 8, 185, 30)];
             playerTextField.adjustsFontSizeToFitWidth = YES;
             playerTextField.textColor = [UIColor blackColor];
-            if ([indexPath row] == 0) {
+            if ([indexPath row] == 0)
+            {
                 playerTextField.placeholder = @"用户名";
                 playerTextField.returnKeyType = UIReturnKeyNext;
                 playerTextField.tag = 0;
                 g_pTextUserName = playerTextField;
+                NSString * lpVal = [LYGlobalSettings GetSetting:SETTING_KEY_USER];
+                if ([lpVal length]>0)
+                {
+                    playerTextField.text = lpVal;
+                }
             }
-            else {
+            else
+            {
                 playerTextField.placeholder = @"密码";
                 playerTextField.keyboardType = UIKeyboardTypeDefault;
                 playerTextField.returnKeyType = UIReturnKeyGo;
                 playerTextField.secureTextEntry = YES;
                 playerTextField.tag = 1;
                 g_pTextPassword = playerTextField;
+                NSString * lpVal = [LYGlobalSettings GetSetting:SETTING_KEY_PASSWORD];
+                if ([lpVal length]>0)
+                {
+                    playerTextField.text = lpVal;
+                }
                 
             }
             playerTextField.backgroundColor = [UIColor whiteColor];
             playerTextField.autocorrectionType = UITextAutocorrectionTypeNo; // no auto correction support
             playerTextField.autocapitalizationType = UITextAutocapitalizationTypeNone; // no auto capitalization support
             playerTextField.textAlignment = UITextAlignmentLeft;
-           
+            
             playerTextField.delegate = self;
             
             playerTextField.clearButtonMode = UITextFieldViewModeWhileEditing; // no clear 'x' button to the right
             [playerTextField setEnabled: YES];
-           
+            
             [cell.contentView addSubview:playerTextField];
             
             [playerTextField release];
@@ -93,7 +109,7 @@ UITextField * g_pTextPassword = nil;
     {
         
     }
-    return cell;    
+    return cell;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -106,7 +122,7 @@ UITextField * g_pTextPassword = nil;
 {
     
     // Return the number of rows in the section.
-
+    
     return 2;
 }
 
@@ -119,14 +135,14 @@ UITextField * g_pTextPassword = nil;
 #pragma mark 视图初始化
 - (void)viewDidLoad
 {
-  
+    
     int lnHeight = [[UIScreen mainScreen] bounds].size.height ;
     int lnWeight = [[UIScreen mainScreen] bounds].size.width;
     self.m_oImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0,0.0,lnWeight,lnHeight)]autorelease];
     
     if (lnHeight == 568)
     {
-         self.m_oImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
+        self.m_oImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
     }
     else
     {
@@ -135,11 +151,38 @@ UITextField * g_pTextPassword = nil;
     
     [self.view insertSubview:self.m_oImageView atIndex:0];
     [super viewDidLoad];
-    self.m_oLoginTableView.delegate = self;
-    self.m_oLoginTableView.dataSource = self;
-    self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 70);
-    [self LoadData];
+    
+    //2.判断是否已经登陆
+    if ([self IsLogin])
+    {
+        [self.m_oLoginTableView setHidden:YES];
+        [self LoadData];
+        
+    }else
+    {
+        [self.m_oLoginTableView setHidden:NO];
+        self.m_oLoginTableView.delegate = self;
+        self.m_oLoginTableView.dataSource = self;
+        self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 70);
+    }
+    
+}
 
+-(BOOL)IsLogin
+{
+    NSString * lpLogin = [LYGlobalSettings GetSetting:SETTING_KEY_LOGIN];
+    BOOL lbLogin = NO;
+    if (nil == lpLogin)
+    {
+        lpLogin = [lpLogin stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if ([lpLogin caseInsensitiveCompare:@"1"] == NSOrderedSame)
+        {
+            lbLogin = YES;
+        }
+    }
+    
+
+    return lbLogin;
 }
 
 #pragma mark 数据加载
@@ -148,7 +191,7 @@ UITextField * g_pTextPassword = nil;
 {
     if(nil !=  responseData)
     {
-        [self->responseData release];        
+        [self->responseData release];
     }
     responseData = [[NSMutableData data] retain];
     
@@ -158,7 +201,7 @@ UITextField * g_pTextPassword = nil;
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
-
+    
 }
 
 - (void) alertLoadFailed
@@ -186,20 +229,32 @@ UITextField * g_pTextPassword = nil;
 	
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 	
-    
-	//NSLog(@"%s",[responseString2 cString] );
 	NSError *error;
 	SBJSON *json = [[SBJSON new] autorelease];
 	self->listOfItems = [json objectWithString:responseString error:&error];
     
-	if (listOfItems == nil)
-	{
-        
+	if (listOfItems == nil || [listOfItems count]==0)
+	{        
         label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
-        [self alertLoadFailed];
+        
+        if ([self IsLogin])
+        {
+            [self.m_oLoginTableView setHidden:YES];
+            [self alertLoadFailed];
+            
+        }else
+        {
+            [self.m_oLoginTableView setHidden:NO];
+            self.m_oLoginTableView.delegate = self;
+            self.m_oLoginTableView.dataSource = self;
+            self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 70);
+        }
+        
     }
 	else
     {
+        [LYGlobalSettings SetSetting:SETTING_KEY_LOGIN apVal:@"1"];
+        [self.m_oLoginTableView setHidden:YES];
         [self navigateToPlantView];
 	}
     [responseString release];
@@ -219,13 +274,13 @@ UITextField * g_pTextPassword = nil;
     // the user clicked one of the OK/Cancel buttons
     if (buttonIndex == 0)
     {
-        [self navigateToPlantView];        
+        [self navigateToPlantView];
     }
     else
     {
-       [self LoadData];
+        [self LoadData];
     }
-  }
+}
 #define kDuration 0.7   // 动画持续时间(秒)
 - (void) startAnimate:(UIView *) apDstView
 {
@@ -236,7 +291,7 @@ UITextField * g_pTextPassword = nil;
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:apDstView cache:YES];
     
     [UIView setAnimationDelegate:self];
-
+    
 }
 
 #pragma mark 导航到设备
@@ -259,7 +314,7 @@ UITextField * g_pTextPassword = nil;
         self->m_pPlantViewController->listOfItems = self->listOfItems;
         [self->m_pPlantViewController->listOfItems retain];
         [self->m_pPlantViewController PreparePlantsData];
-        [self presentViewController:self.m_pNavViewController animated:NO completion:nil];        
+        [self presentViewController:self.m_pNavViewController animated:NO completion:nil];
         [self.m_pNavViewController pushViewController:self->m_pPlantViewController animated:NO];
         [UIView commitAnimations];
         return;
@@ -274,12 +329,12 @@ UITextField * g_pTextPassword = nil;
 #pragma mark 析构
 
 - (void)dealloc {
-
+    
     [m_oActivityProgressbar release];
     self.m_oImageView = nil;
-
-   
- 
+    
+    
+    
     [_m_oLoginTableView release];
     [super dealloc];
 }
@@ -287,13 +342,13 @@ UITextField * g_pTextPassword = nil;
 
 
 - (void)viewDidUnload {
-
+    
     [self setM_oActivityProgressbar:nil];
     self.m_oImageView = nil;
     [self setM_oImageView:nil];
     [self setM_oImageView:nil];
     
-
+    
     [self setM_oLoginTableView:nil];
     [super viewDidUnload];
 }
