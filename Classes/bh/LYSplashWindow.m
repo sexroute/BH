@@ -33,9 +33,11 @@ UITextField * g_pTextPassword = nil;
     switch (tf.tag) {
         case 0:
             [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:tf.text];
+            [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:tf.text];
             [g_pTextPassword becomeFirstResponder];
             break;
         case 1:
+            [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:tf.text];
             [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:tf.text];
             [self.m_oLoginTableView setHidden:YES];
             [self LoadData];
@@ -156,6 +158,9 @@ UITextField * g_pTextPassword = nil;
     if ([self IsLogin])
     {
         [self.m_oLoginTableView setHidden:YES];
+        self.m_oLoginTableView.delegate = self;
+        self.m_oLoginTableView.dataSource = self;
+        
         [self LoadData];
         
     }else
@@ -172,7 +177,7 @@ UITextField * g_pTextPassword = nil;
 {
     NSString * lpLogin = [LYGlobalSettings GetSetting:SETTING_KEY_LOGIN];
     BOOL lbLogin = NO;
-    if (nil == lpLogin)
+    if (nil != lpLogin)
     {
         lpLogin = [lpLogin stringByReplacingOccurrencesOfString:@" " withString:@""];
         if ([lpLogin caseInsensitiveCompare:@"1"] == NSOrderedSame)
@@ -181,7 +186,7 @@ UITextField * g_pTextPassword = nil;
         }
     }
     
-
+    
     return lbLogin;
 }
 
@@ -204,6 +209,14 @@ UITextField * g_pTextPassword = nil;
     
 }
 
+- (void) alertWrongLogin
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"登陆错误" message:nil
+												   delegate:self cancelButtonTitle:@"是" otherButtonTitles:nil, nil];
+    [alert show];
+    [alert release];
+}
+
 - (void) alertLoadFailed
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:@"无法获取数据, 重试?"
@@ -222,32 +235,58 @@ UITextField * g_pTextPassword = nil;
 	[responseData appendData:data];
 }
 
-
+-(BOOL)IsReturnDataValid:(NSMutableArray *) apData
+{
+    BOOL lbRet = NO;
+    if ([apData isKindOfClass:[NSMutableArray class]])
+    {
+        id obj = [apData objectAtIndex:0];
+        if ([obj isKindOfClass:[NSDictionary class]])
+        {
+            id loRet = [obj objectForKey:@"retvalue"];
+            int lnRet = 1;
+            if ([loRet isKindOfClass:[NSNumber class]])
+            {
+                lnRet = [(NSNumber*)loRet intValue];
+            }
+            if (nil == loRet || lnRet!=0)
+            {
+                lbRet = YES;
+            }
+        }
+    }
+    
+    return  lbRet;
+}
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	[connection release];
 	
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 	
-	NSError *error;
+	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
 	self->listOfItems = [json objectWithString:responseString error:&error];
     
-	if (listOfItems == nil || [listOfItems count]==0)
-	{        
-        label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
-        
-        if ([self IsLogin])
+	if (![self IsReturnDataValid:self->listOfItems])
+	{
+        BOOL isNetworkError = NO;
+        //1.网络等错误
+        if ([error isKindOfClass:[NSError class]])
         {
-            [self.m_oLoginTableView setHidden:YES];
+            label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
+            isNetworkError=YES;
+        }
+        
+        if (isNetworkError)
+        {  
             [self alertLoadFailed];
-            
+                
         }else
         {
+            [self alertWrongLogin];
             [self.m_oLoginTableView setHidden:NO];
-            self.m_oLoginTableView.delegate = self;
-            self.m_oLoginTableView.dataSource = self;
-            self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 70);
+            [LYGlobalSettings SetSetting:SETTING_KEY_LOGIN apVal:@"0"];
         }
         
     }
@@ -259,6 +298,7 @@ UITextField * g_pTextPassword = nil;
 	}
     [responseString release];
     [responseData release];
+    self->responseData = nil;
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -271,15 +311,18 @@ UITextField * g_pTextPassword = nil;
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    // the user clicked one of the OK/Cancel buttons
-    if (buttonIndex == 0)
+    if ([self IsLogin])
     {
-        [self navigateToPlantView];
+        if (buttonIndex == 0)
+        {
+            [self navigateToPlantView];
+        }
+        else
+        {
+            [self LoadData];
+        }
     }
-    else
-    {
-        [self LoadData];
-    }
+
 }
 #define kDuration 0.7   // 动画持续时间(秒)
 - (void) startAnimate:(UIView *) apDstView
