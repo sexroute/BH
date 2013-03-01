@@ -155,17 +155,19 @@
                                 <rect key="frame" x="0.0" y="372" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="频谱" width="93" id="qwj-g9-hYP">
+                                    <barButtonItem title="频谱" width="99" id="qwj-g9-hYP">
                                         <connections>
                                             <action selector="onFreqPressed:" destination="eE5-jO-Msr" id="lvr-Rn-pNo"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="fTC-G0-t4k"/>
                                     <barButtonItem title="波形" width="99" id="vAe-we-Njf">
                                         <connections>
                                             <action selector="OnWavePressed:" destination="eE5-jO-Msr" id="s8p-8M-HEo"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="刷新" width="92" id="z6q-mJ-WUi">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="9KA-j9-RS3"/>
+                                    <barButtonItem title="刷新" width="99" id="z6q-mJ-WUi">
                                         <connections>
                                             <action selector="OnRefreshPressed:" destination="eE5-jO-Msr" id="I2v-FH-83F"/>
                                         </connections>
