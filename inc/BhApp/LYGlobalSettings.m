@@ -95,9 +95,9 @@ static NSString * databasePath = nil;
       [g_pSettingsDic setObject:@"222.199.224.145" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
       [g_pSettingsDic setObject:@"7005" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
 
-//    [g_pSettingsDic setObject:@"http://192.168.12.100:8080" forKey:(SETTING_KEY_SERVER_ADDRESS)];
-//    [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
-//    [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
+      [g_pSettingsDic setObject:@"http://192.168.12.100:8080" forKey:(SETTING_KEY_SERVER_ADDRESS)];
+      [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
+      [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
     
     
       [g_pSettingsDic setObject:@"" forKey:(SETTING_KEY_USER)];

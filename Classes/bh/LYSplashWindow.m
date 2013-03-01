@@ -7,7 +7,7 @@
 //
 
 #import "LYSplashWindow.h"
-#import "JSON/JSON.h"
+#import "JSON.h"
 #import "LYGlobalSettings.h"
 
 
@@ -138,7 +138,7 @@ UITextField * g_pTextPassword = nil;
     self.m_oLoginTableView.delegate = self;
     self.m_oLoginTableView.dataSource = self;
     self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 70);
-    //[self LoadData];
+    [self LoadData];
 
 }
 

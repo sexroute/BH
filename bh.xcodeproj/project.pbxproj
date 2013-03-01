@@ -3,26 +3,43 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C17527515D91B9D004D0A35 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C17527415D91B9D004D0A35 /* MBProgressHUD.m */; };
 		4C17527C15D91C4F004D0A35 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */; };
 		4C17527D15D91C4F004D0A35 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */; };
-		4C61891116DF4365004FEE93 /* LYLoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61891016DF4364004FEE93 /* LYLoginCell.m */; };
+		4C29BAB216E0423C006B2E41 /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB016E0423C006B2E41 /* cell.xib */; };
+		4C29BAB316E0423C006B2E41 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB116E0423C006B2E41 /* DetailView.xib */; };
+		4C29BAB616E04246006B2E41 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB416E04246006B2E41 /* MainStoryboard.storyboard */; };
+		4C29BAB716E043C0006B2E41 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */; };
 		4C61891316DF47E6004FEE93 /* loginCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C61891216DF47E6004FEE93 /* loginCell.xib */; };
 		4C61891516DF56B7004FEE93 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C61891416DF56B7004FEE93 /* libsqlite3.dylib */; };
-		4C770D2816D5B608005743DE /* LYGlobalSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C770D2716D5B608005743DE /* LYGlobalSettings.m */; };
+		4C61894716E040C0004FEE93 /* LYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61892816E040C0004FEE93 /* LYAppDelegate.m */; };
+		4C61894816E040C0004FEE93 /* LYCellviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61892A16E040C0004FEE93 /* LYCellviewCell.m */; };
+		4C61894916E040C0004FEE93 /* LYChannInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61892C16E040C0004FEE93 /* LYChannInfoViewController.m */; };
+		4C61894A16E040C0004FEE93 /* LYChannViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61892E16E040C0004FEE93 /* LYChannViewController.m */; };
+		4C61894B16E040C0004FEE93 /* LYChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893016E040C0004FEE93 /* LYChartView.m */; };
+		4C61894C16E040C0004FEE93 /* LYDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893216E040C0004FEE93 /* LYDetailViewController.m */; };
+		4C61894D16E040C0004FEE93 /* LYLoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893416E040C0004FEE93 /* LYLoginCell.m */; };
+		4C61894E16E040C0004FEE93 /* LYNVController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893616E040C0004FEE93 /* LYNVController.m */; };
+		4C61894F16E040C0004FEE93 /* LyPlantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893816E040C0004FEE93 /* LyPlantViewController.m */; };
+		4C61895016E040C0004FEE93 /* LYSplashWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893A16E040C0004FEE93 /* LYSplashWindow.m */; };
+		4C61895116E040C0004FEE93 /* LYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893C16E040C0004FEE93 /* LYViewController.m */; };
+		4C61895216E040C0004FEE93 /* LYWaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893E16E040C0004FEE93 /* LYWaveViewController.m */; };
+		4C61895316E040C0004FEE93 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61893F16E040C0004FEE93 /* main.m */; };
+		4C61895816E040DA004FEE93 /* LYGlobalSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61895716E040DA004FEE93 /* LYGlobalSettings.m */; };
+		4C61899F16E040F7004FEE93 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61899416E040F7004FEE93 /* NSObject+SBJSON.m */; };
+		4C6189A016E040F7004FEE93 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61899616E040F7004FEE93 /* NSString+SBJSON.m */; };
+		4C6189A116E040F7004FEE93 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61899816E040F7004FEE93 /* SBJSON.m */; };
+		4C6189A216E040F7004FEE93 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61899A16E040F7004FEE93 /* SBJsonBase.m */; };
+		4C6189A316E040F7004FEE93 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61899C16E040F7004FEE93 /* SBJsonParser.m */; };
+		4C6189A416E040F7004FEE93 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61899E16E040F7004FEE93 /* SBJsonWriter.m */; };
+		4C6189A816E04103004FEE93 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C6189A716E04103004FEE93 /* EGORefreshTableHeaderView.m */; };
+		4CC05B2916E048EA00521F78 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC05B2816E048EA00521F78 /* MBProgressHUD.m */; };
 		4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */; };
 		4CCF789516DC5DD1001E6413 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789416DC5DD1001E6413 /* Icon.png */; };
 		4CCF789716DC5DD5001E6413 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789616DC5DD5001E6413 /* Icon@2x.png */; };
-		4CF5C18D15CDFE6B00DA6510 /* LYChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF5C18C15CDFE6B00DA6510 /* LYChartView.m */; };
-		4CF5C19015CE986C00DA6510 /* LYWaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CF5C18F15CE986C00DA6510 /* LYWaveViewController.m */; };
-		4CFC52E615CBC0EC006AD344 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CFC52E515CBC0EC006AD344 /* DetailView.xib */; };
-		4CFC52E915CBCA7A006AD344 /* LYChannViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC52E815CBCA79006AD344 /* LYChannViewController.m */; };
-		4CFC52EF15CC22D2006AD344 /* LYChannInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC52EE15CC22D2006AD344 /* LYChannInfoViewController.m */; };
-		A46A586D154FDF6900EDA973 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A46A586C154FDF6900EDA973 /* EGORefreshTableHeaderView.m */; };
 		A46A5878154FDF7400EDA973 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5870154FDF7400EDA973 /* blackArrow.png */; };
 		A46A5879154FDF7400EDA973 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5871154FDF7400EDA973 /* blackArrow@2x.png */; };
 		A46A587A154FDF7400EDA973 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5872154FDF7400EDA973 /* blueArrow.png */; };
@@ -34,31 +51,14 @@
 		A46A5881154FE07400EDA973 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A46A5880154FE07400EDA973 /* QuartzCore.framework */; };
 		A4AABB4A154EF6CF007647DC /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A4AABB49154EF6CF007647DC /* Default.png */; };
 		A4AABB4C154EF6D5007647DC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4AABB4B154EF6D5007647DC /* Default@2x.png */; };
-		A4AABB6A154FC607007647DC /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4AABB69154FC607007647DC /* cell.xib */; };
-		A4AABB6E154FCA6D007647DC /* LYCellviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A4AABB6D154FCA6D007647DC /* LYCellviewCell.m */; };
 		A4D1081F154ED4EC00E73642 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D1081E154ED4EC00E73642 /* UIKit.framework */; };
 		A4D10821154ED4EC00E73642 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D10820154ED4EC00E73642 /* Foundation.framework */; };
 		A4D10823154ED4EC00E73642 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D10822154ED4EC00E73642 /* CoreGraphics.framework */; };
-		A4D10829154ED4EC00E73642 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4D10827154ED4EC00E73642 /* InfoPlist.strings */; };
-		A4D1082B154ED4EC00E73642 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1082A154ED4EC00E73642 /* main.m */; };
-		A4D1082F154ED4EC00E73642 /* LYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1082E154ED4EC00E73642 /* LYAppDelegate.m */; };
-		A4D10832154ED4EC00E73642 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4D10830154ED4EC00E73642 /* MainStoryboard.storyboard */; };
-		A4D10835154ED4EC00E73642 /* LYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10834154ED4EC00E73642 /* LYViewController.m */; };
 		A4D1083D154ED4EC00E73642 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D1083C154ED4EC00E73642 /* SenTestingKit.framework */; };
 		A4D1083E154ED4ED00E73642 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D1081E154ED4EC00E73642 /* UIKit.framework */; };
 		A4D1083F154ED4ED00E73642 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D10820154ED4EC00E73642 /* Foundation.framework */; };
 		A4D10847154ED4ED00E73642 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4D10845154ED4ED00E73642 /* InfoPlist.strings */; };
 		A4D1084A154ED4ED00E73642 /* bhTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10849154ED4ED00E73642 /* bhTests.m */; };
-		A4D10861154ED53C00E73642 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10856154ED53C00E73642 /* NSObject+SBJSON.m */; };
-		A4D10862154ED53C00E73642 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10858154ED53C00E73642 /* NSString+SBJSON.m */; };
-		A4D10863154ED53C00E73642 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1085A154ED53C00E73642 /* SBJSON.m */; };
-		A4D10864154ED53C00E73642 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1085C154ED53C00E73642 /* SBJsonBase.m */; };
-		A4D10865154ED53C00E73642 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1085E154ED53C00E73642 /* SBJsonParser.m */; };
-		A4D10866154ED53C00E73642 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10860154ED53C00E73642 /* SBJsonWriter.m */; };
-		A4D1086B154ED5A600E73642 /* LYSplashWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10868154ED5A600E73642 /* LYSplashWindow.m */; };
-		A4D1086C154ED5A600E73642 /* LyPlantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D1086A154ED5A600E73642 /* LyPlantViewController.m */; };
-		A4D10874154EDCCE00E73642 /* LYNVController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10873154EDCCE00E73642 /* LYNVController.m */; };
-		A4D10877154EE21C00E73642 /* LYDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D10876154EE21C00E73642 /* LYDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,16 +72,59 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4C17527315D91B9D004D0A35 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../bh/MBProgressHUD.h; sourceTree = "<group>"; };
-		4C17527415D91B9D004D0A35 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../bh/MBProgressHUD.m; sourceTree = "<group>"; };
 		4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
-		4C61890F16DF4364004FEE93 /* LYLoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYLoginCell.h; sourceTree = "<group>"; };
-		4C61891016DF4364004FEE93 /* LYLoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYLoginCell.m; sourceTree = "<group>"; };
+		4C29BAB016E0423C006B2E41 /* cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cell.xib; sourceTree = "<group>"; };
+		4C29BAB116E0423C006B2E41 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
+		4C29BAB516E04246006B2E41 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		4C61891216DF47E6004FEE93 /* loginCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = loginCell.xib; sourceTree = "<group>"; };
 		4C61891416DF56B7004FEE93 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		4C770D2616D5B608005743DE /* LYGlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYGlobalSettings.h; path = BhApp/LYGlobalSettings.h; sourceTree = "<group>"; };
-		4C770D2716D5B608005743DE /* LYGlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYGlobalSettings.m; path = BhApp/LYGlobalSettings.m; sourceTree = "<group>"; };
+		4C61892116E040C0004FEE93 /* ChannInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannInfo.h; sourceTree = "<group>"; };
+		4C61892716E040C0004FEE93 /* LYAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYAppDelegate.h; sourceTree = "<group>"; };
+		4C61892816E040C0004FEE93 /* LYAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYAppDelegate.m; sourceTree = "<group>"; };
+		4C61892916E040C0004FEE93 /* LYCellviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYCellviewCell.h; sourceTree = "<group>"; };
+		4C61892A16E040C0004FEE93 /* LYCellviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYCellviewCell.m; sourceTree = "<group>"; };
+		4C61892B16E040C0004FEE93 /* LYChannInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYChannInfoViewController.h; sourceTree = "<group>"; };
+		4C61892C16E040C0004FEE93 /* LYChannInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYChannInfoViewController.m; sourceTree = "<group>"; };
+		4C61892D16E040C0004FEE93 /* LYChannViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYChannViewController.h; sourceTree = "<group>"; };
+		4C61892E16E040C0004FEE93 /* LYChannViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYChannViewController.m; sourceTree = "<group>"; };
+		4C61892F16E040C0004FEE93 /* LYChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYChartView.h; sourceTree = "<group>"; };
+		4C61893016E040C0004FEE93 /* LYChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYChartView.m; sourceTree = "<group>"; };
+		4C61893116E040C0004FEE93 /* LYDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYDetailViewController.h; sourceTree = "<group>"; };
+		4C61893216E040C0004FEE93 /* LYDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYDetailViewController.m; sourceTree = "<group>"; };
+		4C61893316E040C0004FEE93 /* LYLoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYLoginCell.h; sourceTree = "<group>"; };
+		4C61893416E040C0004FEE93 /* LYLoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYLoginCell.m; sourceTree = "<group>"; };
+		4C61893516E040C0004FEE93 /* LYNVController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYNVController.h; sourceTree = "<group>"; };
+		4C61893616E040C0004FEE93 /* LYNVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYNVController.m; sourceTree = "<group>"; };
+		4C61893716E040C0004FEE93 /* LyPlantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LyPlantViewController.h; sourceTree = "<group>"; };
+		4C61893816E040C0004FEE93 /* LyPlantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LyPlantViewController.m; sourceTree = "<group>"; };
+		4C61893916E040C0004FEE93 /* LYSplashWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYSplashWindow.h; sourceTree = "<group>"; };
+		4C61893A16E040C0004FEE93 /* LYSplashWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYSplashWindow.m; sourceTree = "<group>"; };
+		4C61893B16E040C0004FEE93 /* LYViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYViewController.h; sourceTree = "<group>"; };
+		4C61893C16E040C0004FEE93 /* LYViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYViewController.m; sourceTree = "<group>"; };
+		4C61893D16E040C0004FEE93 /* LYWaveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYWaveViewController.h; sourceTree = "<group>"; };
+		4C61893E16E040C0004FEE93 /* LYWaveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYWaveViewController.m; sourceTree = "<group>"; };
+		4C61893F16E040C0004FEE93 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4C61895616E040DA004FEE93 /* LYGlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYGlobalSettings.h; sourceTree = "<group>"; };
+		4C61895716E040DA004FEE93 /* LYGlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYGlobalSettings.m; sourceTree = "<group>"; };
+		4C61899216E040F7004FEE93 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		4C61899316E040F7004FEE93 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		4C61899416E040F7004FEE93 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		4C61899516E040F7004FEE93 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		4C61899616E040F7004FEE93 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		4C61899716E040F7004FEE93 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		4C61899816E040F7004FEE93 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
+		4C61899916E040F7004FEE93 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		4C61899A16E040F7004FEE93 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		4C61899B16E040F7004FEE93 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		4C61899C16E040F7004FEE93 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		4C61899D16E040F7004FEE93 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		4C61899E16E040F7004FEE93 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		4C6189A616E04103004FEE93 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		4C6189A716E04103004FEE93 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		4CC05B2316E0467F00521F78 /* bh-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "bh-Info.plist"; sourceTree = "<group>"; };
+		4CC05B2716E048EA00521F78 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		4CC05B2816E048EA00521F78 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "lib/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		4CC784D716D471190019B95C /* CorePlot-CocoaTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CorePlot-CocoaTouch.h"; sourceTree = "<group>"; };
 		4CC784D816D471190019B95C /* CPTAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTAnnotation.h; sourceTree = "<group>"; };
@@ -160,18 +203,6 @@
 		4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		4CCF789416DC5DD1001E6413 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4CCF789616DC5DD5001E6413 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		4CF5C18B15CDFE6B00DA6510 /* LYChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYChartView.h; sourceTree = "<group>"; };
-		4CF5C18C15CDFE6B00DA6510 /* LYChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYChartView.m; sourceTree = "<group>"; };
-		4CF5C18E15CE986C00DA6510 /* LYWaveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYWaveViewController.h; sourceTree = "<group>"; };
-		4CF5C18F15CE986C00DA6510 /* LYWaveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYWaveViewController.m; sourceTree = "<group>"; };
-		4CFC52E515CBC0EC006AD344 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
-		4CFC52E715CBCA79006AD344 /* LYChannViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYChannViewController.h; sourceTree = "<group>"; };
-		4CFC52E815CBCA79006AD344 /* LYChannViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYChannViewController.m; sourceTree = "<group>"; };
-		4CFC52ED15CC22D2006AD344 /* LYChannInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYChannInfoViewController.h; sourceTree = "<group>"; };
-		4CFC52EE15CC22D2006AD344 /* LYChannInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYChannInfoViewController.m; sourceTree = "<group>"; };
-		4CFC52F015CC28EA006AD344 /* ChannInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChannInfo.h; sourceTree = "<group>"; };
-		A46A586B154FDF6900EDA973 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
-		A46A586C154FDF6900EDA973 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		A46A5870154FDF7400EDA973 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
 		A46A5871154FDF7400EDA973 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
 		A46A5872154FDF7400EDA973 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
@@ -183,49 +214,16 @@
 		A46A5880154FE07400EDA973 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A4AABB49154EF6CF007647DC /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		A4AABB4B154EF6D5007647DC /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
-		A4AABB69154FC607007647DC /* cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cell.xib; sourceTree = "<group>"; };
-		A4AABB6C154FCA6D007647DC /* LYCellviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYCellviewCell.h; path = ../LYCellviewCell.h; sourceTree = "<group>"; };
-		A4AABB6D154FCA6D007647DC /* LYCellviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYCellviewCell.m; path = ../LYCellviewCell.m; sourceTree = "<group>"; };
 		A4D1081A154ED4EC00E73642 /* BH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BH.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4D1081E154ED4EC00E73642 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A4D10820154ED4EC00E73642 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A4D10822154ED4EC00E73642 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		A4D10826154ED4EC00E73642 /* bh-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "bh-Info.plist"; sourceTree = "<group>"; };
-		A4D10828154ED4EC00E73642 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A4D1082A154ED4EC00E73642 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A4D1082C154ED4EC00E73642 /* bh-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bh-Prefix.pch"; sourceTree = "<group>"; };
-		A4D1082D154ED4EC00E73642 /* LYAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYAppDelegate.h; sourceTree = "<group>"; };
-		A4D1082E154ED4EC00E73642 /* LYAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYAppDelegate.m; sourceTree = "<group>"; };
-		A4D10831154ED4EC00E73642 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		A4D10833154ED4EC00E73642 /* LYViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYViewController.h; sourceTree = "<group>"; };
-		A4D10834154ED4EC00E73642 /* LYViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYViewController.m; sourceTree = "<group>"; };
 		A4D1083B154ED4EC00E73642 /* bhTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bhTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4D1083C154ED4EC00E73642 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		A4D10844154ED4ED00E73642 /* bhTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "bhTests-Info.plist"; sourceTree = "<group>"; };
 		A4D10846154ED4ED00E73642 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A4D10848154ED4ED00E73642 /* bhTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bhTests.h; sourceTree = "<group>"; };
 		A4D10849154ED4ED00E73642 /* bhTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bhTests.m; sourceTree = "<group>"; };
-		A4D10854154ED53C00E73642 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		A4D10855154ED53C00E73642 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
-		A4D10856154ED53C00E73642 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
-		A4D10857154ED53C00E73642 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
-		A4D10858154ED53C00E73642 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
-		A4D10859154ED53C00E73642 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
-		A4D1085A154ED53C00E73642 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
-		A4D1085B154ED53C00E73642 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
-		A4D1085C154ED53C00E73642 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
-		A4D1085D154ED53C00E73642 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		A4D1085E154ED53C00E73642 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
-		A4D1085F154ED53C00E73642 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
-		A4D10860154ED53C00E73642 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		A4D10867154ED5A600E73642 /* LYSplashWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYSplashWindow.h; path = bh/LYSplashWindow.h; sourceTree = SOURCE_ROOT; };
-		A4D10868154ED5A600E73642 /* LYSplashWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYSplashWindow.m; path = bh/LYSplashWindow.m; sourceTree = SOURCE_ROOT; };
-		A4D10869154ED5A600E73642 /* LyPlantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LyPlantViewController.h; path = bh/LyPlantViewController.h; sourceTree = SOURCE_ROOT; };
-		A4D1086A154ED5A600E73642 /* LyPlantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LyPlantViewController.m; path = bh/LyPlantViewController.m; sourceTree = SOURCE_ROOT; };
-		A4D10872154EDCCE00E73642 /* LYNVController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYNVController.h; sourceTree = "<group>"; };
-		A4D10873154EDCCE00E73642 /* LYNVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYNVController.m; sourceTree = "<group>"; };
-		A4D10875154EE21C00E73642 /* LYDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYDetailViewController.h; path = ../LYDetailViewController.h; sourceTree = "<group>"; };
-		A4D10876154EE21C00E73642 /* LYDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYDetailViewController.m; path = ../LYDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +231,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C29BAB716E043C0006B2E41 /* libCorePlot-CocoaTouch.a in Frameworks */,
 				4C61891516DF56B7004FEE93 /* libsqlite3.dylib in Frameworks */,
 				A46A5881154FE07400EDA973 /* QuartzCore.framework in Frameworks */,
 				A4D1081F154ED4EC00E73642 /* UIKit.framework in Frameworks */,
@@ -254,19 +253,103 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4C770D2516D5B56D005743DE /* BhApp */ = {
+		4C61891D16E040C0004FEE93 /* bh */ = {
 			isa = PBXGroup;
 			children = (
-				4C770D2616D5B608005743DE /* LYGlobalSettings.h */,
-				4C770D2716D5B608005743DE /* LYGlobalSettings.m */,
+				4C61892116E040C0004FEE93 /* ChannInfo.h */,
+				4C61892716E040C0004FEE93 /* LYAppDelegate.h */,
+				4C61892816E040C0004FEE93 /* LYAppDelegate.m */,
+				4C61892916E040C0004FEE93 /* LYCellviewCell.h */,
+				4C61892A16E040C0004FEE93 /* LYCellviewCell.m */,
+				4C61892B16E040C0004FEE93 /* LYChannInfoViewController.h */,
+				4C61892C16E040C0004FEE93 /* LYChannInfoViewController.m */,
+				4C61892D16E040C0004FEE93 /* LYChannViewController.h */,
+				4C61892E16E040C0004FEE93 /* LYChannViewController.m */,
+				4C61892F16E040C0004FEE93 /* LYChartView.h */,
+				4C61893016E040C0004FEE93 /* LYChartView.m */,
+				4C61893116E040C0004FEE93 /* LYDetailViewController.h */,
+				4C61893216E040C0004FEE93 /* LYDetailViewController.m */,
+				4C61893316E040C0004FEE93 /* LYLoginCell.h */,
+				4C61893416E040C0004FEE93 /* LYLoginCell.m */,
+				4C61893516E040C0004FEE93 /* LYNVController.h */,
+				4C61893616E040C0004FEE93 /* LYNVController.m */,
+				4C61893716E040C0004FEE93 /* LyPlantViewController.h */,
+				4C61893816E040C0004FEE93 /* LyPlantViewController.m */,
+				4C61893916E040C0004FEE93 /* LYSplashWindow.h */,
+				4C61893A16E040C0004FEE93 /* LYSplashWindow.m */,
+				4C61893B16E040C0004FEE93 /* LYViewController.h */,
+				4C61893C16E040C0004FEE93 /* LYViewController.m */,
+				4C61893D16E040C0004FEE93 /* LYWaveViewController.h */,
+				4C61893E16E040C0004FEE93 /* LYWaveViewController.m */,
+				4C61893F16E040C0004FEE93 /* main.m */,
+			);
+			path = bh;
+			sourceTree = "<group>";
+		};
+		4C61895516E040DA004FEE93 /* BhApp */ = {
+			isa = PBXGroup;
+			children = (
+				4C61895616E040DA004FEE93 /* LYGlobalSettings.h */,
+				4C61895716E040DA004FEE93 /* LYGlobalSettings.m */,
 			);
 			name = BhApp;
+			path = inc/BhApp;
+			sourceTree = "<group>";
+		};
+		4C61899116E040F7004FEE93 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				4C61899216E040F7004FEE93 /* JSON.h */,
+				4C61899316E040F7004FEE93 /* NSObject+SBJSON.h */,
+				4C61899416E040F7004FEE93 /* NSObject+SBJSON.m */,
+				4C61899516E040F7004FEE93 /* NSString+SBJSON.h */,
+				4C61899616E040F7004FEE93 /* NSString+SBJSON.m */,
+				4C61899716E040F7004FEE93 /* SBJSON.h */,
+				4C61899816E040F7004FEE93 /* SBJSON.m */,
+				4C61899916E040F7004FEE93 /* SBJsonBase.h */,
+				4C61899A16E040F7004FEE93 /* SBJsonBase.m */,
+				4C61899B16E040F7004FEE93 /* SBJsonParser.h */,
+				4C61899C16E040F7004FEE93 /* SBJsonParser.m */,
+				4C61899D16E040F7004FEE93 /* SBJsonWriter.h */,
+				4C61899E16E040F7004FEE93 /* SBJsonWriter.m */,
+			);
+			name = JSON;
+			path = Thirdparty/JSON;
+			sourceTree = "<group>";
+		};
+		4C6189A516E04103004FEE93 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4C6189A616E04103004FEE93 /* EGORefreshTableHeaderView.h */,
+				4C6189A716E04103004FEE93 /* EGORefreshTableHeaderView.m */,
+			);
+			name = View;
+			path = Thirdparty/View;
+			sourceTree = "<group>";
+		};
+		4CC05B2216E0467F00521F78 /* bh */ = {
+			isa = PBXGroup;
+			children = (
+				4CC05B2316E0467F00521F78 /* bh-Info.plist */,
+			);
+			path = bh;
+			sourceTree = "<group>";
+		};
+		4CC05B2616E048EA00521F78 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				4CC05B2716E048EA00521F78 /* MBProgressHUD.h */,
+				4CC05B2816E048EA00521F78 /* MBProgressHUD.m */,
+			);
+			name = MBProgressHUD;
+			path = Thirdparty/MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		4CC784D116D46E420019B95C /* lib */ = {
 			isa = PBXGroup;
 			children = (
 				4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */,
+				4C61891416DF56B7004FEE93 /* libsqlite3.dylib */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -274,7 +357,7 @@
 		4CC784D416D46E930019B95C /* inc */ = {
 			isa = PBXGroup;
 			children = (
-				4C770D2516D5B56D005743DE /* BhApp */,
+				4C61895516E040DA004FEE93 /* BhApp */,
 				4CC784D616D471190019B95C /* CorePlotHeaders */,
 			);
 			name = inc;
@@ -365,9 +448,9 @@
 		4CC7852116D477110019B95C /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
-				A46A586A154FDF6900EDA973 /* View */,
-				4C17527315D91B9D004D0A35 /* MBProgressHUD.h */,
-				4C17527415D91B9D004D0A35 /* MBProgressHUD.m */,
+				4CC05B2616E048EA00521F78 /* MBProgressHUD */,
+				4C6189A516E04103004FEE93 /* View */,
+				4C61899116E040F7004FEE93 /* JSON */,
 			);
 			name = Thirdparty;
 			sourceTree = "<group>";
@@ -375,25 +458,18 @@
 		A46A5869154FDF6900EDA973 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A4D10824154ED4EC00E73642 /* bh */,
+				4C61891D16E040C0004FEE93 /* bh */,
 				4CC7852116D477110019B95C /* Thirdparty */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		A46A586A154FDF6900EDA973 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				A46A586B154FDF6900EDA973 /* EGORefreshTableHeaderView.h */,
-				A46A586C154FDF6900EDA973 /* EGORefreshTableHeaderView.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		A46A586F154FDF7400EDA973 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A4D10830154ED4EC00E73642 /* MainStoryboard.storyboard */,
+				4C29BAB416E04246006B2E41 /* MainStoryboard.storyboard */,
+				4C29BAB016E0423C006B2E41 /* cell.xib */,
+				4C29BAB116E0423C006B2E41 /* DetailView.xib */,
 				4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */,
 				A4AABB4B154EF6D5007647DC /* Default@2x.png */,
 				A4AABB49154EF6CF007647DC /* Default.png */,
@@ -415,7 +491,7 @@
 		A4D1080F154ED4EC00E73642 = {
 			isa = PBXGroup;
 			children = (
-				4C61891416DF56B7004FEE93 /* libsqlite3.dylib */,
+				4CC05B2216E0467F00521F78 /* bh */,
 				4CCF789616DC5DD5001E6413 /* Icon@2x.png */,
 				4CCF789416DC5DD1001E6413 /* Icon.png */,
 				4CC784D416D46E930019B95C /* inc */,
@@ -449,54 +525,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A4D10824154ED4EC00E73642 /* bh */ = {
-			isa = PBXGroup;
-			children = (
-				A4D1082D154ED4EC00E73642 /* LYAppDelegate.h */,
-				A4D1082E154ED4EC00E73642 /* LYAppDelegate.m */,
-				A4D10867154ED5A600E73642 /* LYSplashWindow.h */,
-				A4D10868154ED5A600E73642 /* LYSplashWindow.m */,
-				A4D10869154ED5A600E73642 /* LyPlantViewController.h */,
-				A4D1086A154ED5A600E73642 /* LyPlantViewController.m */,
-				A4AABB6C154FCA6D007647DC /* LYCellviewCell.h */,
-				A4AABB6D154FCA6D007647DC /* LYCellviewCell.m */,
-				A4D10875154EE21C00E73642 /* LYDetailViewController.h */,
-				A4D10876154EE21C00E73642 /* LYDetailViewController.m */,
-				4CFC52E715CBCA79006AD344 /* LYChannViewController.h */,
-				4CFC52E815CBCA79006AD344 /* LYChannViewController.m */,
-				4CFC52ED15CC22D2006AD344 /* LYChannInfoViewController.h */,
-				4CFC52EE15CC22D2006AD344 /* LYChannInfoViewController.m */,
-				A4D10833154ED4EC00E73642 /* LYViewController.h */,
-				A4D10834154ED4EC00E73642 /* LYViewController.m */,
-				4CF5C18E15CE986C00DA6510 /* LYWaveViewController.h */,
-				4CF5C18F15CE986C00DA6510 /* LYWaveViewController.m */,
-				4CF5C18B15CDFE6B00DA6510 /* LYChartView.h */,
-				4CF5C18C15CDFE6B00DA6510 /* LYChartView.m */,
-				A4D10872154EDCCE00E73642 /* LYNVController.h */,
-				A4D10873154EDCCE00E73642 /* LYNVController.m */,
-				4CFC52F015CC28EA006AD344 /* ChannInfo.h */,
-				A4AABB69154FC607007647DC /* cell.xib */,
-				4CFC52E515CBC0EC006AD344 /* DetailView.xib */,
-				A4D10853154ED53C00E73642 /* JSON */,
-				A4D10825154ED4EC00E73642 /* Supporting Files */,
-				4C61890F16DF4364004FEE93 /* LYLoginCell.h */,
-				4C61891016DF4364004FEE93 /* LYLoginCell.m */,
-			);
-			name = bh;
-			path = ../bh;
-			sourceTree = "<group>";
-		};
-		A4D10825154ED4EC00E73642 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A4D10826154ED4EC00E73642 /* bh-Info.plist */,
-				A4D10827154ED4EC00E73642 /* InfoPlist.strings */,
-				A4D1082A154ED4EC00E73642 /* main.m */,
-				A4D1082C154ED4EC00E73642 /* bh-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		A4D10842154ED4ED00E73642 /* bhTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,26 +542,6 @@
 				A4D10845154ED4ED00E73642 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		A4D10853154ED53C00E73642 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				A4D10854154ED53C00E73642 /* JSON.h */,
-				A4D10855154ED53C00E73642 /* NSObject+SBJSON.h */,
-				A4D10856154ED53C00E73642 /* NSObject+SBJSON.m */,
-				A4D10857154ED53C00E73642 /* NSString+SBJSON.h */,
-				A4D10858154ED53C00E73642 /* NSString+SBJSON.m */,
-				A4D10859154ED53C00E73642 /* SBJSON.h */,
-				A4D1085A154ED53C00E73642 /* SBJSON.m */,
-				A4D1085B154ED53C00E73642 /* SBJsonBase.h */,
-				A4D1085C154ED53C00E73642 /* SBJsonBase.m */,
-				A4D1085D154ED53C00E73642 /* SBJsonParser.h */,
-				A4D1085E154ED53C00E73642 /* SBJsonParser.m */,
-				A4D1085F154ED53C00E73642 /* SBJsonWriter.h */,
-				A4D10860154ED53C00E73642 /* SBJsonWriter.m */,
-			);
-			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -582,10 +590,10 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = LY;
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = A4D10814154ED4EC00E73642 /* Build configuration list for PBXProject "bh" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -607,11 +615,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4D10829154ED4EC00E73642 /* InfoPlist.strings in Resources */,
-				A4D10832154ED4EC00E73642 /* MainStoryboard.storyboard in Resources */,
 				A4AABB4A154EF6CF007647DC /* Default.png in Resources */,
 				A4AABB4C154EF6D5007647DC /* Default@2x.png in Resources */,
-				A4AABB6A154FC607007647DC /* cell.xib in Resources */,
 				A46A5878154FDF7400EDA973 /* blackArrow.png in Resources */,
 				A46A5879154FDF7400EDA973 /* blackArrow@2x.png in Resources */,
 				A46A587A154FDF7400EDA973 /* blueArrow.png in Resources */,
@@ -620,13 +625,15 @@
 				A46A587D154FDF7400EDA973 /* grayArrow@2x.png in Resources */,
 				A46A587E154FDF7400EDA973 /* whiteArrow.png in Resources */,
 				A46A587F154FDF7400EDA973 /* whiteArrow@2x.png in Resources */,
-				4CFC52E615CBC0EC006AD344 /* DetailView.xib in Resources */,
 				4C17527C15D91C4F004D0A35 /* 37x-Checkmark.png in Resources */,
 				4C17527D15D91C4F004D0A35 /* 37x-Checkmark@2x.png in Resources */,
 				4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */,
 				4CCF789516DC5DD1001E6413 /* Icon.png in Resources */,
 				4CCF789716DC5DD5001E6413 /* Icon@2x.png in Resources */,
 				4C61891316DF47E6004FEE93 /* loginCell.xib in Resources */,
+				4C29BAB216E0423C006B2E41 /* cell.xib in Resources */,
+				4C29BAB316E0423C006B2E41 /* DetailView.xib in Resources */,
+				4C29BAB616E04246006B2E41 /* MainStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,28 +668,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4D1082B154ED4EC00E73642 /* main.m in Sources */,
-				A4D1082F154ED4EC00E73642 /* LYAppDelegate.m in Sources */,
-				A4D10835154ED4EC00E73642 /* LYViewController.m in Sources */,
-				A4D10861154ED53C00E73642 /* NSObject+SBJSON.m in Sources */,
-				A4D10862154ED53C00E73642 /* NSString+SBJSON.m in Sources */,
-				A4D10863154ED53C00E73642 /* SBJSON.m in Sources */,
-				A4D10864154ED53C00E73642 /* SBJsonBase.m in Sources */,
-				A4D10865154ED53C00E73642 /* SBJsonParser.m in Sources */,
-				A4D10866154ED53C00E73642 /* SBJsonWriter.m in Sources */,
-				A4D1086B154ED5A600E73642 /* LYSplashWindow.m in Sources */,
-				A4D1086C154ED5A600E73642 /* LyPlantViewController.m in Sources */,
-				A4D10874154EDCCE00E73642 /* LYNVController.m in Sources */,
-				A4D10877154EE21C00E73642 /* LYDetailViewController.m in Sources */,
-				A4AABB6E154FCA6D007647DC /* LYCellviewCell.m in Sources */,
-				A46A586D154FDF6900EDA973 /* EGORefreshTableHeaderView.m in Sources */,
-				4CFC52E915CBCA7A006AD344 /* LYChannViewController.m in Sources */,
-				4CFC52EF15CC22D2006AD344 /* LYChannInfoViewController.m in Sources */,
-				4CF5C18D15CDFE6B00DA6510 /* LYChartView.m in Sources */,
-				4CF5C19015CE986C00DA6510 /* LYWaveViewController.m in Sources */,
-				4C17527515D91B9D004D0A35 /* MBProgressHUD.m in Sources */,
-				4C770D2816D5B608005743DE /* LYGlobalSettings.m in Sources */,
-				4C61891116DF4365004FEE93 /* LYLoginCell.m in Sources */,
+				4C61894716E040C0004FEE93 /* LYAppDelegate.m in Sources */,
+				4C61894816E040C0004FEE93 /* LYCellviewCell.m in Sources */,
+				4C61894916E040C0004FEE93 /* LYChannInfoViewController.m in Sources */,
+				4C61894A16E040C0004FEE93 /* LYChannViewController.m in Sources */,
+				4C61894B16E040C0004FEE93 /* LYChartView.m in Sources */,
+				4C61894C16E040C0004FEE93 /* LYDetailViewController.m in Sources */,
+				4C61894D16E040C0004FEE93 /* LYLoginCell.m in Sources */,
+				4C61894E16E040C0004FEE93 /* LYNVController.m in Sources */,
+				4C61894F16E040C0004FEE93 /* LyPlantViewController.m in Sources */,
+				4C61895016E040C0004FEE93 /* LYSplashWindow.m in Sources */,
+				4C61895116E040C0004FEE93 /* LYViewController.m in Sources */,
+				4C61895216E040C0004FEE93 /* LYWaveViewController.m in Sources */,
+				4C61895316E040C0004FEE93 /* main.m in Sources */,
+				4C61895816E040DA004FEE93 /* LYGlobalSettings.m in Sources */,
+				4C61899F16E040F7004FEE93 /* NSObject+SBJSON.m in Sources */,
+				4C6189A016E040F7004FEE93 /* NSString+SBJSON.m in Sources */,
+				4C6189A116E040F7004FEE93 /* SBJSON.m in Sources */,
+				4C6189A216E040F7004FEE93 /* SBJsonBase.m in Sources */,
+				4C6189A316E040F7004FEE93 /* SBJsonParser.m in Sources */,
+				4C6189A416E040F7004FEE93 /* SBJsonWriter.m in Sources */,
+				4C6189A816E04103004FEE93 /* EGORefreshTableHeaderView.m in Sources */,
+				4CC05B2916E048EA00521F78 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -705,21 +712,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		A4D10827154ED4EC00E73642 /* InfoPlist.strings */ = {
+		4C29BAB416E04246006B2E41 /* MainStoryboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A4D10828154ED4EC00E73642 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		A4D10830154ED4EC00E73642 /* MainStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A4D10831154ED4EC00E73642 /* en */,
+				4C29BAB516E04246006B2E41 /* en */,
 			);
 			name = MainStoryboard.storyboard;
-			path = ../bh;
 			sourceTree = "<group>";
 		};
 		A4D10845154ED4ED00E73642 /* InfoPlist.strings */ = {
@@ -739,6 +737,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -770,6 +772,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -818,6 +824,7 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -850,6 +857,7 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = NO;
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				WRAPPER_EXTENSION = app;
 			};

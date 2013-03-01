@@ -224,7 +224,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="BII-bC-ZpB">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PrototypeCell" id="BII-bC-ZpB">
                                 <rect key="frame" x="0.0" y="46" width="320" height="46"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -254,7 +254,7 @@
         <!--Controller-->
         <scene sceneID="M70-Xz-1Q2">
             <objects>
-                <navigationController definesPresentationContext="YES" id="2dp-kP-k0V" customClass="LYNVController" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LYNVController" definesPresentationContext="YES" id="2dp-kP-k0V" customClass="LYNVController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="zfW-Ko-UUL">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -381,9 +381,6 @@
         <class className="LYWaveViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
-                <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>

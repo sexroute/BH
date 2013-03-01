@@ -9,7 +9,7 @@
 #import "LYPlantViewController.h"
 #import "LYDetailViewController.h"
 #include "LYCellviewCell.h"
-#import "JSON/JSON.h"
+#import "JSON.h"
 #import "LYGlobalSettings.h"
 
 @interface LYPlantViewController ()

@@ -7,7 +7,7 @@
 //
 
 #import "LYChartView.h"
-#import "JSON/JSON.h"
+#import "JSON.h"
 #import "LYGlobalSettings.h"
 @implementation LYChartView
 @synthesize m_pParent;
