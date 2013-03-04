@@ -25,10 +25,14 @@
 
 @property (retain, nonatomic) IBOutlet UIImageView *m_oImageView;
 
+@property (retain, nonatomic) IBOutlet UILabel *m_oLabelLogin;
+
+
 @property (retain, nonatomic) IBOutlet UITableView *m_oLoginTableView;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 
+@property (retain, nonatomic) IBOutlet UIView *m_oLogginButton;
 @property (retain, nonatomic) IBOutlet LYNVController *m_pNavViewController;
 @end
 

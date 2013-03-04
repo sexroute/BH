@@ -40,7 +40,9 @@ UITextField * g_pTextPassword = nil;
             [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:g_pTextUserName.text];
             [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:tf.text];
             [self.m_oLoginTableView setHidden:YES];
+            [self.m_oLogginButton setHidden:TRUE];
             [self LoadData];
+            [g_pTextPassword resignFirstResponder];
             break;
         default:
             [tf resignFirstResponder];
@@ -151,11 +153,11 @@ UITextField * g_pTextPassword = nil;
             }
             else
             {
-                 self.m_oImageView.image = [UIImage imageNamed:@"Default.png"];
+                self.m_oImageView.image = [UIImage imageNamed:@"Default.png"];
             }
-           
+            
             break;
-
+            
         case 568:
             self.m_oImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
             break;
@@ -163,7 +165,7 @@ UITextField * g_pTextPassword = nil;
             self.m_oImageView.image = [UIImage imageNamed:@"Default.png"];
             break;
     }
-
+    
     
     [self.view insertSubview:self.m_oImageView atIndex:0];
     [super viewDidLoad];
@@ -178,7 +180,7 @@ UITextField * g_pTextPassword = nil;
         [self.m_oLoginTableView setHidden:YES];
         self.m_oLoginTableView.delegate = self;
         self.m_oLoginTableView.dataSource = self;
-                [self LoadData];
+        [self LoadData];
         
     }else
     {
@@ -187,10 +189,23 @@ UITextField * g_pTextPassword = nil;
         self.m_oLoginTableView.delegate = self;
         self.m_oLoginTableView.dataSource = self;
         self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 80);
+        [self.m_oLogginButton setHidden:NO];
     }
     
+    //3.登录按钮处理
+    UITapGestureRecognizer *tapGestureTel = [[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleSingleFingerEvent:)]autorelease];
+    [self.m_oLabelLogin addGestureRecognizer:tapGestureTel];
+    [self.m_oLogginButton addGestureRecognizer:tapGestureTel];
 }
-
+- (void)handleSingleFingerEvent:(UITapGestureRecognizer *)sender
+{
+    [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:g_pTextUserName.text];
+    [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
+    [self.m_oLoginTableView setHidden:YES];
+    [self LoadData];
+    [g_pTextPassword resignFirstResponder];
+    [self.m_oLogginButton setHidden:TRUE];
+}
 -(BOOL)IsLogin
 {
     NSString * lpLogin = [LYGlobalSettings GetSetting:SETTING_KEY_LOGIN];
@@ -227,21 +242,7 @@ UITextField * g_pTextPassword = nil;
     
 }
 
-- (void) alertWrongLogin
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"登陆错误" message:nil
-												   delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
-    [alert show];
-    [alert release];
-}
 
-- (void) alertLoadFailed
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:@"无法获取数据, 重试?"
-												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-    [alert show];
-    [alert release];
-}
 
 
 
@@ -297,9 +298,9 @@ UITextField * g_pTextPassword = nil;
         }
         
         if (isNetworkError)
-        {  
+        {
             [self alertLoadFailed];
-                
+            
         }else
         {
             [self alertWrongLogin];
@@ -326,22 +327,6 @@ UITextField * g_pTextPassword = nil;
     [self alertLoadFailed];
 }
 
-
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if ([self IsLogin])
-    {
-        if (buttonIndex == 0)
-        {
-            [self navigateToPlantView];
-        }
-        else
-        {
-            [self LoadData];
-        }
-    }
-
-}
 #define kDuration 0.7   // 动画持续时间(秒)
 - (void) startAnimate:(UIView *) apDstView
 {
@@ -354,6 +339,60 @@ UITextField * g_pTextPassword = nil;
     [UIView setAnimationDelegate:self];
     
 }
+
+#pragma mark 错误提醒
+- (void) alertWrongLogin
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"登陆错误" message:nil
+												   delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+    alert.tag = 0;
+    [alert show];
+    [alert release];
+}
+
+- (void) alertLoadFailed
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:@"无法获取数据, 重试?"
+												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    alert.tag = 1;
+    [alert show];
+    [alert release];
+}
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+   
+    
+    if (nil!=actionSheet && actionSheet.tag== 1)
+    {
+        if (buttonIndex == 0)
+        {
+            if ([self IsLogin])
+            {
+                [self navigateToPlantView];
+                
+            }else
+            {
+                [self.m_oActivityProgressbar setHidden:TRUE];
+                [self.m_oLoginTableView setHidden:NO];
+                [self.m_oLogginButton setHidden:NO];
+            }
+            
+        }
+        else
+        {
+            [self.m_oActivityProgressbar startAnimating];
+            [self LoadData];
+        }
+    }else
+    {
+        
+        [self.m_oActivityProgressbar setHidden:TRUE];
+        [self.m_oLoginTableView setHidden:NO];
+        [self.m_oLogginButton setHidden:NO];
+    }
+    
+}
+
 
 #pragma mark 导航到设备
 
@@ -397,6 +436,8 @@ UITextField * g_pTextPassword = nil;
     
     
     [_m_oLoginTableView release];
+    [_m_oLogginButton release];
+    [_m_oLabelLogin release];
     [super dealloc];
 }
 
@@ -411,6 +452,8 @@ UITextField * g_pTextPassword = nil;
     
     
     [self setM_oLoginTableView:nil];
+    [self setM_oLogginButton:nil];
+    [self setM_oLabelLogin:nil];
     [super viewDidUnload];
 }
 @end

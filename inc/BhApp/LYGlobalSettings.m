@@ -146,7 +146,7 @@ static NSString * databasePath = nil;
             [LYGlobalSettings InitSetting];
         }
         BOOL lbRet = [LYGlobalSettings SetVal2Database:apKey :apVal];
-        assert(lbRet);
+        //assert(lbRet);
         if (lbRet)
         {
             [g_pSettingsDic setObject:apVal forKey:(apKey)];

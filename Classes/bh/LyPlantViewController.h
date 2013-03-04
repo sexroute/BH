@@ -38,7 +38,7 @@ typedef enum
     UIBarButtonItem * m_pButtonAlarm;
     UIBarButtonItem * m_pButtonStop;
     PLANT_FILTER_STATUS m_nFilterStatus;
-    int m_nAllCount;
+    int m_nllCount;
     int m_nAlarmCount;
     int m_nDangerCount;
     int m_nStopCount;
