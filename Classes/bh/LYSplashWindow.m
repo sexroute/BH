@@ -172,7 +172,7 @@ UITextField * g_pTextPassword = nil;
     
     CGRect frame = self.m_oActivityProgressbar.frame;
     frame.origin.x = self.view.frame.size.width / 2 - frame.size.width / 2;
-    frame.origin.y = self.view.frame.size.height / 2 - frame.size.height / 2;
+    frame.origin.y = self.view.frame.size.height /2 - frame.size.height / 2;
     self.m_oActivityProgressbar.frame = frame;
     //2.判断是否已经登陆
     if ([self IsLogin])
