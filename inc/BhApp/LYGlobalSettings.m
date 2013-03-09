@@ -188,13 +188,13 @@ static NSString * databasePath = nil;
         [LYGlobalSettings InitDatabase];
         
         //2.初始化远程连接地址
-        [g_pSettingsDic setObject:@"http://bhxz808.3322.org:8090" forKey:(SETTING_KEY_SERVER_ADDRESS)];
+        [g_pSettingsDic setObject:@"http://bhxz808.3322.org:8090/xapi" forKey:(SETTING_KEY_SERVER_ADDRESS)];
         [g_pSettingsDic setObject:@"222.199.224.145" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
         [g_pSettingsDic setObject:@"7005" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
         
-        [g_pSettingsDic setObject:@"http://192.168.12.100:8080" forKey:(SETTING_KEY_SERVER_ADDRESS)];
-        [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
-        [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
+//        [g_pSettingsDic setObject:@"http://192.168.12.100/api" forKey:(SETTING_KEY_SERVER_ADDRESS)];
+//        [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
+//        [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
         
         //3.初始化用户名密码
         NSString * lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_USER];

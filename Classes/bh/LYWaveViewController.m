@@ -198,7 +198,7 @@
 - (void) LoadDataFromMiddleWare
 {
     [self.hostView initData];
-    NSString * lpUrl = [NSString stringWithFormat:@"%@/api/alarm/wave/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
     NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl

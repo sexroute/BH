@@ -37,6 +37,7 @@ UITextField * g_pTextPassword = nil;
             [g_pTextPassword becomeFirstResponder];
             break;
         case 1:
+            [self.m_oActivityProgressbar setHidden:NO];
             [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:g_pTextUserName.text];
             [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:tf.text];
             [self.m_oLoginTableView setHidden:YES];
@@ -139,10 +140,11 @@ UITextField * g_pTextPassword = nil;
 #pragma mark 视图初始化
 - (void)viewDidLoad
 {
-    
+    //1.根据分辨率和设备类型处理背景图片
     int lnHeight = [[UIScreen mainScreen] bounds].size.height ;
     int lnWeight = [[UIScreen mainScreen] bounds].size.width;
     self.m_oImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0,0.0,lnWeight,lnHeight)]autorelease];
+     CGRect frame =self.m_oLoginTableView.frame;
     
     switch (lnHeight)
     {
@@ -156,10 +158,34 @@ UITextField * g_pTextPassword = nil;
                 self.m_oImageView.image = [UIImage imageNamed:@"Default.png"];
             }
             
+            frame.origin.x = self.m_oLoginTableView.frame.origin.x;
+
+            
+            self.m_oLoginTableView.frame = frame;
             break;
             
         case 568:
             self.m_oImageView.image = [UIImage imageNamed:@"Default-568h@2x.png"];
+            frame =self.m_oLoginTableView.frame;
+            frame.origin.x = self.m_oLoginTableView.frame.origin.x;
+            frame.origin.y = 140;
+            self.m_oLoginTableView.frame = frame;
+            break;
+            
+        case 1024:
+           
+            frame =self.m_oLoginTableView.frame;
+            frame.origin.x = self.m_oLoginTableView.frame.origin.x;
+            if(IS_RETINA)
+            {
+                frame.origin.y = 60;
+                 self.m_oImageView.image = [UIImage imageNamed:@"Default-Portrait@2x~ipad.png"];
+            }else
+            {
+                self.m_oImageView.image = [UIImage imageNamed:@"Default-Portrait~ipad.png"];
+                frame.origin.y = 30;
+            }
+            self.m_oLoginTableView.frame = frame;
             break;
         default:
             self.m_oImageView.image = [UIImage imageNamed:@"Default.png"];
@@ -170,13 +196,14 @@ UITextField * g_pTextPassword = nil;
     [self.view insertSubview:self.m_oImageView atIndex:0];
     [super viewDidLoad];
     
-    CGRect frame = self.m_oActivityProgressbar.frame;
+    frame = self.m_oActivityProgressbar.frame;
     frame.origin.x = self.view.frame.size.width / 2 - frame.size.width / 2;
     frame.origin.y = self.view.frame.size.height /2 - frame.size.height / 2;
     self.m_oActivityProgressbar.frame = frame;
     //2.判断是否已经登陆
     if ([self IsLogin])
     {
+        [self.m_oActivityProgressbar setHidden:NO];
         [self.m_oLoginTableView setHidden:YES];
         self.m_oLoginTableView.delegate = self;
         self.m_oLoginTableView.dataSource = self;
@@ -184,24 +211,37 @@ UITextField * g_pTextPassword = nil;
         
     }else
     {
+        [self.m_oActivityProgressbar setHidden:YES];
         [self.m_oActivityProgressbar stopAnimating];
         [self.m_oLoginTableView setHidden:NO];
         self.m_oLoginTableView.delegate = self;
         self.m_oLoginTableView.dataSource = self;
+
         self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 80);
         [self.m_oLogginButton setHidden:NO];
     }
     
+
     //3.登录按钮处理
     UITapGestureRecognizer *tapGestureTel = [[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleSingleFingerEvent:)]autorelease];
+    
+    
     [self.m_oLabelLogin addGestureRecognizer:tapGestureTel];
     [self.m_oLogginButton addGestureRecognizer:tapGestureTel];
+    
+    frame = self.m_oLogginButton.frame;
+    frame.origin.x = self.m_oLoginTableView.frame.origin.x;
+    frame.origin.y = self.m_oLoginTableView.frame.origin.y+self.m_oLoginTableView.frame.size.height+5;
+    self.m_oLogginButton.frame = frame;
+    
 }
 - (void)handleSingleFingerEvent:(UITapGestureRecognizer *)sender
 {
     [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:g_pTextUserName.text];
     [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
     [self.m_oLoginTableView setHidden:YES];
+    [self.m_oActivityProgressbar setHidden:NO];
+    [self.m_oActivityProgressbar startAnimating];
     [self LoadData];
     [g_pTextPassword resignFirstResponder];
     [self.m_oLogginButton setHidden:TRUE];
@@ -234,7 +274,7 @@ UITextField * g_pTextPassword = nil;
     responseData = [[NSMutableData data] retain];
     
     NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
-    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/api/alarm/gethierarchy/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:lpServerAddress] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];

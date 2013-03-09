@@ -12,13 +12,13 @@
 #import "LYLoginCell.h"
 #import "LYGlobalSettings.h"
 
-
+#define IS_RETINA       ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&([UIScreen mainScreen].scale == 2.0))
 @interface LYSplashWindow : UIViewController<UIAlertViewDelegate,UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate> {
 	IBOutlet UILabel *label;
 	NSMutableData *responseData;
     NSMutableArray *listOfItems;
     LYPlantViewController * m_pPlantViewController;
-   
+    
     LYNVController *m_pNavViewController;
 }
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *m_oActivityProgressbar;
