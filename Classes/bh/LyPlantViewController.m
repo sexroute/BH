@@ -11,6 +11,7 @@
 #include "LYCellviewCell.h"
 #import "JSON.h"
 #import "LYGlobalSettings.h"
+#import "LYSegmentMsgMap.h"
 
 @interface LYPlantViewController ()
 
@@ -32,21 +33,18 @@
 @synthesize m_oDangerPlants;
 @synthesize m_oStopPlants;
 @synthesize m_oNormalPlants;
-
+@synthesize m_pSegmentMap;
 @synthesize responseData;
 
-- (void)loadView {
-    [super loadView];
-     self.m_oTableView.delegate = self;
-     self.m_oTableView.dataSource = self;
-    if (nil == self.m_oAlarmPlants) {
-        self.m_oDangerPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
-        self.m_oAlarmPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
-        self.m_oStopPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
-        self.m_oNormalPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
-    }
-}
 
+#pragma mark 初始化
+
+- (id)init
+{
+    self = [super init];
+    self.m_pSegmentMap = nil;
+    return self;
+}
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -63,8 +61,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self.m_oActiveIndicator stopAnimating];
+  
+    //1.拖拽刷新
     if (_refreshHeaderView == nil)
     {
         
@@ -75,48 +75,135 @@
         [view release];
         
     }
-    
+       //2.报警、危险、停车等
     //  update the last update date
     [_refreshHeaderView refreshLastUpdatedDate];
     self.navigationItem.title = @"全部设备列表";
     [self.navigationController setToolbarHidden:FALSE animated:FALSE];
     
     self.m_pButtonAll = [[ UIBarButtonItem alloc ] initWithTitle:   @"全部"
-                                                                     style: UIBarButtonItemStyleDone
-                                                                    target: self
-                                                                    action: @selector(onButtonAllDeviceSelected:) ];
-    
+                                                           style: UIBarButtonItemStyleDone
+                                                          target: self
+                                                          action: @selector(onButtonAllDeviceSelected:) ];
+ 
     self->m_nFilterStatus = ALL;
     
     self.m_pButtonAlarm  = [[ UIBarButtonItem alloc ] initWithTitle: @"报警"
-                                                                      style: UIBarButtonItemStylePlain
-                                                                     target: self
-                                                                     action: @selector(onButtonAlarmDeviceSelected:) ];
+                                                              style: UIBarButtonItemStylePlain
+                                                             target: self
+                                                             action: @selector(onButtonAlarmDeviceSelected:) ];
     self.m_pButtonDanger = [[ UIBarButtonItem alloc ] initWithTitle: @"危险"
-                                                                     style: UIBarButtonItemStylePlain
-                                                                    target: self
-                                                                    action: @selector(onButtonDangerDeviceSelected:) ];
+                                                              style: UIBarButtonItemStylePlain
+                                                             target: self
+                                                             action: @selector(onButtonDangerDeviceSelected:) ];
     
     self.m_pButtonStop = [[ UIBarButtonItem alloc ] initWithTitle: @"停车"
-                                                                      style: UIBarButtonItemStylePlain
-                                                                     target: self
-                                                                     action: @selector(onButtonStopDeviceSelected:) ];
-    
-    self.m_pButtonNormal = [[ UIBarButtonItem alloc ] initWithTitle: @"正常"
                                                             style: UIBarButtonItemStylePlain
                                                            target: self
-                                                           action: @selector(onButtonNormalDeviceSelected:) ];
+                                                           action: @selector(onButtonStopDeviceSelected:) ];
+    
+    self.m_pButtonNormal = [[ UIBarButtonItem alloc ] initWithTitle: @"正常"
+                                                              style: UIBarButtonItemStylePlain
+                                                             target: self
+                                                             action: @selector(onButtonNormalDeviceSelected:) ];
+      
+    //3.segment view
+    if (nil ==self.m_pSegmentMap)
+    {
+        self.m_pSegmentMap = [[[NSMutableArray alloc] init]autorelease];
+        
+        LYSegmentMsgMap * lpVal =[[[LYSegmentMsgMap alloc]init]autorelease];        
+        lpVal.m_pSegmentMsgIndex = [NSNumber numberWithInt:0];
+        lpVal.m_pSegmentMsgHandle = @selector(onButtonAllDeviceSelected:);
+        lpVal.m_pSegmentTitle = @"全部";
+        [self.m_pSegmentMap addObject:lpVal];
+       
+        
+        LYSegmentMsgMap * lpValAlarm =[[[LYSegmentMsgMap alloc]init]autorelease];
+        lpValAlarm.m_pSegmentMsgIndex = [NSNumber numberWithInt:1];
+        lpValAlarm.m_pSegmentMsgHandle = @selector(onButtonAlarmDeviceSelected:);
+        lpValAlarm.m_pSegmentTitle = @"报警";
+         [self.m_pSegmentMap addObject:lpValAlarm];
 
-     UIBarButtonItem *flexItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]autorelease];
-    [self setToolbarItems:[NSArray arrayWithObjects:flexItem, self.m_pButtonAll, flexItem, self.m_pButtonDanger , flexItem, self.m_pButtonAlarm, flexItem,self.m_pButtonNormal,flexItem, self.m_pButtonStop, flexItem, nil]];
-   }
+        
+        LYSegmentMsgMap * lpValDangrous =[[[LYSegmentMsgMap alloc]init]autorelease];
+        lpValDangrous.m_pSegmentMsgIndex = [NSNumber numberWithInt:2];
+        lpValDangrous.m_pSegmentMsgHandle = @selector(onButtonDangerDeviceSelected:);
+        lpValDangrous.m_pSegmentTitle = @"危险";
+         [self.m_pSegmentMap addObject:lpValDangrous];
+
+        
+        LYSegmentMsgMap * lpValNormal =[[[LYSegmentMsgMap alloc]init]autorelease];
+        lpValNormal.m_pSegmentMsgIndex = [NSNumber numberWithInt:3];
+        lpValNormal.m_pSegmentMsgHandle = @selector(onButtonNormalDeviceSelected:);
+        lpValNormal.m_pSegmentTitle = @"正常";
+         [self.m_pSegmentMap addObject:lpValNormal];
+
+
+        
+        LYSegmentMsgMap * lpValStopped =[[[LYSegmentMsgMap alloc]init]autorelease];
+        lpValStopped.m_pSegmentMsgIndex = [NSNumber numberWithInt:4];
+        lpValStopped.m_pSegmentMsgHandle = @selector(onButtonStopDeviceSelected:);
+        lpValStopped.m_pSegmentTitle = @"停车";
+         [self.m_pSegmentMap addObject:lpValStopped];
+
+        
+        
+        LYSegmentMsgMap * lpValNoval =[[[LYSegmentMsgMap alloc]init]autorelease];
+        lpValNoval.m_pSegmentMsgIndex = [NSNumber numberWithInt:5];
+        lpValNoval.m_pSegmentMsgHandle = @selector(onButtonStopDeviceSelected:);
+        lpValNoval.m_pSegmentTitle = @"断网";
+        [self.m_pSegmentMap addObject:lpValNoval];     
+        
+    }
+    
+  
+    NSMutableArray * segmentItems  = [[[NSMutableArray alloc]init]autorelease];
+    for (int i =0; i<self.m_pSegmentMap.count; i++)
+    {
+        LYSegmentMsgMap * lpFired = [self.m_pSegmentMap objectAtIndex:i];
+        [segmentItems addObject:lpFired.m_pSegmentTitle];
+    }
+    
+   UISegmentedControl * segmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] retain];
+    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+    segmentedControl.selectedSegmentIndex = 0;
+    [segmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
+    self.navigationItem.titleView = segmentedControl;
+}
+
+- (void) onSegmentedControlChanged:(UISegmentedControl *) sender
+{
+    if (nil== sender)
+    {
+        return;
+    }
+    // lazy load data for a segment choice (write this based on your data)
+    int lnSelectedIndex = [(UISegmentedControl *) sender selectedSegmentIndex];
+    
+    if (lnSelectedIndex<self.m_pSegmentMap.count)
+    {
+        LYSegmentMsgMap * lpFired = [self.m_pSegmentMap objectAtIndex:lnSelectedIndex];
+        SEL lpFun = lpFired.m_pSegmentMsgHandle;
+        [self performSelector:lpFun];
+    }
+   
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.navigationController setToolbarHidden:FALSE animated:TRUE];
 }
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark 析构
 - (void)viewDidUnload
 {
-
+    
     
     [self setM_oTableView:nil];
     [self setM_oActiveIndicator:nil];
@@ -125,17 +212,32 @@
     self.m_oAlarmPlants = nil;
     self.m_oDangerPlants = nil;
     self.m_oStopPlants = nil;
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    self.m_pSegmentMap = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+- (void)dealloc {
+    _refreshHeaderView = nil;
+    [m_oTableView release];
+    
+    [m_oActiveIndicator release];
+    [super dealloc];
+    
 }
+
+
 
 #pragma mark - Table view data source
-
+- (void)loadView {
+    [super loadView];
+    self.m_oTableView.delegate = self;
+    self.m_oTableView.dataSource = self;
+    if (nil == self.m_oAlarmPlants) {
+        self.m_oDangerPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+        self.m_oAlarmPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+        self.m_oStopPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+        self.m_oNormalPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+    }
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -146,12 +248,12 @@
 {
     
     // Return the number of rows in the section.
-    NSMutableArray * lpPlants =  [self GetCurrentDataSource];   
+    NSMutableArray * lpPlants =  [self GetCurrentDataSource];
     int lnCount = [lpPlants count];
     return lnCount;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{   
+{
     return 100;
 }
 
@@ -164,7 +266,7 @@
     {
         NSMutableString *lpstrData = [NSMutableString stringWithString:@" "];
         [lpstrData appendFormat:@"%@",apData];
-        lpRet = [lpstrData substringFromIndex:0];  
+        lpRet = [lpstrData substringFromIndex:0];
         lpRet  = [[lpRet
                    stringByReplacingOccurrencesOfString:@"+" withString:@" "]
                   stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -184,23 +286,23 @@
     }
     int i= indexPath.row;
     id logroupid = [[lpPlants objectAtIndex:i] objectForKey:@"groupid"];
-    id locompanyid = [[lpPlants objectAtIndex:i] objectForKey:@"companyid"]; 
+    id locompanyid = [[lpPlants objectAtIndex:i] objectForKey:@"companyid"];
     id lofactoryid = [[lpPlants objectAtIndex:i] objectForKey:@"factoryid"];
     id losetid = [[lpPlants objectAtIndex:i] objectForKey:@"setid"];
-    id loplantid = [[lpPlants objectAtIndex:i] objectForKey:@"plantid"]; 
-    id loRpm =[[lpPlants objectAtIndex:i] objectForKey:@"rev"]; 
+    id loplantid = [[lpPlants objectAtIndex:i] objectForKey:@"plantid"];
+    id loRpm =[[lpPlants objectAtIndex:i] objectForKey:@"rev"];
     id loAlarmStatus = [[lpPlants objectAtIndex:i] objectForKey:@"alarm_status"];
     id loStopStatus = [[lpPlants objectAtIndex:i] objectForKey:@"stop_status"];
     NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@""];
     [lpStrGroupNo appendFormat:@"%@-%@-%@-%@",logroupid,locompanyid,lofactoryid,losetid];
-    NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
+    NSString * lpResult = [lpStrGroupNo substringFromIndex:0];
     lpResult  = [[lpResult
                   stringByReplacingOccurrencesOfString:@"+" withString:@" "]
                  stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-   // NSLog(@"%@",lpResult);
-    if (cell == nil) 
+    // NSLog(@"%@",lpResult);
+    if (cell == nil)
     {
-
+        
         if(!cell)
         {
             //加载自定义表格
@@ -229,24 +331,24 @@
                     NSInteger lnAlarmStatus = [lpAlarmStatus integerValue];
                     NSString  * lpStopStatus = [self GetStringFromID:loStopStatus];
                     NSInteger lnStopStatus = [lpStopStatus integerValue];
-                    #ifdef DEBUG 
-//                    NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
-                    #endif
+#ifdef DEBUG
+                    //                    NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
+#endif
                     if (nil != lpAlarmStatus) {
                         if (2 == lnAlarmStatus) {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1]autorelease];
                         }else if (1 == lnAlarmStatus) {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:1 blue:0 alpha:1]autorelease];
-                        } if (1 == lnStopStatus) 
+                        } if (1 == lnStopStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1]autorelease];
                         }
-                            
+                        
                     }else {
-                        if (1 == lnStopStatus ) 
+                        if (1 == lnStopStatus )
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:200 green:200 blue:200 alpha:1]autorelease];
-                        } 
+                        }
                     }
                     break;
                 }
@@ -254,8 +356,8 @@
         }
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     }
-    //cell.text = lpResult; 
- 
+    //cell.text = lpResult;
+    
     return cell;
 }
 
@@ -295,14 +397,14 @@
                                                              bundle: nil];
     
     LYDetailViewController *detailViewController = (LYDetailViewController*)[mainStoryboard
-                                                                         instantiateViewControllerWithIdentifier: @"DetailView"];
+                                                                             instantiateViewControllerWithIdentifier: @"DetailView"];
     int i= indexPath.row;
     
     detailViewController.m_pData = [[self GetCurrentDataSource] objectAtIndex:i];
-   [self.navigationController setToolbarHidden:YES animated:FALSE] ;
+    [self.navigationController setToolbarHidden:YES animated:FALSE] ;
     [self.navigationController pushViewController:detailViewController animated:YES];
     return;
-
+    
     
 }
 
@@ -313,39 +415,32 @@
                                                              bundle: nil];
     
     LYDetailViewController *detailViewController = (LYDetailViewController*)[mainStoryboard
-                                                                         instantiateViewControllerWithIdentifier: @"DetailView"];
+                                                                             instantiateViewControllerWithIdentifier: @"DetailView"];
     int i= indexPath.row;
     
     [self.navigationController setToolbarHidden:YES animated:TRUE] ;
     detailViewController.m_pData = [[self GetCurrentDataSource] objectAtIndex:i];
     [self.navigationController pushViewController:detailViewController animated:YES];
     return;
-
-}
-
-
-
-
-
-
-- (void)dealloc {
-    _refreshHeaderView = nil;
-    [m_oTableView release];
-
-    [m_oActiveIndicator release];
-    [super dealloc];
     
 }
+
+
+
+
+
+
+
 
 - (void)reloadTableViewDataSource{
     
     //  should be calling your tableviews data source model to reload
     //  put here just for demo
-
-        [self doLoadData];
-        _reloading = YES;
-   
-
+    
+    [self doLoadData];
+    _reloading = YES;
+    
+    
     
 }
 
@@ -400,7 +495,7 @@
     //    NSString *Title;
     NSLog(@"%@",[segue identifier]);
     if ([[segue identifier] isEqualToString:@"ShowDetail"])
-    {        
+    {
         NSLog(@"%@",[segue identifier]);
     }
 }
@@ -423,18 +518,18 @@
                 continue;
             }
             id loAlarmStatus = [loObj objectForKey:@"alarm_status"];
-           id loStopStatus = [loObj objectForKey:@"stop_status"];
+            id loStopStatus = [loObj objectForKey:@"stop_status"];
             if (nil!= loAlarmStatus && nil!= loStopStatus)
             {
                 NSNumber *val = loAlarmStatus;
                 int lnAlarmStatus = [val intValue];
                 int lnStopStatus = [(NSNumber *)loStopStatus intValue];
-//                NSLog((@"Alarmstatus:%d | %d"),lnAlarmStatus,lnStopStatus);
+                //                NSLog((@"Alarmstatus:%d | %d"),lnAlarmStatus,lnStopStatus);
                 if (lnAlarmStatus>0|| (lnAlarmStatus==0 && lnStopStatus<=0))
                 {
                     switch (lnAlarmStatus)
                     {
-
+                            
                         case 1:
                             [self.m_oAlarmPlants addObject:loObj];
                             break;
@@ -451,17 +546,17 @@
                     [self.m_oStopPlants addObject:loObj];
                     
                 }
-
+                
             }
         }
     }
     
-//NSLog(@"%d %d %d %d",[self.m_oAlarmPlants count],[self.m_oDangerPlants count],[self.m_oStopPlants count],[self.m_oNormalPlants count]);
+    //NSLog(@"%d %d %d %d",[self.m_oAlarmPlants count],[self.m_oDangerPlants count],[self.m_oStopPlants count],[self.m_oNormalPlants count]);
 }
 
 
 
-#pragma mark 
+#pragma mark
 #pragma mark NSURLRequest Methods
 - (void) doLoadData
 {
@@ -481,13 +576,13 @@
 	currentLength = 0;
     if (nil != HUD && expectedLength >0)
     {
-       HUD.mode = MBProgressHUDModeDeterminate;
+        HUD.mode = MBProgressHUDModeDeterminate;
 	}
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
 	[self.responseData appendData:data];
-   
+    
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -496,9 +591,9 @@
     self.responseData = nil;
     if (nil!=HUD)
     {
-      [HUD hide:YES];
+        [HUD hide:YES];
     }
-   
+    
 }
 
 
@@ -523,7 +618,7 @@
             [self->listOfItems release];
         }
         
-        self->listOfItems = lpListOfItems;        
+        self->listOfItems = lpListOfItems;
         [self->listOfItems retain];
         [self PreparePlantsData];
         [self.m_oTableView reloadData];
@@ -535,9 +630,9 @@
     
     if (nil != HUD)
     {
-       [HUD hide:YES afterDelay:0];
+        [HUD hide:YES afterDelay:0];
     }
-
+    
 }
 #pragma mark -
 #pragma mark ButtonPressed Methods
@@ -549,17 +644,17 @@
 {
     [self PopulateIndicator];
     [self doLoadData];
-
+    
 }
 - (IBAction)OnRefreshButtonPressed:(id)sender
 {
     [self startTimer];
-   
+    
     
 }
 
 - (IBAction)OnSearchButtonPressed:(id)sender {
-   
+    
 }
 
 
@@ -572,7 +667,7 @@
     self.m_pButtonAll.style = UIBarButtonItemStyleDone;
     self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
     self->m_nFilterStatus = ALL;
-   
+    
     [self.m_oTableView reloadData];
 }
 
@@ -630,7 +725,7 @@
 	// Remove HUD from screen when the HUD was hidded
 	[apHud removeFromSuperview];
 	[apHud release];
-     
+    
 }
 
 - (void)PopulateIndicator

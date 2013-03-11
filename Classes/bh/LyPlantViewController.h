@@ -42,6 +42,7 @@ typedef enum
     int m_nAlarmCount;
     int m_nDangerCount;
     int m_nStopCount;
+    NSMutableArray * m_pSegmentMap;
     
 }
 - (void)OnHudCallBack;
@@ -58,6 +59,7 @@ typedef enum
 @property (retain, nonatomic) NSMutableArray * m_oAlarmPlants;
 @property (retain, nonatomic) NSMutableArray * m_oNormalPlants;
 @property (retain, nonatomic) NSMutableData * responseData;
+@property (retain, nonatomic) NSMutableArray  * m_pSegmentMap;
 
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonAll;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonDanger;

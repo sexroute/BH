@@ -35,6 +35,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="设备列表" id="wc9-Bx-2kB">
+                        <barButtonItem key="leftBarButtonItem" title="筛选" id="HBa-Ie-qOw"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="gs5-Ea-vyP">
                             <connections>
                                 <action selector="OnRefreshButtonPressed:" destination="Jq2-v1-unc" id="Qft-6S-T3g"/>
@@ -407,7 +408,6 @@
         <class className="LYWaveViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
-                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>

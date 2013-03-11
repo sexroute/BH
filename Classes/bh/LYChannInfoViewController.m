@@ -9,9 +9,7 @@
 #import "LYChannInfoViewController.h"
 #import "LYWaveViewController.h"
 
-@interface LYChannInfoViewController ()
 
-@end
 
 @implementation LYChannInfoViewController
 @synthesize m_pData;
