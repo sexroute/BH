@@ -468,6 +468,7 @@ UITextField * g_pTextPassword = nil;
     //2. load view
     if (nil == self->m_pPlantViewController)
     {
+        
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                                  bundle: nil];
         
@@ -476,8 +477,10 @@ UITextField * g_pTextPassword = nil;
                                                                                instantiateViewControllerWithIdentifier: @"tabbar"];
         
         lpviewController.m_oListView = self.m_oListAllPlantsItem;
+        
+        lpviewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 
-        [self presentViewController:lpviewController animated:NO completion:nil];
+        [self presentViewController:lpviewController animated:YES completion:nil];
 
         [UIView commitAnimations];
         return;        
