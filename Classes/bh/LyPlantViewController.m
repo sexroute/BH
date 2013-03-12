@@ -61,9 +61,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self.m_oActiveIndicator stopAnimating];
-  
+      [self.m_oActiveIndicator stopAnimating];
+  [self.navigationController setToolbarHidden:YES animated:NO];
     //1.拖拽刷新
     if (_refreshHeaderView == nil)
     {
@@ -79,6 +78,7 @@
     //  update the last update date
     [_refreshHeaderView refreshLastUpdatedDate];
     self.navigationItem.title = @"全部设备列表";
+   
     [self.navigationController setToolbarHidden:FALSE animated:FALSE];
     
     self.m_pButtonAll = [[ UIBarButtonItem alloc ] initWithTitle:   @"全部"
@@ -165,11 +165,15 @@
         [segmentItems addObject:lpFired.m_pSegmentTitle];
     }
     
-   UISegmentedControl * segmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] retain];
+   UISegmentedControl * segmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] autorelease];
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     segmentedControl.selectedSegmentIndex = 0;
     [segmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
     self.navigationItem.titleView = segmentedControl;
+    
+    //4.bottom button
+    
+   
 }
 
 - (void) onSegmentedControlChanged:(UISegmentedControl *) sender
@@ -191,7 +195,7 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self.navigationController setToolbarHidden:FALSE animated:TRUE];
+    [self.navigationController setToolbarHidden:YES animated:NO];
 }
 
 

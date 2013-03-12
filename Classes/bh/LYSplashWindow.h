@@ -17,7 +17,7 @@
 	IBOutlet UILabel *label;
 	NSMutableData *responseData;
     NSMutableArray *listOfItems;
-    LYPlantViewController * m_pPlantViewController;
+    UIViewController * m_pPlantViewController;
     
     LYNVController *m_pNavViewController;
 }

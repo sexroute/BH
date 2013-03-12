@@ -20,6 +20,8 @@
 		4C5F85AF16EADDE100D1592F /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5F85AE16EADDE100D1592F /* Default-Landscape~ipad.png */; };
 		4C5F85B116EADDE900D1592F /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5F85B016EADDE900D1592F /* Default-Landscape@2x~ipad.png */; };
 		4C5F85B416ED8FFD00D1592F /* LYSegmentMsgMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F85B316ED8FFD00D1592F /* LYSegmentMsgMap.m */; };
+		4C5F85B716EDBD4800D1592F /* LYTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F85B616EDBD4800D1592F /* LYTabBarViewController.m */; };
+		4C5F85BA16EDD4D400D1592F /* LYSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F85B916EDD4D400D1592F /* LYSettingViewController.m */; };
 		4C61891316DF47E6004FEE93 /* loginCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C61891216DF47E6004FEE93 /* loginCell.xib */; };
 		4C61891516DF56B7004FEE93 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C61891416DF56B7004FEE93 /* libsqlite3.dylib */; };
 		4C61894716E040C0004FEE93 /* LYAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61892816E040C0004FEE93 /* LYAppDelegate.m */; };
@@ -92,6 +94,10 @@
 		4C5F85B016EADDE900D1592F /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		4C5F85B216ED8FFD00D1592F /* LYSegmentMsgMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYSegmentMsgMap.h; sourceTree = "<group>"; };
 		4C5F85B316ED8FFD00D1592F /* LYSegmentMsgMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYSegmentMsgMap.m; sourceTree = "<group>"; };
+		4C5F85B516EDBD4700D1592F /* LYTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYTabBarViewController.h; sourceTree = "<group>"; };
+		4C5F85B616EDBD4800D1592F /* LYTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYTabBarViewController.m; sourceTree = "<group>"; };
+		4C5F85B816EDD4D200D1592F /* LYSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYSettingViewController.h; sourceTree = "<group>"; };
+		4C5F85B916EDD4D400D1592F /* LYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYSettingViewController.m; sourceTree = "<group>"; };
 		4C61891216DF47E6004FEE93 /* loginCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = loginCell.xib; sourceTree = "<group>"; };
 		4C61891416DF56B7004FEE93 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		4C61892116E040C0004FEE93 /* ChannInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannInfo.h; sourceTree = "<group>"; };
@@ -272,6 +278,8 @@
 			isa = PBXGroup;
 			children = (
 				4C61892116E040C0004FEE93 /* ChannInfo.h */,
+				4C5F85B516EDBD4700D1592F /* LYTabBarViewController.h */,
+				4C5F85B616EDBD4800D1592F /* LYTabBarViewController.m */,
 				A46A5870154FDF7400EDA973 /* blackArrow.png */,
 				4C61892716E040C0004FEE93 /* LYAppDelegate.h */,
 				4C61892816E040C0004FEE93 /* LYAppDelegate.m */,
@@ -300,6 +308,8 @@
 				4C61893F16E040C0004FEE93 /* main.m */,
 				4C5F85B216ED8FFD00D1592F /* LYSegmentMsgMap.h */,
 				4C5F85B316ED8FFD00D1592F /* LYSegmentMsgMap.m */,
+				4C5F85B816EDD4D200D1592F /* LYSettingViewController.h */,
+				4C5F85B916EDD4D400D1592F /* LYSettingViewController.m */,
 			);
 			path = bh;
 			sourceTree = "<group>";
@@ -720,6 +730,8 @@
 				4C6189A816E04103004FEE93 /* EGORefreshTableHeaderView.m in Sources */,
 				4CC05B2916E048EA00521F78 /* MBProgressHUD.m in Sources */,
 				4C5F85B416ED8FFD00D1592F /* LYSegmentMsgMap.m in Sources */,
+				4C5F85B716EDBD4800D1592F /* LYTabBarViewController.m in Sources */,
+				4C5F85BA16EDD4D400D1592F /* LYSettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

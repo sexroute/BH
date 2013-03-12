@@ -9,7 +9,7 @@
 #import "LYSplashWindow.h"
 #import "JSON.h"
 #import "LYGlobalSettings.h"
-
+#import "LYTabBarViewController.h"
 
 
 
@@ -137,14 +137,38 @@ UITextField * g_pTextPassword = nil;
     return 40;
 }
 
+
 #pragma mark 视图初始化
 - (void)viewDidLoad
+{
+   
+    [super viewDidLoad];
+    [self InitUI];
+
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    if ([self IsLogin])
+    {
+        [self.m_oLoginTableView setHidden:YES];
+        [self.m_oLabelLogin setHidden:YES];
+        [self.m_oLogginButton setHidden:YES];
+    }else
+    {
+        [self.m_oLoginTableView setHidden:NO];
+        [self.m_oLabelLogin setHidden:NO];
+        [self.m_oLogginButton setHidden:NO];
+    }
+
+}
+
+-(void) InitUI
 {
     //1.根据分辨率和设备类型处理背景图片
     int lnHeight = [[UIScreen mainScreen] bounds].size.height ;
     int lnWeight = [[UIScreen mainScreen] bounds].size.width;
     self.m_oImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0,0.0,lnWeight,lnHeight)]autorelease];
-     CGRect frame =self.m_oLoginTableView.frame;
+    CGRect frame =self.m_oLoginTableView.frame;
     
     switch (lnHeight)
     {
@@ -159,7 +183,7 @@ UITextField * g_pTextPassword = nil;
             }
             
             frame.origin.x = self.m_oLoginTableView.frame.origin.x;
-
+            
             
             self.m_oLoginTableView.frame = frame;
             break;
@@ -173,13 +197,13 @@ UITextField * g_pTextPassword = nil;
             break;
             
         case 1024:
-           
+            
             frame =self.m_oLoginTableView.frame;
             frame.origin.x = self.m_oLoginTableView.frame.origin.x;
             if(IS_RETINA)
             {
                 frame.origin.y = 60;
-                 self.m_oImageView.image = [UIImage imageNamed:@"Default-Portrait@2x~ipad.png"];
+                self.m_oImageView.image = [UIImage imageNamed:@"Default-Portrait@2x~ipad.png"];
             }else
             {
                 self.m_oImageView.image = [UIImage imageNamed:@"Default-Portrait~ipad.png"];
@@ -194,13 +218,13 @@ UITextField * g_pTextPassword = nil;
     
     
     [self.view insertSubview:self.m_oImageView atIndex:0];
-    [super viewDidLoad];
-    
+     
     frame = self.m_oActivityProgressbar.frame;
     frame.origin.x = self.view.frame.size.width / 2 - frame.size.width / 2;
     frame.origin.y = self.view.frame.size.height /2 - frame.size.height / 2;
     self.m_oActivityProgressbar.frame = frame;
     //2.判断是否已经登陆
+   self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 80);
     if ([self IsLogin])
     {
         [self.m_oActivityProgressbar setHidden:NO];
@@ -216,12 +240,12 @@ UITextField * g_pTextPassword = nil;
         [self.m_oLoginTableView setHidden:NO];
         self.m_oLoginTableView.delegate = self;
         self.m_oLoginTableView.dataSource = self;
+        
 
-        self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 80);
         [self.m_oLogginButton setHidden:NO];
     }
     
-
+    
     //3.登录按钮处理
     UITapGestureRecognizer *tapGestureTel = [[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleSingleFingerEvent:)]autorelease];
     
@@ -233,7 +257,6 @@ UITextField * g_pTextPassword = nil;
     frame.origin.x = self.m_oLoginTableView.frame.origin.x;
     frame.origin.y = self.m_oLoginTableView.frame.origin.y+self.m_oLoginTableView.frame.size.height+5;
     self.m_oLogginButton.frame = frame;
-    
 }
 - (void)handleSingleFingerEvent:(UITapGestureRecognizer *)sender
 {
@@ -447,15 +470,14 @@ UITextField * g_pTextPassword = nil;
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                                  bundle: nil];
         
-        LYPlantViewController *detailViewController = (LYPlantViewController*)[mainStoryboard
-                                                                               instantiateViewControllerWithIdentifier: @"PlantView"];
-        self->m_pPlantViewController = detailViewController;
-        self.m_pNavViewController = [[[LYNVController alloc]init] autorelease];
-        self->m_pPlantViewController->listOfItems = self->listOfItems;
-        [self->m_pPlantViewController->listOfItems retain];
-        [self->m_pPlantViewController PreparePlantsData];
-        [self presentViewController:self.m_pNavViewController animated:NO completion:nil];
-        [self.m_pNavViewController pushViewController:self->m_pPlantViewController animated:NO];
+        
+        LYTabBarViewController  *lpviewController = (LYTabBarViewController *)[mainStoryboard
+                                                                               instantiateViewControllerWithIdentifier: @"tabbar"];
+        
+        lpviewController.m_oListView = self->listOfItems;
+
+        [self presentViewController:lpviewController animated:NO completion:nil];
+
         [UIView commitAnimations];
         return;
         
