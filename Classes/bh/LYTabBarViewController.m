@@ -48,7 +48,7 @@
         if (nil!= lpViewController && [lpViewController isKindOfClass:[LYPlantViewController class]])
         {
             lpPlantTableViewController = (LYPlantViewController *)lpViewController;
-             lpPlantTableViewController->listOfItems = self.m_oListView;
+             lpPlantTableViewController.m_oPlantItems = self.m_oListView;
             
              [lpPlantTableViewController PreparePlantsData];
         }

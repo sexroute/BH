@@ -27,7 +27,7 @@ typedef enum
 	long long expectedLength;
 	long long currentLength;
     @public
-    NSMutableArray *listOfItems;
+    NSMutableArray *m_oPlantItems;
     NSMutableData *responseData;
     NSMutableArray * m_oAlarmPlants;
     NSMutableArray * m_oDangerPlants;
@@ -66,6 +66,6 @@ typedef enum
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonAlarm;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonStop;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonNormal;
-
+@property (retain, nonatomic) NSMutableArray * m_oPlantItems;
 @end
 

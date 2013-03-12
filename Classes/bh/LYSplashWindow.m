@@ -302,8 +302,7 @@ UITextField * g_pTextPassword = nil;
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    
-}
+    }
 
 
 

@@ -35,6 +35,7 @@
 @synthesize m_oNormalPlants;
 @synthesize m_pSegmentMap;
 @synthesize responseData;
+@synthesize m_oPlantItems;
 
 
 #pragma mark 初始化
@@ -217,12 +218,13 @@
     self.m_oDangerPlants = nil;
     self.m_oStopPlants = nil;
     self.m_pSegmentMap = nil;
+    self.m_oPlantItems = nil;
 }
 
 - (void)dealloc {
     _refreshHeaderView = nil;
-    [m_oTableView release];
     
+    [m_oTableView release];
     [m_oActiveIndicator release];
     [super dealloc];
     
@@ -371,7 +373,7 @@
     switch (self->m_nFilterStatus)
     {
         case ALL:
-            lpPlants = self->listOfItems;
+            lpPlants = self.m_oPlantItems;
             break;
         case ALARM:
             lpPlants = self.m_oAlarmPlants;
@@ -386,7 +388,7 @@
             lpPlants = self.m_oNormalPlants;
             break;
         default:
-            lpPlants = self->listOfItems;
+            lpPlants = self.m_oPlantItems;
             break;
     }
     
@@ -512,12 +514,12 @@
     self.m_oAlarmPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
     self.m_oStopPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
     self.m_oNormalPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
-    if (nil != self->listOfItems)
+    if (nil != self.m_oPlantItems)
     {
-        int lnSize = [self->listOfItems count];
+        int lnSize = [self.m_oPlantItems count];
         for (int i=0; i<lnSize; i++)
         {
-            id loObj = [listOfItems objectAtIndex:i];
+            id loObj = [m_oPlantItems objectAtIndex:i];
             if (nil == loObj) {
                 continue;
             }
@@ -603,7 +605,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	[connection release];
+	
 	
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 	
@@ -617,13 +619,9 @@
     
     if (nil!=lpListOfItems && [lpListOfItems count] != 0)
     {
-        if (nil!=self->listOfItems)
-        {
-            [self->listOfItems release];
-        }
+
         
-        self->listOfItems = lpListOfItems;
-        [self->listOfItems retain];
+        self.m_oPlantItems = lpListOfItems;
         [self PreparePlantsData];
         [self.m_oTableView reloadData];
     }
@@ -636,6 +634,8 @@
     {
         [HUD hide:YES afterDelay:0];
     }
+    
+    [connection release];
     
 }
 #pragma mark -
