@@ -18,6 +18,7 @@
 
 @synthesize m_pNavViewController;
 @synthesize m_oImageView;
+@synthesize m_oListAllPlantsItem;
 
 UITextField * g_pTextUserName = nil;
 UITextField * g_pTextPassword = nil;
@@ -347,9 +348,9 @@ UITextField * g_pTextPassword = nil;
 	
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
-	self->listOfItems = [json objectWithString:responseString error:&error];
+	self.m_oListAllPlantsItem = [json objectWithString:responseString error:&error];
     
-	if (![self IsReturnDataValid:self->listOfItems])
+	if (![self IsReturnDataValid:self.m_oListAllPlantsItem])
 	{
         BOOL isNetworkError = NO;
         //1.网络等错误
@@ -463,6 +464,7 @@ UITextField * g_pTextPassword = nil;
     self.m_oActivityProgressbar.hidesWhenStopped = TRUE;
     label.text = @"";
     [self.m_oActivityProgressbar stopAnimating];
+    
     //2. load view
     if (nil == self->m_pPlantViewController)
     {
@@ -473,14 +475,12 @@ UITextField * g_pTextPassword = nil;
         LYTabBarViewController  *lpviewController = (LYTabBarViewController *)[mainStoryboard
                                                                                instantiateViewControllerWithIdentifier: @"tabbar"];
         
-        lpviewController.m_oListView = self->listOfItems;
+        lpviewController.m_oListView = self.m_oListAllPlantsItem;
 
         [self presentViewController:lpviewController animated:NO completion:nil];
 
         [UIView commitAnimations];
-        return;
-        
-        
+        return;        
     }
 }
 

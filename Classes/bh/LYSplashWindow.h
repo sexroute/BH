@@ -16,7 +16,7 @@
 @interface LYSplashWindow : UIViewController<UIAlertViewDelegate,UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate> {
 	IBOutlet UILabel *label;
 	NSMutableData *responseData;
-    NSMutableArray *listOfItems;
+    NSMutableArray *m_oListAllPlantsItem;
     UIViewController * m_pPlantViewController;
     
     LYNVController *m_pNavViewController;
@@ -34,5 +34,7 @@
 
 @property (retain, nonatomic) IBOutlet UIView *m_oLogginButton;
 @property (retain, nonatomic) IBOutlet LYNVController *m_pNavViewController;
+
+@property (retain, nonatomic) IBOutlet NSMutableArray *m_oListAllPlantsItem;
 @end
 
