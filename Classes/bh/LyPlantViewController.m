@@ -12,6 +12,7 @@
 #import "JSON.h"
 #import "LYGlobalSettings.h"
 #import "LYSegmentMsgMap.h"
+#import "LYFilterViewController.h"
 
 @interface LYPlantViewController ()
 
@@ -657,8 +658,23 @@
     
 }
 
-- (IBAction)OnSearchButtonPressed:(id)sender {
+- (IBAction)OnFilterButtonPressed:(id)sender
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                                             bundle: nil];
     
+    
+    LYFilterViewController  *lpviewController = (LYFilterViewController *)[mainStoryboard
+                                                                           instantiateViewControllerWithIdentifier: @"LYFilterViewController"];
+    
+    lpviewController.m_oAllItems = self.m_oPlantItems;
+    
+    
+    lpviewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    
+    [self.navigationController pushViewController:lpviewController animated:YES];
+        
+    [UIView commitAnimations];
 }
 
 

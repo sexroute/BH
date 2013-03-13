@@ -22,6 +22,7 @@
 @synthesize m_oFactorys;
 @synthesize m_oSets;
 @synthesize m_oPlantTypes;
+@synthesize m_oAllItems;
 
 @synthesize m_strSelectedCompany;
 @synthesize m_strSelectedFactory;
@@ -55,6 +56,7 @@
     self.m_oCompanys = [NSMutableArray arrayWithCapacity:0];
     self.m_oFactorys = [NSMutableArray arrayWithCapacity:0];
     self.m_oSets = [NSMutableArray arrayWithCapacity:0];
+    self.m_oPlantTypes = [NSMutableArray arrayWithCapacity:0];
 }
 
 - (id) init
@@ -66,7 +68,9 @@
 {
     [super viewDidLoad];
     [self InitData];
+    [self PrepareData];
 
+   
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -158,6 +162,9 @@
         case 3:
             [self NavigateToSelectedPage:self.m_oSets apstrTitle:@"选择装置"];
             break;
+        case 4:
+            [self NavigateToSelectedPage:self.m_oPlantTypes apstrTitle:@"选择设备类型"];
+            break;
         default:
             break;
     }
@@ -178,11 +185,44 @@
     lpViewController.title = apstrTitle;
     lpViewController.m_oItems = apData;
    
-        [self.navigationController pushViewController:lpViewController animated:YES];
+    [self.navigationController pushViewController:lpViewController animated:YES];
+    
     
 }
 
+- (void)PrepareData
+{
+    if (nil!= self.m_oAllItems)
+    {
+        NSMutableDictionary * lpGroup = [NSMutableDictionary dictionaryWithCapacity:0];
+        NSMutableDictionary * lpCompany = [NSMutableDictionary dictionaryWithCapacity:0];
+        NSMutableDictionary * lpFactory = [NSMutableDictionary dictionaryWithCapacity:0];
+        NSMutableDictionary * lpSet = [NSMutableDictionary dictionaryWithCapacity:0];
+      
+        for (int i =0; i<self.m_oAllItems.count ; i++)
+        {
+            id logroupid = [[self.m_oAllItems objectAtIndex:i] objectForKey:@"groupid"];
+            id locompanyid = [[self.m_oAllItems objectAtIndex:i] objectForKey:@"companyid"];
+            id lofactoryid = [[self.m_oAllItems objectAtIndex:i] objectForKey:@"factoryid"];
+            id losetid = [[self.m_oAllItems objectAtIndex:i] objectForKey:@"setid"];
+            
+            [lpGroup setObject:logroupid forKey:logroupid];
+            [lpCompany setObject:locompanyid forKey:locompanyid];
+            [lpFactory setObject:lofactoryid forKey:lofactoryid];
+            [lpSet setObject:losetid forKey:losetid];
 
+        }
+        self.m_oGroups = [NSMutableArray arrayWithArray:lpGroup.allKeys];
+        self.m_oCompanys = [NSMutableArray arrayWithArray:lpCompany.allKeys];
+        self.m_oFactorys = [NSMutableArray arrayWithArray:lpFactory.allKeys];
+        self.m_oSets = [NSMutableArray arrayWithArray:lpSet.allKeys];
+       
+        [self.m_oPlantTypes addObject:@"往复"];
+        [self.m_oPlantTypes addObject:@"旋转"];
+        [self.m_oPlantTypes addObject:@"机泵"];
+        [self.m_oPlantTypes addObject:@"风电"];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -282,6 +322,8 @@
     self.m_strSelectedFactory = nil;
     self.m_strSelectedSet = nil;
     self.m_strSelectedType = nil;
+    
+    self.m_oAllItems = nil;
     
     [super viewDidUnload];
 }

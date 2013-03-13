@@ -27,6 +27,7 @@
 @property (strong,nonatomic) NSMutableArray * m_oFactorys;
 @property (strong,nonatomic) NSMutableArray * m_oSets;
 @property (strong,nonatomic) NSMutableArray * m_oPlantTypes;
+@property (strong,nonatomic) NSMutableArray * m_oAllItems;
 
 
 

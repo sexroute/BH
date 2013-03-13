@@ -47,7 +47,7 @@ typedef enum
 }
 - (void)OnHudCallBack;
 - (IBAction)OnRefreshButtonPressed:(id)sender;
-- (IBAction)OnSearchButtonPressed:(id)sender;
+- (IBAction)OnFilterButtonPressed:(id)sender;
 
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *m_oActiveIndicator;
 @property (retain, nonatomic) IBOutlet UITableView *m_oTableView;
