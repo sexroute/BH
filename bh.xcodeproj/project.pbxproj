@@ -47,6 +47,7 @@
 		4C6189A416E040F7004FEE93 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C61899E16E040F7004FEE93 /* SBJsonWriter.m */; };
 		4C6189A816E04103004FEE93 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C6189A716E04103004FEE93 /* EGORefreshTableHeaderView.m */; };
 		4C9F98FE16F019D9004179FE /* LYUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C9F98FD16F019D9004179FE /* LYUtility.m */; };
+		4C9F990116F0533B004179FE /* LYSelectItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C9F990016F0533B004179FE /* LYSelectItemViewController.m */; };
 		4CC05B2916E048EA00521F78 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC05B2816E048EA00521F78 /* MBProgressHUD.m */; };
 		4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */; };
 		4CCF789516DC5DD1001E6413 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789416DC5DD1001E6413 /* Icon.png */; };
@@ -149,6 +150,8 @@
 		4C6189A716E04103004FEE93 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		4C9F98FC16F019D9004179FE /* LYUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYUtility.h; sourceTree = "<group>"; };
 		4C9F98FD16F019D9004179FE /* LYUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYUtility.m; sourceTree = "<group>"; };
+		4C9F98FF16F0533B004179FE /* LYSelectItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYSelectItemViewController.h; sourceTree = "<group>"; };
+		4C9F990016F0533B004179FE /* LYSelectItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYSelectItemViewController.m; sourceTree = "<group>"; };
 		4CC05B2316E0467F00521F78 /* bh-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "bh-Info.plist"; sourceTree = "<group>"; };
 		4CC05B2716E048EA00521F78 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		4CC05B2816E048EA00521F78 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -317,6 +320,8 @@
 				4C5F85B916EDD4D400D1592F /* LYSettingViewController.m */,
 				4C361CDE16EF1771007D760F /* LYFilterViewController.h */,
 				4C361CDF16EF1772007D760F /* LYFilterViewController.m */,
+				4C9F98FF16F0533B004179FE /* LYSelectItemViewController.h */,
+				4C9F990016F0533B004179FE /* LYSelectItemViewController.m */,
 			);
 			path = bh;
 			sourceTree = "<group>";
@@ -744,6 +749,7 @@
 				4C5F85BA16EDD4D400D1592F /* LYSettingViewController.m in Sources */,
 				4C361CE016EF1773007D760F /* LYFilterViewController.m in Sources */,
 				4C9F98FE16F019D9004179FE /* LYUtility.m in Sources */,
+				4C9F990116F0533B004179FE /* LYSelectItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

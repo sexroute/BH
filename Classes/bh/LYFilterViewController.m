@@ -8,6 +8,8 @@
 
 #import "LYFilterViewController.h"
 #import "LYGlobalSettings.h"
+#import "LYUtility.h"
+#import "LYSelectItemViewController.h"
 
 @interface LYFilterViewController ()
 
@@ -16,13 +18,20 @@
 @implementation LYFilterViewController
 
 @synthesize m_oGroups;
-@synthesize m_oCompany;
-@synthesize m_oFactory;
-@synthesize m_oSet;
-@synthesize m_oType;
+@synthesize m_oCompanys;
+@synthesize m_oFactorys;
+@synthesize m_oSets;
+@synthesize m_oPlantTypes;
 
-const int G_NO_SELECTED_VALUE = 0;
- NSString * G_NO_SELECTED_VALUE_STR = @"全部";
+@synthesize m_strSelectedCompany;
+@synthesize m_strSelectedFactory;
+@synthesize m_strSelectedGroup;
+@synthesize m_strSelectedSet;
+@synthesize m_strSelectedType;
+@synthesize m_StrSelectedInSelectItemViewController;
+
+ NSString * G_NO_SELECTED_VALUE_STR = @"";
+ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
 #pragma mark 初始化
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -37,15 +46,15 @@ const int G_NO_SELECTED_VALUE = 0;
 
 -(void) InitData
 {
-    self.m_nSelectGroupIndex= [LYGlobalSettings GetSettingInt:SETTING_KEY_SELECTED_GROUP anDefault:G_NO_SELECTED_VALUE];
-    self.m_nSelectFactoryIndex =[LYGlobalSettings GetSettingInt:SETTING_KEY_SELECTED_COMPANY anDefault:G_NO_SELECTED_VALUE] ;
-    self.m_nSelectCompanyIndex =[LYGlobalSettings GetSettingInt:SETTING_KEY_SELECTED_FACTORY anDefault:G_NO_SELECTED_VALUE];
-    self.m_nSelectSetIndex = [LYGlobalSettings GetSettingInt:SETTING_KEY_SELECTED_SET anDefault:G_NO_SELECTED_VALUE];
+    self.m_strSelectedGroup = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_GROUP];
+    self.m_strSelectedCompany = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_COMPANY];
+    self.m_strSelectedFactory = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_FACTORY];
+    self.m_strSelectedSet = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_SET];
     
     self.m_oGroups = [NSMutableArray arrayWithCapacity:0];
-    self.m_oCompany = [NSMutableArray arrayWithCapacity:0];
-    self.m_oFactory = [NSMutableArray arrayWithCapacity:0];
-    self.m_oSet = [NSMutableArray arrayWithCapacity:0];
+    self.m_oCompanys = [NSMutableArray arrayWithCapacity:0];
+    self.m_oFactorys = [NSMutableArray arrayWithCapacity:0];
+    self.m_oSets = [NSMutableArray arrayWithCapacity:0];
 }
 
 - (id) init
@@ -57,7 +66,7 @@ const int G_NO_SELECTED_VALUE = 0;
 {
     [super viewDidLoad];
     [self InitData];
-    
+
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -66,30 +75,31 @@ const int G_NO_SELECTED_VALUE = 0;
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
--(void)toogleDataForPerSection:(NSMutableArray *)apData  apLabel:(UILabel *)apLabel anSelectedIndex:(int)anSelectedIndex
+-(void)toogleDataForPerSection:(NSMutableArray *)apData  apLabel:(UILabel *)apLabel apSelectedStr:(NSString *)apSelectedStr
 {
     if (nil == apLabel)
     {
         return;
     }
    
-    if (G_NO_SELECTED_VALUE == anSelectedIndex || apData == nil || anSelectedIndex <0 || anSelectedIndex >= [apData count])
+    if ([LYUtility IsStringEmpty:apSelectedStr])
     {
-        apLabel.text = G_NO_SELECTED_VALUE_STR;
+        apLabel.text = G_NO_SELECTED_VALUE_STR_DISPLAY;
+        
     }else
     {
-        apLabel.text = [apData objectAtIndex:anSelectedIndex];
+        apLabel.text = apSelectedStr;
     }
 }
 
--(void)toogleCellUI:(UITableViewCell*)apCell  apLabel:(UILabel *)apLabel  anSelectedIndex:(int)anSelectedIndex
+-(void)toogleCellUI:(UITableViewCell*)apCell  apLabel:(UILabel *)apLabel  apSelectedStr:(NSString *)apSelectedStr
 {
     if (nil == apLabel || nil == apCell)
     {
         return;
     }
     
-    if (anSelectedIndex == G_NO_SELECTED_VALUE)
+    if ([LYUtility IsStringEmpty:apSelectedStr])
     {
         apCell.selectionStyle = UITableViewCellSelectionStyleNone;
         apCell.userInteractionEnabled = NO;
@@ -106,20 +116,23 @@ const int G_NO_SELECTED_VALUE = 0;
 -(void)toogleData
 {
     //group
-    [self toogleDataForPerSection:self.m_oGroups apLabel:self.m_olblGroup anSelectedIndex:self.m_nSelectGroupIndex];
+    [self toogleDataForPerSection:self.m_oGroups apLabel:self.m_olblGroup apSelectedStr:self.m_strSelectedGroup];
     
     //company
-    [self toogleCellUI:self.m_oCellCompany apLabel:self.m_olblCompany anSelectedIndex:self.m_nSelectGroupIndex];
-    [self toogleDataForPerSection:self.m_oCompany apLabel:self.m_olblCompany anSelectedIndex:self.m_nSelectCompanyIndex];
+    [self toogleCellUI:self.m_oCellCompany apLabel:self.m_olblCompany apSelectedStr:self.m_strSelectedGroup];
+    [self toogleDataForPerSection:self.m_oCompanys apLabel:self.m_olblCompany apSelectedStr:self.m_strSelectedCompany];
     
 
     //factory
-    [self toogleCellUI:self.m_oCellFactory apLabel:self.m_olblFactory anSelectedIndex:self.m_nSelectCompanyIndex];
-    [self toogleDataForPerSection:self.m_oFactory apLabel:self.m_olblFactory anSelectedIndex:self.m_nSelectFactoryIndex];
+    [self toogleCellUI:self.m_oCellFactory apLabel:self.m_olblFactory apSelectedStr:self.self.m_strSelectedCompany];
+    [self toogleDataForPerSection:self.m_oFactorys apLabel:self.m_olblFactory apSelectedStr:self.m_strSelectedFactory];
     
     //set
-    [self toogleCellUI:self.m_oCellSet apLabel:self.m_olblSet anSelectedIndex:self.m_nSelectFactoryIndex];
-    [self toogleDataForPerSection:self.m_oSet apLabel:self.m_olblSet anSelectedIndex:self.m_nSelectSetIndex];
+    [self toogleCellUI:self.m_oCellSet apLabel:self.m_olblSet apSelectedStr:self.m_strSelectedFactory];
+    [self toogleDataForPerSection:self.m_oSets apLabel:self.m_olblSet apSelectedStr:self.m_strSelectedSet];
+    
+    //type
+    [self toogleDataForPerSection:self.m_oPlantTypes apLabel:self.m_olblType apSelectedStr:self.m_strSelectedType];
     
  }
 
@@ -134,29 +147,38 @@ const int G_NO_SELECTED_VALUE = 0;
 {
     switch (anSectionIndex) {
         case 0:
-            [self NavigateToSelectedPage:self.m_oGroups anSelectedIndex:self.m_nSelectGroupIndex];
+            [self NavigateToSelectedPage:self.m_oGroups apstrTitle:@"选择集团"];
             break;
         case 1:
-           [self NavigateToSelectedPage:self.m_oCompany anSelectedIndex:self.m_nSelectCompanyIndex];
+           [self NavigateToSelectedPage:self.m_oCompanys apstrTitle:@"选择公司"];
             break;
         case 2:
-            [self NavigateToSelectedPage:self.m_oFactory anSelectedIndex:self.m_nSelectFactoryIndex];
+            [self NavigateToSelectedPage:self.m_oFactorys apstrTitle:@"选择分厂"];
             break;
         case 3:
-            [self NavigateToSelectedPage:self.m_oSet anSelectedIndex:self.m_nSelectSetIndex];
+            [self NavigateToSelectedPage:self.m_oSets apstrTitle:@"选择装置"];
             break;
         default:
             break;
     }
 }
 
--(void)NavigateToSelectedPage:(NSMutableArray *)apData anSelectedIndex:(int) anSelectedIndex
+-(void)NavigateToSelectedPage:(NSMutableArray *)apData apstrTitle:(NSString*)apstrTitle
 {
     if (nil == apData )
     {
         return;
     }
     
+    UIStoryboard *mainStoryboard = self.storyboard;
+    LYSelectItemViewController * lpViewController = (LYSelectItemViewController*)[mainStoryboard
+                                                                                            instantiateViewControllerWithIdentifier: @"LYSelectItemViewController"];
+    self.navigationItem.backBarButtonItem.title = @"确认";
+   
+    lpViewController.title = apstrTitle;
+    lpViewController.m_oItems = apData;
+   
+        [self.navigationController pushViewController:lpViewController animated:YES];
     
 }
 
@@ -233,7 +255,7 @@ const int G_NO_SELECTED_VALUE = 0;
     [_m_oCellFactory release];
     [_m_olblSet release];
     [_m_oCellSet release];
-    [_m_oTypeCell release];
+    [_m_oCellType release];
     [_m_olblType release];
     [super dealloc];
 }
@@ -246,14 +268,20 @@ const int G_NO_SELECTED_VALUE = 0;
     [self setM_oCellFactory:nil];
     [self setM_olblSet:nil];
     [self setM_oCellSet:nil];
-    [self setM_oTypeCell:nil];
+    [self setM_oCellType:nil];
     [self setM_olblType:nil];
     
     self.m_oGroups = nil;
-    self.m_oCompany = nil;
-    self.m_oFactory = nil;
-    self.m_oSet = nil;
-    self.m_oType = nil;
+    self.m_oCompanys = nil;
+    self.m_oFactorys = nil;
+    self.m_oSets = nil;
+    self.m_oPlantTypes = nil;
+    
+    self.m_strSelectedGroup = nil;
+    self.m_strSelectedCompany = nil;
+    self.m_strSelectedFactory = nil;
+    self.m_strSelectedSet = nil;
+    self.m_strSelectedType = nil;
     
     [super viewDidUnload];
 }

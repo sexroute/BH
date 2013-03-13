@@ -23,16 +23,23 @@
 @property (retain, nonatomic) IBOutlet UITableViewCell *m_oCellSet;
 
 @property (strong,nonatomic) NSMutableArray * m_oGroups;
-@property (strong,nonatomic) NSMutableArray * m_oCompany;
-@property (strong,nonatomic) NSMutableArray * m_oFactory;
-@property (strong,nonatomic) NSMutableArray * m_oSet;
-@property (strong,nonatomic) NSMutableArray * m_oType;
+@property (strong,nonatomic) NSMutableArray * m_oCompanys;
+@property (strong,nonatomic) NSMutableArray * m_oFactorys;
+@property (strong,nonatomic) NSMutableArray * m_oSets;
+@property (strong,nonatomic) NSMutableArray * m_oPlantTypes;
 
-@property (nonatomic) int m_nSelectGroupIndex;
-@property (nonatomic) int m_nSelectCompanyIndex;
-@property (nonatomic) int m_nSelectFactoryIndex;
-@property (nonatomic) int m_nSelectSetIndex;
+
+
 @property (retain, nonatomic) IBOutlet UILabel *m_olblType;
-@property (retain, nonatomic) IBOutlet UITableViewCell *m_oTypeCell;
+@property (retain, nonatomic) IBOutlet UITableViewCell *m_oCellType;
+
+@property (retain, nonatomic) NSString * m_strSelectedGroup;
+@property (retain, nonatomic) NSString * m_strSelectedCompany;
+@property (retain, nonatomic) NSString * m_strSelectedFactory;
+@property (retain, nonatomic) NSString * m_strSelectedSet;
+@property (retain, nonatomic) NSString * m_strSelectedType;
+
+@property (strong,nonatomic) NSString * m_StrSelectedInSelectItemViewController;
+@property (nonatomic) int m_nPlantType;
 
 @end

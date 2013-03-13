@@ -57,7 +57,7 @@
         <!--DetailViewController-->
         <scene sceneID="Lfc-E0-kB7">
             <objects>
-                <tableViewController storyboardIdentifier="DetailView" title="DetailView" id="N98-1c-TBu" userLabel="DetailViewController" customClass="LYDetailViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DetailView" title="DetailView" hidesBottomBarWhenPushed="YES" id="N98-1c-TBu" userLabel="DetailViewController" customClass="LYDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="tx0-X6-gq3">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -284,10 +284,10 @@
             </objects>
             <point key="canvasLocation" x="757" y="-531"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Select Item View Controller-->
         <scene sceneID="chx-aS-pEK">
             <objects>
-                <tableViewController id="bZN-jD-PxC" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="LYSelectItemViewController" id="bZN-jD-PxC" customClass="LYSelectItemViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="YTr-Ny-nil">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -317,7 +317,7 @@
         <!--Filter View Controller - 设备筛选-->
         <scene sceneID="U8x-LD-x5K">
             <objects>
-                <tableViewController title="设备筛选" id="Mny-Cx-TLY" customClass="LYFilterViewController" sceneMemberID="viewController">
+                <tableViewController title="设备筛选" hidesBottomBarWhenPushed="YES" id="Mny-Cx-TLY" customClass="LYFilterViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="G8q-x7-dS0">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -482,7 +482,7 @@
                         <outlet property="m_oCellFactory" destination="51n-v6-y4E" id="QbZ-iC-xyI"/>
                         <outlet property="m_oCellGroup" destination="Lnj-G4-fp5" id="yYr-0p-m5j"/>
                         <outlet property="m_oCellSet" destination="Red-vX-jPL" id="Fls-WY-FNg"/>
-                        <outlet property="m_oTypeCell" destination="faJ-Ge-Nry" id="W03-33-d9l"/>
+                        <outlet property="m_oCellType" destination="faJ-Ge-Nry" id="pF1-My-gWh"/>
                         <outlet property="m_olblCompany" destination="2qi-4V-gaR" id="jwW-Od-xeN"/>
                         <outlet property="m_olblFactory" destination="9Ib-kJ-tT3" id="oFo-dd-q60"/>
                         <outlet property="m_olblGroup" destination="s4A-Ed-xdc" id="hig-YC-B7Q"/>
@@ -754,7 +754,7 @@ Ew
                 <relationship kind="outlet" name="m_oCellFactory" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="m_oCellGroup" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="m_oCellSet" candidateClass="UITableViewCell"/>
-                <relationship kind="outlet" name="m_oTypeCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oCellType" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="m_olblCompany" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="m_olblFactory" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="m_olblGroup" candidateClass="UILabel"/>
@@ -778,6 +778,9 @@ Ew
                 <relationship kind="outlet" name="m_pButtonNormal" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pButtonStop" candidateClass="UIBarButtonItem"/>
             </relationships>
+        </class>
+        <class className="LYSelectItemViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYSelectItemViewController.h"/>
         </class>
         <class className="LYSettingViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYSettingViewController.h"/>
@@ -809,8 +812,6 @@ Ew
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
                 <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>
