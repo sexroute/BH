@@ -134,23 +134,23 @@ const int G_NO_SELECTED_VALUE = 0;
 {
     switch (anSectionIndex) {
         case 0:
-            [self NavigateToSelectedPage:self.m_oGroups anSelectedIndex:&self->m_nSelectGroupIndex];
+            [self NavigateToSelectedPage:self.m_oGroups anSelectedIndex:self.m_nSelectGroupIndex];
             break;
         case 1:
-           [self NavigateToSelectedPage:self.m_oCompany anSelectedIndex:&self->m_nSelectCompanyIndex];
+           [self NavigateToSelectedPage:self.m_oCompany anSelectedIndex:self.m_nSelectCompanyIndex];
             break;
         case 2:
-            [self NavigateToSelectedPage:self.m_oFactory anSelectedIndex:&self->m_nSelectFactoryIndex];
+            [self NavigateToSelectedPage:self.m_oFactory anSelectedIndex:self.m_nSelectFactoryIndex];
             break;
         case 3:
-            [self NavigateToSelectedPage:self.m_oSet anSelectedIndex:&self->m_nSelectSetIndex];
+            [self NavigateToSelectedPage:self.m_oSet anSelectedIndex:self.m_nSelectSetIndex];
             break;
         default:
             break;
     }
 }
 
--(void)NavigateToSelectedPage:(NSMutableArray *)apData anSelectedIndex:(int * ) anSelectedIndex
+-(void)NavigateToSelectedPage:(NSMutableArray *)apData anSelectedIndex:(int) anSelectedIndex
 {
     if (nil == apData )
     {

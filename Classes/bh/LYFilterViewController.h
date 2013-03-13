@@ -10,10 +10,7 @@
 
 @interface LYFilterViewController : UITableViewController
 {
-    int m_nSelectGroupIndex;
-    int m_nSelectCompanyIndex;
-    int m_nSelectFactoryIndex;
-    int m_nSelectSetIndex;
+
 }
 @property (retain, nonatomic) IBOutlet UILabel *m_olblGroup;
 

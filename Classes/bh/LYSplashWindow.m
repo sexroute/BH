@@ -39,6 +39,7 @@ UITextField * g_pTextPassword = nil;
             break;
         case 1:
             [self.m_oActivityProgressbar setHidden:NO];
+            [self.m_oActivityProgressbar startAnimating];
             [LYGlobalSettings SetSettingString:SETTING_KEY_USER apVal:g_pTextUserName.text];
             [LYGlobalSettings SetSettingString:SETTING_KEY_PASSWORD apVal:tf.text];
             [self.m_oLoginTableView setHidden:YES];
