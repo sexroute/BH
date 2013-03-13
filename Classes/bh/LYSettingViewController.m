@@ -49,7 +49,7 @@
     loFrame = self.m_olabelUserName.frame;
     loFrame.origin.x = a - loFrame.size.width - 10;
     self.m_olabelUserName.frame = loFrame;
-    self.m_olabelUserName.text = [LYGlobalSettings GetSetting:SETTING_KEY_USER];
+    self.m_olabelUserName.text = [LYGlobalSettings GetSettingString:SETTING_KEY_USER];
     
      UITapGestureRecognizer *tapGestureTel = [[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleSingleFingerEvent:)]autorelease];
     
@@ -71,7 +71,7 @@
 {
     NSLog(@"logOut");
     //1.将登录状态设置为0
-    [LYGlobalSettings SetSetting:SETTING_KEY_LOGIN apVal:@"0"];
+    [LYGlobalSettings SetSettingString:SETTING_KEY_LOGIN apVal:@"0"];
     //2.导航至splash window
     [self dismissModalViewControllerAnimated:YES];
     

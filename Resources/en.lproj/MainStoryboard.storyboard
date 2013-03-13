@@ -354,7 +354,7 @@
                             </tableViewSection>
                             <tableViewSection id="aBr-3e-Sxg">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="ycC-Gs-aH1" detailTextLabel="2qi-4V-gaR" style="IBUITableViewCellStyleValue1" id="7CF-S7-l1N">
+                                    <tableViewCell tag="1" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="ycC-Gs-aH1" detailTextLabel="2qi-4V-gaR" style="IBUITableViewCellStyleValue1" id="7CF-S7-l1N">
                                         <rect key="frame" x="0.0" y="76" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -383,7 +383,7 @@
                             </tableViewSection>
                             <tableViewSection id="Orx-Ei-CeA">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="MM2-ol-12z" detailTextLabel="9Ib-kJ-tT3" style="IBUITableViewCellStyleValue1" id="51n-v6-y4E">
+                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="MM2-ol-12z" detailTextLabel="9Ib-kJ-tT3" style="IBUITableViewCellStyleValue1" id="51n-v6-y4E">
                                         <rect key="frame" x="0.0" y="142" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -412,7 +412,7 @@
                             </tableViewSection>
                             <tableViewSection id="bLR-IU-Mgp">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="fj2-qR-m8Y" detailTextLabel="AcW-Ly-zi3" style="IBUITableViewCellStyleValue1" id="Red-vX-jPL">
+                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="fj2-qR-m8Y" detailTextLabel="AcW-Ly-zi3" style="IBUITableViewCellStyleValue1" id="Red-vX-jPL">
                                         <rect key="frame" x="0.0" y="208" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -439,6 +439,35 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="Lgw-lx-r1V">
+                                <cells>
+                                    <tableViewCell tag="2" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" indentationWidth="10" textLabel="Cyh-wo-ZKy" detailTextLabel="179-aK-dJG" style="IBUITableViewCellStyleValue1" id="faJ-Ge-Nry">
+                                        <rect key="frame" x="0.0" y="274" width="320" height="46"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="10" y="1" width="267" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="类型" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Cyh-wo-ZKy">
+                                                    <rect key="frame" x="10" y="11" width="34" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="全部" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="179-aK-dJG">
+                                                    <rect key="frame" x="223" y="11" width="34" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.21960784310000001" green="0.3294117647" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="Mny-Cx-TLY" id="xHg-sV-g8X"/>
@@ -449,10 +478,16 @@
                         <barButtonItem key="backBarButtonItem" title="返回设备列表" id="tiV-0J-ARo"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="m_oCellCompany" destination="7CF-S7-l1N" id="Ivo-9W-AGS"/>
-                        <outlet property="m_oCellFactory" destination="51n-v6-y4E" id="IT3-qX-y38"/>
-                        <outlet property="m_oCellGroup" destination="Lnj-G4-fp5" id="a6c-Hq-57Y"/>
-                        <outlet property="m_oCellSet" destination="Red-vX-jPL" id="wTF-1r-51w"/>
+                        <outlet property="m_oCellCompany" destination="7CF-S7-l1N" id="v6y-XH-lu4"/>
+                        <outlet property="m_oCellFactory" destination="51n-v6-y4E" id="QbZ-iC-xyI"/>
+                        <outlet property="m_oCellGroup" destination="Lnj-G4-fp5" id="yYr-0p-m5j"/>
+                        <outlet property="m_oCellSet" destination="Red-vX-jPL" id="Fls-WY-FNg"/>
+                        <outlet property="m_oTypeCell" destination="faJ-Ge-Nry" id="W03-33-d9l"/>
+                        <outlet property="m_olblCompany" destination="2qi-4V-gaR" id="jwW-Od-xeN"/>
+                        <outlet property="m_olblFactory" destination="9Ib-kJ-tT3" id="oFo-dd-q60"/>
+                        <outlet property="m_olblGroup" destination="s4A-Ed-xdc" id="hig-YC-B7Q"/>
+                        <outlet property="m_olblSet" destination="AcW-Ly-zi3" id="Of7-lg-FX0"/>
+                        <outlet property="m_olblType" destination="179-aK-dJG" id="cDo-g2-JFB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rk9-6c-u1n" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -719,10 +754,12 @@ Ew
                 <relationship kind="outlet" name="m_oCellFactory" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="m_oCellGroup" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="m_oCellSet" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oTypeCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="m_olblCompany" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="m_olblFactory" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="m_olblGroup" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="m_olblSet" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_olblType" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="LYNVController" superclassName="UINavigationController">

@@ -7,6 +7,7 @@
 //
 
 #import "LYGlobalSettings.h"
+#import "LYUtility.h"
 
 @implementation LYGlobalSettings
 
@@ -137,7 +138,59 @@ static NSString * databasePath = nil;
 }
 
 #pragma mark 内存操作
-+(BOOL) SetSetting:(NSString*)apKey apVal:(NSString*)apVal
++(BOOL) SetSettingInt:(NSString *)apKey apVal:(int)anVal
+{
+    NSString * lpVal = [NSString stringWithFormat:@"%d",anVal];
+    BOOL lbRet = [LYGlobalSettings SetSettingString:apKey apVal:lpVal];
+    return  lbRet;
+}
+
+
++(int) GetSettingInt:(NSString *)apKey
+{
+    return  [LYGlobalSettings GetSettingInt:apKey anDefault:0];
+}
+
++ (int) GetSettingInt:(NSString *) apKey anDefault:(int) anDefault
+{
+    NSString * lpVal = [LYGlobalSettings GetSettingString:apKey];
+    if ([LYUtility IsStringEmpty:lpVal])
+    {
+        return anDefault;
+    }
+    
+    int lnVal = [lpVal intValue];
+    
+    return  lnVal;
+}
+
++(BOOL) SetSettingDouble:(NSString*)apKey apVal:(double)adblVal
+{
+    NSString * lpVal = [NSString stringWithFormat:@"%f",adblVal];
+    BOOL lbRet = [LYGlobalSettings SetSettingString:apKey apVal:lpVal];
+    return  lbRet;
+}
+
++ (double) GetSettingDouble:(NSString *) apKey
+{
+    return  [LYGlobalSettings GetSettingDouble:apKey adblDefault:.0];
+}
+
++ (double) GetSettingDouble:(NSString *) apKey adblDefault:(double) adblDefault
+{
+    NSString * lpVal = [LYGlobalSettings GetSettingString:apKey];
+    if ([LYUtility IsStringEmpty:lpVal])
+    {
+        return adblDefault;
+    }
+    
+    double ldblVal = [lpVal doubleValue];
+    return  ldblVal;
+}
+
+
+
++(BOOL) SetSettingString:(NSString*)apKey apVal:(NSString*)apVal
 {
     @synchronized(self)
     {
@@ -157,7 +210,7 @@ static NSString * databasePath = nil;
     }
 }
 
-+(NSString *) GetSetting:(NSString *) apKey
++ (NSString *) GetSettingString:(NSString *) apKey apStrDefault:(NSString *) apStrDefault
 {
     NSString * lpRetValue = nil;
     if (nil!= apKey && ([apKey isKindOfClass:[NSString class]]))
@@ -175,10 +228,21 @@ static NSString * databasePath = nil;
         }
     }
     
-    if (nil ==lpRetValue) {
-        lpRetValue = [NSString stringWithFormat:@""];
+    if (nil ==lpRetValue)
+    {
+        if (nil == apStrDefault)
+        {
+            apStrDefault = @"";
+        }
+        
+        lpRetValue = [NSString stringWithFormat:@"%@",apStrDefault];
     }
     return  lpRetValue;
+}
+
++(NSString *) GetSettingString:(NSString *) apKey
+{
+    return [LYGlobalSettings GetSettingString:apKey apStrDefault:@""];
 }
 + (void) initDict
 {
@@ -220,7 +284,7 @@ static NSString * databasePath = nil;
 + (NSString *) GetPostDataPrefix
 {
     
-    NSString * lpPostDataPreFix = [NSString stringWithFormat:@"MIDDLE_WARE_IP=%@&MIDDLE_WARE_PORT=%@&SERVER_TYPE=%@&operator=%@&password=%@",[LYGlobalSettings GetSetting:SETTING_KEY_MIDDLE_WARE_IP ],[LYGlobalSettings GetSetting:SETTING_KEY_MIDDLE_WARE_PORT],[LYGlobalSettings GetSetting:SETTING_KEY_SERVERTYPE],[LYGlobalSettings GetSetting:SETTING_KEY_USER],[LYGlobalSettings GetSetting:SETTING_KEY_PASSWORD]];
+    NSString * lpPostDataPreFix = [NSString stringWithFormat:@"MIDDLE_WARE_IP=%@&MIDDLE_WARE_PORT=%@&SERVER_TYPE=%@&operator=%@&password=%@",[LYGlobalSettings GetSettingString:SETTING_KEY_MIDDLE_WARE_IP ],[LYGlobalSettings GetSettingString:SETTING_KEY_MIDDLE_WARE_PORT],[LYGlobalSettings GetSettingString:SETTING_KEY_SERVERTYPE],[LYGlobalSettings GetSettingString:SETTING_KEY_USER],[LYGlobalSettings GetSettingString:SETTING_KEY_PASSWORD]];
     return lpPostDataPreFix;
 }
 @end

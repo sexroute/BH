@@ -8,11 +8,23 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+
 @interface LYGlobalSettings : NSObject
 
-+ (NSString *) GetSetting:(NSString *) apKey;
-+(BOOL) SetSetting:(NSString*)apKey apVal:(NSString*)apVal;
++ (NSString *) GetSettingString:(NSString *) apKey;
++ (NSString *) GetSettingString:(NSString *) apKey apStrDefault:(NSString *) apStrDefault;
++(BOOL) SetSettingString:(NSString*)apKey apVal:(NSString*)apVal;
+
++ (int) GetSettingInt:(NSString *) apKey;
++ (int) GetSettingInt:(NSString *) apKey anDefault:(int) anDefault;
++(BOOL) SetSettingInt:(NSString*)apKey apVal:(int)anVal;
+
++ (double) GetSettingDouble:(NSString *) apKey;
++ (double) GetSettingDouble:(NSString *) apKey adblDefault:(double) adblDefault;
++(BOOL) SetSettingDouble:(NSString*)apKey apVal:(double)adblVal;
+
 + (NSString *) GetPostDataPrefix;
+
 @end
 
 #ifndef __SETTING_KEY__
@@ -24,4 +36,8 @@
 #define SETTING_KEY_PASSWORD         @"PASSWORD"
 #define SETTING_KEY_SERVERTYPE       @"SERVER_TYPE"
 #define SETTING_KEY_LOGIN            @"LOGIN"
+#define SETTING_KEY_SELECTED_GROUP        @"SELECTED_GROUP"
+#define SETTING_KEY_SELECTED_COMPANY      @"SELECTED_COMPANY"
+#define SETTING_KEY_SELECTED_FACTORY      @"SELECTED_FACTORY"
+#define SETTING_KEY_SELECTED_SET          @"SELECTED_SET"
 #endif

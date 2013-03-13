@@ -49,7 +49,7 @@
     self.DynChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     
     responseData = [[NSMutableData data] retain];
-    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/pointalarm/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/pointalarm/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     NSString * lpPostData = [NSString stringWithFormat:@"%@&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
 
     NSLog(@"%@",lpUrl);

@@ -33,14 +33,14 @@ UITextField * g_pTextPassword = nil;
 {
     switch (tf.tag) {
         case 0:
-            [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:tf.text];
-            [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_USER apVal:tf.text];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
             [g_pTextPassword becomeFirstResponder];
             break;
         case 1:
             [self.m_oActivityProgressbar setHidden:NO];
-            [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:g_pTextUserName.text];
-            [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:tf.text];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_USER apVal:g_pTextUserName.text];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_PASSWORD apVal:tf.text];
             [self.m_oLoginTableView setHidden:YES];
             [self.m_oLogginButton setHidden:TRUE];
             [self LoadData];
@@ -72,7 +72,7 @@ UITextField * g_pTextPassword = nil;
                 playerTextField.returnKeyType = UIReturnKeyNext;
                 playerTextField.tag = 0;
                 g_pTextUserName = playerTextField;
-                NSString * lpVal = [LYGlobalSettings GetSetting:SETTING_KEY_USER];
+                NSString * lpVal = [LYGlobalSettings GetSettingString:SETTING_KEY_USER];
                 if ([lpVal length]>0)
                 {
                     //playerTextField.text = lpVal;
@@ -86,7 +86,7 @@ UITextField * g_pTextPassword = nil;
                 playerTextField.secureTextEntry = YES;
                 playerTextField.tag = 1;
                 g_pTextPassword = playerTextField;
-                NSString * lpVal = [LYGlobalSettings GetSetting:SETTING_KEY_PASSWORD];
+                NSString * lpVal = [LYGlobalSettings GetSettingString:SETTING_KEY_PASSWORD];
                 if ([lpVal length]>0)
                 {
                     //playerTextField.text = lpVal;
@@ -261,8 +261,8 @@ UITextField * g_pTextPassword = nil;
 }
 - (void)handleSingleFingerEvent:(UITapGestureRecognizer *)sender
 {
-    [LYGlobalSettings SetSetting:SETTING_KEY_USER apVal:g_pTextUserName.text];
-    [LYGlobalSettings SetSetting:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
+    [LYGlobalSettings SetSettingString:SETTING_KEY_USER apVal:g_pTextUserName.text];
+    [LYGlobalSettings SetSettingString:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
     [self.m_oLoginTableView setHidden:YES];
     [self.m_oActivityProgressbar setHidden:NO];
     [self.m_oActivityProgressbar startAnimating];
@@ -272,7 +272,7 @@ UITextField * g_pTextPassword = nil;
 }
 -(BOOL)IsLogin
 {
-    NSString * lpLogin = [LYGlobalSettings GetSetting:SETTING_KEY_LOGIN];
+    NSString * lpLogin = [LYGlobalSettings GetSettingString:SETTING_KEY_LOGIN];
     BOOL lbLogin = NO;
     if (nil != lpLogin)
     {
@@ -298,7 +298,7 @@ UITextField * g_pTextPassword = nil;
     responseData = [[NSMutableData data] retain];
     
     NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
-    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:lpServerAddress] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
@@ -368,13 +368,13 @@ UITextField * g_pTextPassword = nil;
         {
             [self alertWrongLogin];
             [self.m_oLoginTableView setHidden:NO];
-            [LYGlobalSettings SetSetting:SETTING_KEY_LOGIN apVal:@"0"];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_LOGIN apVal:@"0"];
         }
         
     }
 	else
     {
-        [LYGlobalSettings SetSetting:SETTING_KEY_LOGIN apVal:@"1"];
+        [LYGlobalSettings SetSettingString:SETTING_KEY_LOGIN apVal:@"1"];
         [self.m_oLoginTableView setHidden:YES];
         [self navigateToPlantView];
 	}

@@ -10,7 +10,10 @@
 
 @interface LYFilterViewController : UITableViewController
 {
-    
+    int m_nSelectGroupIndex;
+    int m_nSelectCompanyIndex;
+    int m_nSelectFactoryIndex;
+    int m_nSelectSetIndex;
 }
 @property (retain, nonatomic) IBOutlet UILabel *m_olblGroup;
 
@@ -21,6 +24,18 @@
 @property (retain, nonatomic) IBOutlet UITableViewCell *m_oCellFactory;
 @property (retain, nonatomic) IBOutlet UILabel *m_olblSet;
 @property (retain, nonatomic) IBOutlet UITableViewCell *m_oCellSet;
+
 @property (strong,nonatomic) NSMutableArray * m_oGroups;
+@property (strong,nonatomic) NSMutableArray * m_oCompany;
+@property (strong,nonatomic) NSMutableArray * m_oFactory;
+@property (strong,nonatomic) NSMutableArray * m_oSet;
+@property (strong,nonatomic) NSMutableArray * m_oType;
+
+@property (nonatomic) int m_nSelectGroupIndex;
+@property (nonatomic) int m_nSelectCompanyIndex;
+@property (nonatomic) int m_nSelectFactoryIndex;
+@property (nonatomic) int m_nSelectSetIndex;
+@property (retain, nonatomic) IBOutlet UILabel *m_olblType;
+@property (retain, nonatomic) IBOutlet UITableViewCell *m_oTypeCell;
 
 @end

@@ -568,7 +568,7 @@
 {
     self.responseData = [[[NSMutableData alloc]initWithCapacity:10]autorelease];
     NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
-    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSetting:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:lpServerAddress] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
