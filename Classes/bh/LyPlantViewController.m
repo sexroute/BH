@@ -78,7 +78,7 @@
        //2.报警、危险、停车等
     //  update the last update date
     [_refreshHeaderView refreshLastUpdatedDate];
-    self.navigationItem.title = @"全部设备列表";
+    self.navigationItem.title = @"设备列表";
    
     [self.navigationController setToolbarHidden:FALSE animated:FALSE];
     
