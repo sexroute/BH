@@ -13,5 +13,5 @@
 }
 @property (strong,nonatomic) NSMutableArray * m_oItems;
 @property (nonatomic) int m_nSelectedIndex;
-@property (nonatomic) id m_pParent;
+@property (assign,nonatomic) id m_pParent;
 @end

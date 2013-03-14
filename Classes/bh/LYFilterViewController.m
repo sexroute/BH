@@ -393,16 +393,16 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             }
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_GROUP apVal:self.m_StrSelectedInSelectItemViewController];
             self.m_strSelectedGroup = self.m_StrSelectedInSelectItemViewController;
-            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_GROUP apVal:self.m_strSelectedGroup];
+          
             
             self.m_strSelectedCompany = G_NO_SELECTED_VALUE_STR;
-            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedCompany];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_COMPANY apVal:self.m_strSelectedCompany];
             
             self.m_strSelectedFactory = G_NO_SELECTED_VALUE_STR;
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedFactory];
             
             self.m_strSelectedSet = G_NO_SELECTED_VALUE_STR;
-            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedSet];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_SET apVal:self.m_strSelectedSet];
             
             
             break;
@@ -418,7 +418,7 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedFactory];
             
             self.m_strSelectedSet = G_NO_SELECTED_VALUE_STR;
-            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedSet];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_SET apVal:self.m_strSelectedSet];
             
             break;
         case 2:

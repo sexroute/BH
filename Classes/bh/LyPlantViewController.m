@@ -13,6 +13,7 @@
 #import "LYGlobalSettings.h"
 #import "LYSegmentMsgMap.h"
 #import "LYFilterViewController.h"
+#import "LYUtility.h"
 
 @interface LYPlantViewController ()
 
@@ -198,6 +199,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.navigationController setToolbarHidden:YES animated:NO];
+ 
+    [self.m_oTableView reloadData];
 }
 
 
@@ -368,6 +371,9 @@
     return cell;
 }
 
+
+
+
 -(NSMutableArray *)GetCurrentDataSource
 {
     NSMutableArray * lpPlants =  nil;
@@ -393,7 +399,61 @@
             break;
     }
     
-    return lpPlants;
+    NSString * lpSelectedGroup = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_GROUP];
+    NSString * lpSelectedCompany = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_COMPANY];
+    NSString * lpSelectedFactory = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_FACTORY];
+    NSString * lpSelectedSet = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_SET];
+    
+    NSMutableArray * lpPlantsRet = [NSMutableArray arrayWithCapacity:0];
+    for (int i=0; i<lpPlants.count; i++)
+    {
+        NSString * logroupid = [[lpPlants objectAtIndex:i] objectForKey:@"groupid"];
+        NSString * locompanyid = [[lpPlants objectAtIndex:i] objectForKey:@"companyid"];
+        NSString * lofactoryid = [[lpPlants objectAtIndex:i] objectForKey:@"factoryid"];
+        NSString * losetid = [[lpPlants objectAtIndex:i] objectForKey:@"setid"];
+        
+        logroupid = [((NSString*) logroupid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        locompanyid = [((NSString*) locompanyid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        lofactoryid = [((NSString*) lofactoryid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        losetid = [((NSString*) losetid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+      
+        if (![LYUtility IsStringEmpty:lpSelectedGroup])
+        {
+            if ([lpSelectedGroup compare:logroupid]!= NSOrderedSame)
+            {
+                continue;
+            }
+        }
+        
+        if (![LYUtility IsStringEmpty:lpSelectedCompany])
+        {
+            if ([lpSelectedCompany compare:locompanyid]!= NSOrderedSame)
+            {
+                continue;
+            }
+        }
+        
+        if (![LYUtility IsStringEmpty:lpSelectedFactory])
+        {
+            if ([lpSelectedFactory compare:lofactoryid]!= NSOrderedSame)
+            {
+                continue;
+            }
+        }
+        
+        if (![LYUtility IsStringEmpty:lpSelectedSet])
+        {
+            if ([lpSelectedSet compare:losetid]!= NSOrderedSame)
+            {
+                continue;
+            }
+        }
+        
+        [lpPlantsRet addObject:[lpPlants objectAtIndex:i]];
+        
+    }
+    
+    return lpPlantsRet;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
