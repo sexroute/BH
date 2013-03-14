@@ -98,6 +98,35 @@ static NSString * databasePath = nil;
     
 }
 
++(void)FillAllKeysInDatabase
+{
+    @synchronized(self)
+    {
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement = nil;
+        
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat:@"SELECT ID,VAL FROM SETTING "];
+            const char *query_stmt = [querySQL UTF8String];
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    NSString * lpVal = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)]autorelease];
+                    NSString * lpKey = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]autorelease];
+                     [g_pSettingsDic setObject:lpVal forKey:lpKey];
+                }
+                
+                sqlite3_finalize(statement);
+            }
+            
+            sqlite3_close(contactDB);
+        }
+        
+    }
+}
+
 + (void)InitDatabase
 {
     
@@ -255,22 +284,24 @@ static NSString * databasePath = nil;
         [g_pSettingsDic setObject:@"http://bhxz808.3322.org:8090/xapi" forKey:(SETTING_KEY_SERVER_ADDRESS)];
         [g_pSettingsDic setObject:@"222.199.224.145" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
         [g_pSettingsDic setObject:@"7005" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
+        [g_pSettingsDic setObject:@"1" forKey:(SETTING_KEY_SERVERTYPE)];
         
-        [g_pSettingsDic setObject:@"http://192.168.12.100/api" forKey:(SETTING_KEY_SERVER_ADDRESS)];
-        [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
-        [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
+//        [g_pSettingsDic setObject:@"http://192.168.12.100/api" forKey:(SETTING_KEY_SERVER_ADDRESS)];
+//        [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
+//        [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
         
         //3.初始化用户名密码
-        NSString * lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_USER];
-        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_USER)];
+//        NSString * lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_USER];
+//        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_USER)];
+//        
+//        lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_PASSWORD];
+//        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_PASSWORD)];
+//        
+//        lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_LOGIN];
+//        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_LOGIN)];
         
-        lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_PASSWORD];
-        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_PASSWORD)];
         
-        lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_LOGIN];
-        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_LOGIN)];
-        
-        [g_pSettingsDic setObject:@"1" forKey:(SETTING_KEY_SERVERTYPE)];
+       [LYGlobalSettings FillAllKeysInDatabase];
     }
 }
 

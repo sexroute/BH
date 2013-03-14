@@ -30,6 +30,8 @@
 @synthesize m_strSelectedType;
 @synthesize m_StrSelectedInSelectItemViewController;
 
+@synthesize m_oPlantPool;
+
 NSString * G_NO_SELECTED_VALUE_STR = @"";
 NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
 #pragma mark 初始化
@@ -51,6 +53,8 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
     self.m_strSelectedFactory = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_FACTORY];
     self.m_strSelectedSet = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_SET];
     self.m_strSelectedType = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_PLANT_TYPE];
+    
+    self.m_oPlantPool = [NSMutableDictionary dictionaryWithCapacity:0];
     
     self.m_oGroups = [NSMutableArray arrayWithCapacity:0];
     self.m_oCompanys = [NSMutableArray arrayWithCapacity:0];
@@ -148,18 +152,101 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
 
 #pragma mark 页面出口-导航到筛选列表
 
-- (void)navigateToItemSelection:(int) anSectionIndex anRowIndex:(int) anRowIndex
+-(NSMutableArray *) GetCurrentPoolItems:(int) anType
+{
+    
+    NSMutableArray * lpTemp = [NSMutableArray arrayWithCapacity:0];
+    [lpTemp addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
+    NSMutableDictionary * lpTempCompanys = nil;
+    NSMutableDictionary * lpTempFactorys = nil;
+    NSMutableDictionary * lpTempSets = nil;
+    
+    switch (anType)
+    {
+        case 0:
+            
+            [lpTemp addObjectsFromArray: self.m_oPlantPool.allKeys];
+            break;
+            
+        case 1:
+            lpTempCompanys = [self.m_oPlantPool objectForKey:self.m_strSelectedGroup];
+            if (nil != lpTempCompanys)
+            {
+                [lpTemp addObjectsFromArray: lpTempCompanys.allKeys];
+            }
+            break;
+            
+            
+        case 2:
+            lpTempCompanys = [self.m_oPlantPool objectForKey:self.m_strSelectedGroup];
+            if (nil != lpTempCompanys)
+            {
+                lpTempFactorys = [lpTempCompanys objectForKey:self.m_strSelectedCompany];
+                if (nil!=lpTempFactorys)
+                {
+                    [lpTemp addObjectsFromArray: lpTempFactorys.allKeys];
+                }
+            }
+            break;
+            
+        case 3:
+            lpTempCompanys = [self.m_oPlantPool objectForKey:self.m_strSelectedGroup];
+            if (nil != lpTempCompanys)
+            {
+                lpTempFactorys = [lpTempCompanys objectForKey:self.m_strSelectedCompany];
+                if (nil!=lpTempFactorys)
+                {
+                    lpTempSets = [lpTempFactorys objectForKey:self.m_strSelectedFactory];
+                    if (nil!= lpTempSets)
+                    {
+                        
+                        [lpTemp addObjectsFromArray: lpTempSets.allKeys];
+                    }
+                }
+            }
+            break;
+            
+        case 4:
+            [lpTemp addObject:@"往复"];
+            [lpTemp addObject:@"旋转"];
+            [lpTemp addObject:@"机泵"];
+            [lpTemp addObject:@"风电"];
+       
+            break;
+        default:
+            break;
+    }
+    
+    return lpTemp;
+}
+
+-(void) UpdatePlantpoolSelectionResult
+{
+    self.m_oGroups = [self GetCurrentPoolItems:0];
+    self.m_oCompanys = [self GetCurrentPoolItems:1];
+    self.m_oFactorys = [self GetCurrentPoolItems:2];
+    self.m_oSets = [self GetCurrentPoolItems:3];
+    self.m_oPlantTypes = [self GetCurrentPoolItems:4];
+    
+}
+
+
+- (void)PrepareNavigateToItemSelect:(int) anSectionIndex anRowIndex:(int) anRowIndex
 {
     self.m_nFilterType = anSectionIndex;
-    switch (anSectionIndex) {
+    [self UpdatePlantpoolSelectionResult];
+    
+    switch (anSectionIndex)
+    {
         case 0:
             [self NavigateToSelectedPage:self.m_oGroups apstrSeletedItem:self.m_strSelectedGroup  apstrTitle:@"选择集团"];
-            
             break;
         case 1:
+            
             [self NavigateToSelectedPage:self.m_oCompanys apstrSeletedItem:self.m_strSelectedCompany apstrTitle:@"选择公司"];
             break;
         case 2:
+            
             [self NavigateToSelectedPage:self.m_oFactorys apstrSeletedItem:self.m_strSelectedFactory apstrTitle:@"选择分厂"];
             break;
         case 3:
@@ -201,19 +288,16 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             break;
         }
     }
-        
+    
     [self.navigationController pushViewController:lpViewController animated:YES];
-      
+    
 }
 
 - (void)PrepareData
 {
     if (nil!= self.m_oAllItems)
     {
-        NSMutableDictionary * lpGroup = [NSMutableDictionary dictionaryWithCapacity:0];
-        NSMutableDictionary * lpCompany = [NSMutableDictionary dictionaryWithCapacity:0];
-        NSMutableDictionary * lpFactory = [NSMutableDictionary dictionaryWithCapacity:0];
-        NSMutableDictionary * lpSet = [NSMutableDictionary dictionaryWithCapacity:0];
+        
         
         for (int i =0; i<self.m_oAllItems.count ; i++)
         {
@@ -247,10 +331,42 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             lofactoryid = [((NSString*) lofactoryid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             losetid = [((NSString*) losetid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             
-            [lpGroup setObject:logroupid forKey:logroupid];
-            [lpCompany setObject:locompanyid forKey:locompanyid];
-            [lpFactory setObject:lofactoryid forKey:lofactoryid];
-            [lpSet setObject:losetid forKey:losetid];
+            NSMutableDictionary * lpCompany = [self.m_oPlantPool objectForKey:logroupid];
+            NSMutableDictionary * lpFactory = nil;
+            NSMutableDictionary * lpSet     = nil;
+            NSMutableDictionary * lpPlant     = nil;
+            
+            if (nil == lpCompany)
+            {
+                lpCompany = [NSMutableDictionary dictionaryWithCapacity:0];
+                [self.m_oPlantPool setObject:lpCompany forKey:logroupid];
+                
+            }else
+            {
+                lpFactory = [lpCompany objectForKey:locompanyid];
+                if (nil == lpFactory)
+                {
+                    lpFactory = [NSMutableDictionary dictionaryWithCapacity:0];
+                    [lpCompany setObject:lpFactory forKey:locompanyid];
+                }
+                
+                lpSet =  [lpFactory objectForKey:lofactoryid];
+                
+                if (nil == lpSet)
+                {
+                    lpSet = [NSMutableDictionary dictionaryWithCapacity:0];
+                    [lpFactory setObject:lpSet forKey:lofactoryid];
+                }
+                
+                lpPlant =  [lpSet objectForKey:losetid];
+                
+                if (nil == lpPlant)
+                {
+                    lpPlant = [NSMutableDictionary dictionaryWithCapacity:0];
+                    [lpSet setObject:lpPlant forKey:losetid];
+                }
+                
+            }
             
         }
         [self.m_oGroups removeAllObjects];
@@ -258,23 +374,6 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
         [self.m_oFactorys removeAllObjects];
         [self.m_oSets removeAllObjects];
         [self.m_oPlantTypes removeAllObjects];
-        
-        
-        [self.m_oGroups addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
-        [self.m_oCompanys addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
-        [self.m_oFactorys addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
-        [self.m_oSets addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
-        [self.m_oPlantTypes addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
-        
-        [self.m_oGroups addObjectsFromArray: [NSMutableArray arrayWithArray:lpGroup.allKeys]];
-        [self.m_oCompanys addObjectsFromArray: [NSMutableArray arrayWithArray:lpCompany.allKeys]];
-        [self.m_oFactorys addObjectsFromArray: [NSMutableArray arrayWithArray:lpFactory.allKeys]];
-        [self.m_oSets addObjectsFromArray: [NSMutableArray arrayWithArray:lpSet.allKeys]];
-        
-        [self.m_oPlantTypes addObject:@"往复"];
-        [self.m_oPlantTypes addObject:@"旋转"];
-        [self.m_oPlantTypes addObject:@"机泵"];
-        [self.m_oPlantTypes addObject:@"风电"];
     }
 }
 - (void)didReceiveMemoryWarning
@@ -294,6 +393,18 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             }
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_GROUP apVal:self.m_StrSelectedInSelectItemViewController];
             self.m_strSelectedGroup = self.m_StrSelectedInSelectItemViewController;
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_GROUP apVal:self.m_strSelectedGroup];
+            
+            self.m_strSelectedCompany = G_NO_SELECTED_VALUE_STR;
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedCompany];
+            
+            self.m_strSelectedFactory = G_NO_SELECTED_VALUE_STR;
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedFactory];
+            
+            self.m_strSelectedSet = G_NO_SELECTED_VALUE_STR;
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedSet];
+            
+            
             break;
         case 1:
             if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
@@ -302,7 +413,13 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             }
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_COMPANY apVal:self.m_StrSelectedInSelectItemViewController];
             self.m_strSelectedCompany = self.m_StrSelectedInSelectItemViewController;
-
+           
+            self.m_strSelectedFactory = G_NO_SELECTED_VALUE_STR;
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedFactory];
+            
+            self.m_strSelectedSet = G_NO_SELECTED_VALUE_STR;
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedSet];
+            
             break;
         case 2:
             if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
@@ -311,7 +428,10 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             }
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_StrSelectedInSelectItemViewController];
             self.m_strSelectedFactory = self.m_StrSelectedInSelectItemViewController;
-
+            
+            self.m_strSelectedSet = G_NO_SELECTED_VALUE_STR;
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedSet];
+            
             break;
         case 3:
             if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
@@ -320,7 +440,7 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             }
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_SET apVal:self.m_StrSelectedInSelectItemViewController];
             self.m_strSelectedSet = self.m_StrSelectedInSelectItemViewController;
-
+            
             break;
         case 4:
             if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
@@ -329,7 +449,7 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             }
             [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_PLANT_TYPE apVal:self.m_StrSelectedInSelectItemViewController];
             self.m_strSelectedType = self.m_StrSelectedInSelectItemViewController;
-
+            
             break;
         default:
             break;
@@ -383,11 +503,11 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self navigateToItemSelection:indexPath.section anRowIndex:indexPath.row];
+    [self PrepareNavigateToItemSelect:indexPath.section anRowIndex:indexPath.row];
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    [self navigateToItemSelection:indexPath.section anRowIndex:indexPath.row];
+    [self PrepareNavigateToItemSelect:indexPath.section anRowIndex:indexPath.row];
     
 }
 

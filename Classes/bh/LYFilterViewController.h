@@ -29,6 +29,8 @@
 @property (strong,nonatomic) NSMutableArray * m_oPlantTypes;
 @property (strong,nonatomic) NSMutableArray * m_oAllItems;
 
+@property (strong,nonatomic) NSMutableDictionary * m_oPlantPool;
+
 
 
 @property (retain, nonatomic) IBOutlet UILabel *m_olblType;
