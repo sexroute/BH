@@ -51,7 +51,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    LYFilterViewController * lpVal = (LYFilterViewController *)self.navigationController.parentViewController;
+
     
     
 }
@@ -66,14 +66,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     int lnRowCount = 0;
     if (nil!=self.m_oItems)
@@ -96,19 +94,46 @@
     }
     
     cell.textLabel.text = [self.m_oItems objectAtIndex: indexPath.row];
+    
+    if (indexPath.row == self.m_nSelectedIndex)
+    {
+         cell.accessoryType=UITableViewCellAccessoryCheckmark;
+    }
+    else
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 
     return cell;
 }
-
+//处理选中
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //1.更新选中状态
     UITableViewCell *cellView = [tableView cellForRowAtIndexPath:indexPath];
-    if (cellView.accessoryType == UITableViewCellAccessoryNone) {
+    self.m_nSelectedIndex = indexPath.row;
+    if (cellView.accessoryType == UITableViewCellAccessoryNone)
+    {
         cellView.accessoryType=UITableViewCellAccessoryCheckmark;
     }
-    else {
+    else
+    {
         cellView.accessoryType = UITableViewCellAccessoryNone;
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    
+    [self.tableView beginUpdates];
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+    //2.存储选中数据
+    LYFilterViewController * lpVal = (LYFilterViewController *)self.m_pParent;
+    
+    if (nil!= lpVal && [lpVal isKindOfClass:[LYFilterViewController class]])
+    {
+        lpVal.m_StrSelectedInSelectItemViewController = cellView.textLabel.text;
+        [lpVal SaveSelectedItem];
     }
 }
 /*

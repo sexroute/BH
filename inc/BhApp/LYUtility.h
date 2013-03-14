@@ -10,4 +10,5 @@
 
 @interface LYUtility : NSObject
 + (BOOL)IsStringEmpty:(NSString *) apStr;
++ (NSString *)StringTrim:(NSString *)apStr;
 @end

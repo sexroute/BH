@@ -41,6 +41,6 @@
 @property (retain, nonatomic) NSString * m_strSelectedType;
 
 @property (strong,nonatomic) NSString * m_StrSelectedInSelectItemViewController;
-@property (nonatomic) int m_nPlantType;
-
+@property (nonatomic) int m_nFilterType;
+-(void) SaveSelectedItem;
 @end

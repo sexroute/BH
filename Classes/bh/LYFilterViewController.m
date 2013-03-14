@@ -17,7 +17,6 @@
 
 @implementation LYFilterViewController
 
-@synthesize m_oGroups;
 @synthesize m_oCompanys;
 @synthesize m_oFactorys;
 @synthesize m_oSets;
@@ -31,8 +30,8 @@
 @synthesize m_strSelectedType;
 @synthesize m_StrSelectedInSelectItemViewController;
 
- NSString * G_NO_SELECTED_VALUE_STR = @"";
- NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
+NSString * G_NO_SELECTED_VALUE_STR = @"";
+NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
 #pragma mark 初始化
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -40,7 +39,7 @@
     if (self)
     {
         // Custom initialization
-
+        
     }
     return self;
 }
@@ -51,6 +50,7 @@
     self.m_strSelectedCompany = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_COMPANY];
     self.m_strSelectedFactory = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_FACTORY];
     self.m_strSelectedSet = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_SET];
+    self.m_strSelectedType = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_PLANT_TYPE];
     
     self.m_oGroups = [NSMutableArray arrayWithCapacity:0];
     self.m_oCompanys = [NSMutableArray arrayWithCapacity:0];
@@ -69,12 +69,12 @@
     [super viewDidLoad];
     [self InitData];
     [self PrepareData];
-
-   
+    
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -85,7 +85,7 @@
     {
         return;
     }
-   
+    
     if ([LYUtility IsStringEmpty:apSelectedStr])
     {
         apLabel.text = G_NO_SELECTED_VALUE_STR_DISPLAY;
@@ -114,6 +114,7 @@
         apCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         apCell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         apCell.userInteractionEnabled = YES;
+        [apCell setBackgroundColor:[UIColor colorWithRed:0xff/255.0 green:0xff/255.0 blue:0xff/255.0 alpha:1]];
     }
 }
 
@@ -126,7 +127,7 @@
     [self toogleCellUI:self.m_oCellCompany apLabel:self.m_olblCompany apSelectedStr:self.m_strSelectedGroup];
     [self toogleDataForPerSection:self.m_oCompanys apLabel:self.m_olblCompany apSelectedStr:self.m_strSelectedCompany];
     
-
+    
     //factory
     [self toogleCellUI:self.m_oCellFactory apLabel:self.m_olblFactory apSelectedStr:self.self.m_strSelectedCompany];
     [self toogleDataForPerSection:self.m_oFactorys apLabel:self.m_olblFactory apSelectedStr:self.m_strSelectedFactory];
@@ -138,7 +139,7 @@
     //type
     [self toogleDataForPerSection:self.m_oPlantTypes apLabel:self.m_olblType apSelectedStr:self.m_strSelectedType];
     
- }
+}
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -149,45 +150,60 @@
 
 - (void)navigateToItemSelection:(int) anSectionIndex anRowIndex:(int) anRowIndex
 {
+    self.m_nFilterType = anSectionIndex;
     switch (anSectionIndex) {
         case 0:
-            [self NavigateToSelectedPage:self.m_oGroups apstrTitle:@"选择集团"];
+            [self NavigateToSelectedPage:self.m_oGroups apstrSeletedItem:self.m_strSelectedGroup  apstrTitle:@"选择集团"];
+            
             break;
         case 1:
-           [self NavigateToSelectedPage:self.m_oCompanys apstrTitle:@"选择公司"];
+            [self NavigateToSelectedPage:self.m_oCompanys apstrSeletedItem:self.m_strSelectedCompany apstrTitle:@"选择公司"];
             break;
         case 2:
-            [self NavigateToSelectedPage:self.m_oFactorys apstrTitle:@"选择分厂"];
+            [self NavigateToSelectedPage:self.m_oFactorys apstrSeletedItem:self.m_strSelectedFactory apstrTitle:@"选择分厂"];
             break;
         case 3:
-            [self NavigateToSelectedPage:self.m_oSets apstrTitle:@"选择装置"];
+            [self NavigateToSelectedPage:self.m_oSets apstrSeletedItem:self.m_strSelectedSet apstrTitle:@"选择装置"];
             break;
         case 4:
-            [self NavigateToSelectedPage:self.m_oPlantTypes apstrTitle:@"选择设备类型"];
+            [self NavigateToSelectedPage:self.m_oPlantTypes apstrSeletedItem:self.m_strSelectedType apstrTitle:@"选择设备类型"];
             break;
         default:
             break;
     }
 }
 
--(void)NavigateToSelectedPage:(NSMutableArray *)apData apstrTitle:(NSString*)apstrTitle
+-(void)NavigateToSelectedPage:(NSMutableArray *)apData apstrSeletedItem:(NSString *)apstrSeletedItem  apstrTitle:(NSString*)apstrTitle
 {
     if (nil == apData )
     {
         return;
     }
-    
+    apstrSeletedItem = [LYUtility StringTrim:apstrSeletedItem];
     UIStoryboard *mainStoryboard = self.storyboard;
     LYSelectItemViewController * lpViewController = (LYSelectItemViewController*)[mainStoryboard
-                                                                                            instantiateViewControllerWithIdentifier: @"LYSelectItemViewController"];
+                                                                                  instantiateViewControllerWithIdentifier: @"LYSelectItemViewController"];
     self.navigationItem.backBarButtonItem.title = @"确认";
-   
+    
     lpViewController.title = apstrTitle;
     lpViewController.m_oItems = apData;
-   
+    
+    lpViewController.m_nSelectedIndex = 0;
+    lpViewController.m_pParent = self;
+    for (int i=0; i<apData.count; i++)
+    {
+        NSString * lpItem = [apData objectAtIndex:i];
+        lpItem = [LYUtility StringTrim:lpItem];
+        if ([apstrSeletedItem compare:lpItem options:NSCaseInsensitiveSearch] == NSOrderedSame)
+        {
+            lpViewController.m_nSelectedIndex = i;
+            
+            break;
+        }
+    }
+        
     [self.navigationController pushViewController:lpViewController animated:YES];
-    
-    
+      
 }
 
 - (void)PrepareData
@@ -198,7 +214,7 @@
         NSMutableDictionary * lpCompany = [NSMutableDictionary dictionaryWithCapacity:0];
         NSMutableDictionary * lpFactory = [NSMutableDictionary dictionaryWithCapacity:0];
         NSMutableDictionary * lpSet = [NSMutableDictionary dictionaryWithCapacity:0];
-      
+        
         for (int i =0; i<self.m_oAllItems.count ; i++)
         {
             id logroupid = [[self.m_oAllItems objectAtIndex:i] objectForKey:@"groupid"];
@@ -206,17 +222,55 @@
             id lofactoryid = [[self.m_oAllItems objectAtIndex:i] objectForKey:@"factoryid"];
             id losetid = [[self.m_oAllItems objectAtIndex:i] objectForKey:@"setid"];
             
+            if (nil == logroupid || !([logroupid isKindOfClass:[NSString class]]))
+            {
+                continue;
+            }
+            
+            if (nil == locompanyid || !([locompanyid isKindOfClass:[NSString class]]))
+            {
+                continue;
+            }
+            
+            if (nil == lofactoryid || !([lofactoryid isKindOfClass:[NSString class]]))
+            {
+                continue;
+            }
+            
+            if (nil == losetid || !([losetid isKindOfClass:[NSString class]]))
+            {
+                continue;
+            }
+            
+            logroupid = [((NSString*) logroupid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            locompanyid = [((NSString*) locompanyid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            lofactoryid = [((NSString*) lofactoryid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            losetid = [((NSString*) losetid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
             [lpGroup setObject:logroupid forKey:logroupid];
             [lpCompany setObject:locompanyid forKey:locompanyid];
             [lpFactory setObject:lofactoryid forKey:lofactoryid];
             [lpSet setObject:losetid forKey:losetid];
-
+            
         }
-        self.m_oGroups = [NSMutableArray arrayWithArray:lpGroup.allKeys];
-        self.m_oCompanys = [NSMutableArray arrayWithArray:lpCompany.allKeys];
-        self.m_oFactorys = [NSMutableArray arrayWithArray:lpFactory.allKeys];
-        self.m_oSets = [NSMutableArray arrayWithArray:lpSet.allKeys];
-       
+        [self.m_oGroups removeAllObjects];
+        [self.m_oCompanys removeAllObjects];
+        [self.m_oFactorys removeAllObjects];
+        [self.m_oSets removeAllObjects];
+        [self.m_oPlantTypes removeAllObjects];
+        
+        
+        [self.m_oGroups addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
+        [self.m_oCompanys addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
+        [self.m_oFactorys addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
+        [self.m_oSets addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
+        [self.m_oPlantTypes addObject:G_NO_SELECTED_VALUE_STR_DISPLAY];
+        
+        [self.m_oGroups addObjectsFromArray: [NSMutableArray arrayWithArray:lpGroup.allKeys]];
+        [self.m_oCompanys addObjectsFromArray: [NSMutableArray arrayWithArray:lpCompany.allKeys]];
+        [self.m_oFactorys addObjectsFromArray: [NSMutableArray arrayWithArray:lpFactory.allKeys]];
+        [self.m_oSets addObjectsFromArray: [NSMutableArray arrayWithArray:lpSet.allKeys]];
+        
         [self.m_oPlantTypes addObject:@"往复"];
         [self.m_oPlantTypes addObject:@"旋转"];
         [self.m_oPlantTypes addObject:@"机泵"];
@@ -229,48 +283,101 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)SaveSelectedItem
+{
+    switch (self.m_nFilterType)
+    {
+        case 0:
+            if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
+            {
+                self.m_StrSelectedInSelectItemViewController = @"";
+            }
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_GROUP apVal:self.m_StrSelectedInSelectItemViewController];
+            self.m_strSelectedGroup = self.m_StrSelectedInSelectItemViewController;
+            break;
+        case 1:
+            if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
+            {
+                self.m_StrSelectedInSelectItemViewController = @"";
+            }
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_COMPANY apVal:self.m_StrSelectedInSelectItemViewController];
+            self.m_strSelectedCompany = self.m_StrSelectedInSelectItemViewController;
+
+            break;
+        case 2:
+            if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
+            {
+                self.m_StrSelectedInSelectItemViewController = @"";
+            }
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_StrSelectedInSelectItemViewController];
+            self.m_strSelectedFactory = self.m_StrSelectedInSelectItemViewController;
+
+            break;
+        case 3:
+            if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
+            {
+                self.m_StrSelectedInSelectItemViewController = @"";
+            }
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_SET apVal:self.m_StrSelectedInSelectItemViewController];
+            self.m_strSelectedSet = self.m_StrSelectedInSelectItemViewController;
+
+            break;
+        case 4:
+            if ([self.m_StrSelectedInSelectItemViewController compare:G_NO_SELECTED_VALUE_STR_DISPLAY] == NSOrderedSame)
+            {
+                self.m_StrSelectedInSelectItemViewController = @"";
+            }
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_PLANT_TYPE apVal:self.m_StrSelectedInSelectItemViewController];
+            self.m_strSelectedType = self.m_StrSelectedInSelectItemViewController;
+
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - Table view data source
 
 
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - Table view delegate
 
@@ -281,7 +388,7 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     [self navigateToItemSelection:indexPath.section anRowIndex:indexPath.row];
-
+    
 }
 
 #pragma mark - 析构
