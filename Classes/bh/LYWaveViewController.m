@@ -23,6 +23,8 @@
 @synthesize m_pStrChann;
 @synthesize m_pStrPlant;
 
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -138,10 +140,11 @@
 
 - (void)OnHudCallBack
 {
-    sleep(3600);
+    sleep(NETWORK_TIMEOUT);
 }
 
-- (void)hudWasHidden:(MBProgressHUD *)aphud {
+- (void)hudWasHidden:(MBProgressHUD *)aphud
+{
     if (nil!=aphud)
     {
         NSLog(@"hudWasHidden self :%d",aphud.retainCount);
@@ -172,6 +175,17 @@
 
 
 #pragma mark - NSURLConnection
+
+- (void) alertLoadFailed:(NSString * )apstrError
+{
+    NSString * lpStr = [NSString stringWithFormat:@"获取数据失败,重试?"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
+												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+
+    
+    [alert show];
+    [alert release];
+}
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
 	[self.hostView connection:connection didReceiveResponse:response];
@@ -185,7 +199,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	//弹出网络错误对话框
-  
+    [self alertLoadFailed:@""];
 
 }
 
@@ -203,7 +217,7 @@
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                       timeoutInterval:10.0];
+                                                       timeoutInterval:NETWORK_TIMEOUT];
     
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];

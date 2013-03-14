@@ -821,7 +821,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "\"/Users/zhaodali/Downloads/CorePlot_1.0/Source/framework\"";
 			};
 			name = Debug;
@@ -850,7 +850,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "\"/Users/zhaodali/Downloads/CorePlot_1.0/Source/framework\"";
 				VALIDATE_PRODUCT = YES;
 			};

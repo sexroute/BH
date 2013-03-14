@@ -81,10 +81,14 @@
 
 - (void) alertLoadFailed:(NSString * )apstrError
 {
-    NSString * lpStr = [NSString stringWithFormat:@"无法获取数据:%@\r\n重试?",apstrError];
+    NSString * lpStr = [NSString stringWithFormat:@"获取数据失败,重试?"];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
 												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-    [self.m_pProgressBar stopAnimating];
+    if (nil!=self.m_pProgressBar)
+    {
+        [self.m_pProgressBar stopAnimating];        
+    }
+   
     [alert show];
     [alert release];
 }
@@ -180,6 +184,7 @@
     [m_pProgressBar release];
     m_pProgressBar = nil;
     [self setM_pProgressBar:nil];
+   
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

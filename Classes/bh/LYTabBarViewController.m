@@ -31,7 +31,7 @@
     
     int lnPlantViewIndex = 0;
     int lnAlarmLogViewIndex = 1;
-    int lnSettingViewIndex = 2;
+    int lnSettingViewIndex = 1;
     //1.隐藏系统提供的navigate controller
     [self.navigationController setNavigationBarHidden:YES];
     
