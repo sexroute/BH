@@ -430,7 +430,7 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             self.m_strSelectedFactory = self.m_StrSelectedInSelectItemViewController;
             
             self.m_strSelectedSet = G_NO_SELECTED_VALUE_STR;
-            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_FACTORY apVal:self.m_strSelectedSet];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_SELECTED_SET apVal:self.m_strSelectedSet];
             
             break;
         case 3:
