@@ -14,6 +14,7 @@
 #import "LYSegmentMsgMap.h"
 #import "LYFilterViewController.h"
 #import "LYUtility.h"
+#import "ChannInfo.h"
 
 @interface LYPlantViewController ()
 
@@ -120,20 +121,20 @@
         lpVal.m_pSegmentMsgHandle = @selector(onButtonAllDeviceSelected:);
         lpVal.m_pSegmentTitle = @"全部";
         [self.m_pSegmentMap addObject:lpVal];
-       
         
-        LYSegmentMsgMap * lpValAlarm =[[[LYSegmentMsgMap alloc]init]autorelease];
-        lpValAlarm.m_pSegmentMsgIndex = [NSNumber numberWithInt:1];
-        lpValAlarm.m_pSegmentMsgHandle = @selector(onButtonAlarmDeviceSelected:);
-        lpValAlarm.m_pSegmentTitle = @"报警";
-         [self.m_pSegmentMap addObject:lpValAlarm];
-
         
         LYSegmentMsgMap * lpValDangrous =[[[LYSegmentMsgMap alloc]init]autorelease];
-        lpValDangrous.m_pSegmentMsgIndex = [NSNumber numberWithInt:2];
+        lpValDangrous.m_pSegmentMsgIndex = [NSNumber numberWithInt:1];
         lpValDangrous.m_pSegmentMsgHandle = @selector(onButtonDangerDeviceSelected:);
         lpValDangrous.m_pSegmentTitle = @"危险";
          [self.m_pSegmentMap addObject:lpValDangrous];
+        
+        
+        LYSegmentMsgMap * lpValAlarm =[[[LYSegmentMsgMap alloc]init]autorelease];
+        lpValAlarm.m_pSegmentMsgIndex = [NSNumber numberWithInt:2];
+        lpValAlarm.m_pSegmentMsgHandle = @selector(onButtonAlarmDeviceSelected:);
+        lpValAlarm.m_pSegmentTitle = @"报警";
+        [self.m_pSegmentMap addObject:lpValAlarm];
 
         
         LYSegmentMsgMap * lpValNormal =[[[LYSegmentMsgMap alloc]init]autorelease];
@@ -394,6 +395,7 @@
         case NORMAL:
             lpPlants = self.m_oNormalPlants;
             break;
+
         default:
             lpPlants = self.m_oPlantItems;
             break;
@@ -404,6 +406,28 @@
     NSString * lpSelectedFactory = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_FACTORY];
     NSString * lpSelectedSet = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_SET];
     
+    NSString * lpSelectedMachineType = [LYGlobalSettings GetSettingString:SETTING_KEY_SELECTED_PLANT_TYPE];
+    
+    int lnSelectedMachineType = -1;
+    if (![LYUtility IsStringEmpty:lpSelectedMachineType])
+    {
+        lpSelectedMachineType = [LYUtility StringTrim:lpSelectedMachineType];
+        if ([lpSelectedMachineType compare:MACHINE_TYPE_RC] == NSOrderedSame)
+        {
+            lnSelectedMachineType = MACHINE_TYPE_RC_GENERIC;
+        }else if ([lpSelectedMachineType compare:MACHINE_TYPE_ROTATION] == NSOrderedSame)
+        {
+            lnSelectedMachineType = MACHINE_TYPE_ROTATION_GENERIC;
+        }else if ([lpSelectedMachineType compare:MACHINE_TYPE_PUMP] == NSOrderedSame)
+        {
+            lnSelectedMachineType = MACHINE_TYPE_PUMP_GENERIC;
+        }else if ([lpSelectedMachineType compare:MACHINE_TYPE_WIND] == NSOrderedSame)
+        {
+            lnSelectedMachineType = MACHINE_TYPE_WIND_GENERIC;
+        }
+
+    }
+    
     NSMutableArray * lpPlantsRet = [NSMutableArray arrayWithCapacity:0];
     for (int i=0; i<lpPlants.count; i++)
     {
@@ -411,12 +435,17 @@
         NSString * locompanyid = [[lpPlants objectAtIndex:i] objectForKey:@"companyid"];
         NSString * lofactoryid = [[lpPlants objectAtIndex:i] objectForKey:@"factoryid"];
         NSString * losetid = [[lpPlants objectAtIndex:i] objectForKey:@"setid"];
+        NSString * lpPlantType = [[lpPlants objectAtIndex:i] objectForKey:@"machine_type"];
         
         logroupid = [((NSString*) logroupid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         locompanyid = [((NSString*) locompanyid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         lofactoryid = [((NSString*) lofactoryid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         losetid = [((NSString*) losetid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-      
+        
+//        lpPlantType = [((NSString*) lpPlantType) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        int lnMachine_Type = [lpPlantType intValue];
+              
         if (![LYUtility IsStringEmpty:lpSelectedGroup])
         {
             if ([lpSelectedGroup compare:logroupid]!= NSOrderedSame)
@@ -444,6 +473,37 @@
         if (![LYUtility IsStringEmpty:lpSelectedSet])
         {
             if ([lpSelectedSet compare:losetid]!= NSOrderedSame)
+            {
+                continue;
+            }
+        }
+        
+        if (lnSelectedMachineType>=0)
+        {
+            switch (lnMachine_Type) {
+                case GE_MACHINETYPE_COMPR:
+                case GE_MACHINETYPE_FAN:
+                case GE_MACHINETYPE_TURB:
+                case GE_MACHINETYPE_COMPR1:
+                case GE_MACHINETYPE_OTHERS:
+                case GE_MACHINETYPE_SMOKESTEAM:
+                    lnMachine_Type = MACHINE_TYPE_ROTATION_GENERIC;                    
+                    break;
+                case GE_MACHINETYPE_RC:
+                    lnMachine_Type = MACHINE_TYPE_RC_GENERIC;
+                    break;
+                case GE_MACHINETYPE_KEYPUMP:
+                case GE_MACHINETYPE_PUMP:
+                    lnMachine_Type = MACHINE_TYPE_PUMP_GENERIC;
+                    break;
+                case GE_MACHINETYPE_WINDPEQ:
+                    lnMachine_Type = MACHINE_TYPE_WIND_GENERIC;
+                    break;
+                default:
+                    break;
+            }
+            
+            if (lnMachine_Type!= lnSelectedMachineType)
             {
                 continue;
             }

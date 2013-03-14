@@ -10,6 +10,7 @@
 #import "LYGlobalSettings.h"
 #import "LYUtility.h"
 #import "LYSelectItemViewController.h"
+#import "ChannInfo.h"
 
 @interface LYFilterViewController ()
 
@@ -73,14 +74,6 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
     [super viewDidLoad];
     [self InitData];
     [self PrepareData];
-    
-    
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 -(void)toogleDataForPerSection:(NSMutableArray *)apData  apLabel:(UILabel *)apLabel apSelectedStr:(NSString *)apSelectedStr
@@ -207,10 +200,10 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
             break;
             
         case 4:
-            [lpTemp addObject:@"往复"];
-            [lpTemp addObject:@"旋转"];
-            [lpTemp addObject:@"机泵"];
-            [lpTemp addObject:@"风电"];
+            [lpTemp addObject:MACHINE_TYPE_RC];
+            [lpTemp addObject:MACHINE_TYPE_ROTATION];
+            [lpTemp addObject:MACHINE_TYPE_PUMP];
+            [lpTemp addObject:MACHINE_TYPE_WIND];
        
             break;
         default:
@@ -460,44 +453,6 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
 
 
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 #pragma mark - Table view delegate
 

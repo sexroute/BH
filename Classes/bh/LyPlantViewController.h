@@ -16,7 +16,8 @@ typedef enum
     ALARM,
     DANGER,
     STOPPED,
-    NORMAL
+    NORMAL,
+    NETOFF
 } PLANT_FILTER_STATUS;
 
 @interface LYPlantViewController : UITableViewController<EGORefreshTableHeaderDelegate,MBProgressHUDDelegate>

@@ -26,4 +26,31 @@ enum CHANNTYPE
 	GE_AXISLOCATIONCHANN= 100       /*!轴心位置*/
 };
 
+enum MACHINETYPE
+{
+	GE_MACHINETYPE_COMPR=0,    ///离心压缩机compressor
+	GE_MACHINETYPE_FAN,        ///风机fan
+	GE_MACHINETYPE_TURB,       ///汽轮机turbine
+	GE_MACHINETYPE_PUMP,       ///离心泵pump
+	GE_MACHINETYPE_COMPR1,     ///轴流式压缩机或轴流+离心压缩机
+	GE_MACHINETYPE_OTHERS,     ///其他
+	GE_MACHINETYPE_RC,         ///往复式压缩机 reciprocating compressor
+	GE_MACHINETYPE_KEYPUMP,    ///关键机泵
+	GE_MACHINETYPE_WINDPEQ,    ///风电设备
+	GE_MACHINETYPE_SMOKESTEAM  ///烟汽轮机
+};
+
+enum MACHINETYPE_GENERIC
+{
+    MACHINE_TYPE_ROTATION_GENERIC = 0,
+    MACHINE_TYPE_RC_GENERIC,
+    MACHINE_TYPE_PUMP_GENERIC,
+    MACHINE_TYPE_WIND_GENERIC
+};
+
+#define MACHINE_TYPE_ROTATION @"旋转"
+#define MACHINE_TYPE_RC @"往复"
+#define MACHINE_TYPE_PUMP @"机泵"
+#define MACHINE_TYPE_WIND @"风电"
+
 #endif
