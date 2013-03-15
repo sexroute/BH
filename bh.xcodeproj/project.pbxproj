@@ -286,42 +286,19 @@
 		4C61891D16E040C0004FEE93 /* bh */ = {
 			isa = PBXGroup;
 			children = (
+				4C9F990816F2AD9A004179FE /* tabbar */,
+				4C9F990716F2AD62004179FE /* chann */,
+				4C9F990616F2AD4B004179FE /* setting */,
+				4C9F990516F2AD2A004179FE /* filter */,
+				4C9F990416F2ACEA004179FE /* plantview */,
+				4C9F990316F2ACBC004179FE /* login */,
+				4C9F990216F2AC86004179FE /* wave */,
 				4C61892116E040C0004FEE93 /* ChannInfo.h */,
-				4C5F85B516EDBD4700D1592F /* LYTabBarViewController.h */,
-				4C5F85B616EDBD4800D1592F /* LYTabBarViewController.m */,
 				4C61892716E040C0004FEE93 /* LYAppDelegate.h */,
 				4C61892816E040C0004FEE93 /* LYAppDelegate.m */,
-				4C61892916E040C0004FEE93 /* LYCellviewCell.h */,
-				4C61892A16E040C0004FEE93 /* LYCellviewCell.m */,
-				4C61892B16E040C0004FEE93 /* LYChannInfoViewController.h */,
-				4C61892C16E040C0004FEE93 /* LYChannInfoViewController.m */,
-				4C61892D16E040C0004FEE93 /* LYChannViewController.h */,
-				4C61892E16E040C0004FEE93 /* LYChannViewController.m */,
-				4C61892F16E040C0004FEE93 /* LYChartView.h */,
-				4C61893016E040C0004FEE93 /* LYChartView.m */,
-				4C61893116E040C0004FEE93 /* LYDetailViewController.h */,
-				4C61893216E040C0004FEE93 /* LYDetailViewController.m */,
-				4C61893316E040C0004FEE93 /* LYLoginCell.h */,
-				4C61893416E040C0004FEE93 /* LYLoginCell.m */,
-				4C61893516E040C0004FEE93 /* LYNVController.h */,
-				4C61893616E040C0004FEE93 /* LYNVController.m */,
-				4C61893716E040C0004FEE93 /* LyPlantViewController.h */,
-				4C61893816E040C0004FEE93 /* LyPlantViewController.m */,
-				4C61893916E040C0004FEE93 /* LYSplashWindow.h */,
-				4C61893A16E040C0004FEE93 /* LYSplashWindow.m */,
 				4C61893B16E040C0004FEE93 /* LYViewController.h */,
 				4C61893C16E040C0004FEE93 /* LYViewController.m */,
-				4C61893D16E040C0004FEE93 /* LYWaveViewController.h */,
-				4C61893E16E040C0004FEE93 /* LYWaveViewController.m */,
 				4C61893F16E040C0004FEE93 /* main.m */,
-				4C5F85B216ED8FFD00D1592F /* LYSegmentMsgMap.h */,
-				4C5F85B316ED8FFD00D1592F /* LYSegmentMsgMap.m */,
-				4C5F85B816EDD4D200D1592F /* LYSettingViewController.h */,
-				4C5F85B916EDD4D400D1592F /* LYSettingViewController.m */,
-				4C361CDE16EF1771007D760F /* LYFilterViewController.h */,
-				4C361CDF16EF1772007D760F /* LYFilterViewController.m */,
-				4C9F98FF16F0533B004179FE /* LYSelectItemViewController.h */,
-				4C9F990016F0533B004179FE /* LYSelectItemViewController.m */,
 			);
 			path = bh;
 			sourceTree = "<group>";
@@ -367,6 +344,85 @@
 			);
 			name = View;
 			path = Thirdparty/View;
+			sourceTree = "<group>";
+		};
+		4C9F990216F2AC86004179FE /* wave */ = {
+			isa = PBXGroup;
+			children = (
+				4C61893D16E040C0004FEE93 /* LYWaveViewController.h */,
+				4C61893E16E040C0004FEE93 /* LYWaveViewController.m */,
+				4C61892F16E040C0004FEE93 /* LYChartView.h */,
+				4C61893016E040C0004FEE93 /* LYChartView.m */,
+			);
+			name = wave;
+			sourceTree = "<group>";
+		};
+		4C9F990316F2ACBC004179FE /* login */ = {
+			isa = PBXGroup;
+			children = (
+				4C61893A16E040C0004FEE93 /* LYSplashWindow.m */,
+				4C61893916E040C0004FEE93 /* LYSplashWindow.h */,
+				4C61893316E040C0004FEE93 /* LYLoginCell.h */,
+				4C61893416E040C0004FEE93 /* LYLoginCell.m */,
+			);
+			name = login;
+			sourceTree = "<group>";
+		};
+		4C9F990416F2ACEA004179FE /* plantview */ = {
+			isa = PBXGroup;
+			children = (
+				4C61893116E040C0004FEE93 /* LYDetailViewController.h */,
+				4C61893216E040C0004FEE93 /* LYDetailViewController.m */,
+				4C5F85B216ED8FFD00D1592F /* LYSegmentMsgMap.h */,
+				4C5F85B316ED8FFD00D1592F /* LYSegmentMsgMap.m */,
+				4C61893616E040C0004FEE93 /* LYNVController.m */,
+				4C61893716E040C0004FEE93 /* LyPlantViewController.h */,
+				4C61893816E040C0004FEE93 /* LyPlantViewController.m */,
+				4C61893516E040C0004FEE93 /* LYNVController.h */,
+				4C61892916E040C0004FEE93 /* LYCellviewCell.h */,
+				4C61892A16E040C0004FEE93 /* LYCellviewCell.m */,
+			);
+			name = plantview;
+			sourceTree = "<group>";
+		};
+		4C9F990516F2AD2A004179FE /* filter */ = {
+			isa = PBXGroup;
+			children = (
+				4C361CDF16EF1772007D760F /* LYFilterViewController.m */,
+				4C9F98FF16F0533B004179FE /* LYSelectItemViewController.h */,
+				4C9F990016F0533B004179FE /* LYSelectItemViewController.m */,
+				4C361CDE16EF1771007D760F /* LYFilterViewController.h */,
+			);
+			name = filter;
+			sourceTree = "<group>";
+		};
+		4C9F990616F2AD4B004179FE /* setting */ = {
+			isa = PBXGroup;
+			children = (
+				4C5F85B816EDD4D200D1592F /* LYSettingViewController.h */,
+				4C5F85B916EDD4D400D1592F /* LYSettingViewController.m */,
+			);
+			name = setting;
+			sourceTree = "<group>";
+		};
+		4C9F990716F2AD62004179FE /* chann */ = {
+			isa = PBXGroup;
+			children = (
+				4C61892B16E040C0004FEE93 /* LYChannInfoViewController.h */,
+				4C61892C16E040C0004FEE93 /* LYChannInfoViewController.m */,
+				4C61892D16E040C0004FEE93 /* LYChannViewController.h */,
+				4C61892E16E040C0004FEE93 /* LYChannViewController.m */,
+			);
+			name = chann;
+			sourceTree = "<group>";
+		};
+		4C9F990816F2AD9A004179FE /* tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				4C5F85B516EDBD4700D1592F /* LYTabBarViewController.h */,
+				4C5F85B616EDBD4800D1592F /* LYTabBarViewController.m */,
+			);
+			name = tabbar;
 			sourceTree = "<group>";
 		};
 		4CC05B2216E0467F00521F78 /* bh */ = {
