@@ -8,6 +8,7 @@
 
 #import "LYDetailViewController.h"
 #import "LYChannViewController.h"
+#import "LYBHUtility.h"
 
 @interface LYDetailViewController ()
 
@@ -188,15 +189,15 @@
                 case 1:
                     lpText = [ self.m_pData objectForKey:@"machine_type"];
                      NSString * lpData = [lpText description];
-                    if ([lpData isEqualToString: @"0"])
+                    if (nil!= lpData)
                     {
-                        lpText = @"旋转设备";
+                        int lnMachineType = [lpData intValue];
                         
-                    }else if([lpData isEqualToString: @"6"])
-                    {
-                        lpText = @"往复设备";
+                        NSString * lpPlantType = [LYBHUtility GetPlantTypeName:lnMachineType];
+                        
+                        lpText = [NSString stringWithFormat:@"%@设备",lpPlantType];
                     }
-                        
+                    
                     lpTitle =@"设备类型:";
                     break;
                 case 2:

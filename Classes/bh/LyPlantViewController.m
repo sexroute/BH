@@ -15,6 +15,7 @@
 #import "LYFilterViewController.h"
 #import "LYUtility.h"
 #import "ChannInfo.h"
+#import "LYBHUtility.h"
 
 @interface LYPlantViewController ()
 
@@ -480,28 +481,7 @@
         
         if (lnSelectedMachineType>=0)
         {
-            switch (lnMachine_Type) {
-                case GE_MACHINETYPE_COMPR:
-                case GE_MACHINETYPE_FAN:
-                case GE_MACHINETYPE_TURB:
-                case GE_MACHINETYPE_COMPR1:
-                case GE_MACHINETYPE_OTHERS:
-                case GE_MACHINETYPE_SMOKESTEAM:
-                    lnMachine_Type = MACHINE_TYPE_ROTATION_GENERIC;                    
-                    break;
-                case GE_MACHINETYPE_RC:
-                    lnMachine_Type = MACHINE_TYPE_RC_GENERIC;
-                    break;
-                case GE_MACHINETYPE_KEYPUMP:
-                case GE_MACHINETYPE_PUMP:
-                    lnMachine_Type = MACHINE_TYPE_PUMP_GENERIC;
-                    break;
-                case GE_MACHINETYPE_WINDPEQ:
-                    lnMachine_Type = MACHINE_TYPE_WIND_GENERIC;
-                    break;
-                default:
-                    break;
-            }
+            lnMachine_Type = [LYBHUtility GetPlantType:lnMachine_Type];
             
             if (lnMachine_Type!= lnSelectedMachineType)
             {

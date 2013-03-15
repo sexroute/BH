@@ -48,6 +48,7 @@
 		4C6189A816E04103004FEE93 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C6189A716E04103004FEE93 /* EGORefreshTableHeaderView.m */; };
 		4C9F98FE16F019D9004179FE /* LYUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C9F98FD16F019D9004179FE /* LYUtility.m */; };
 		4C9F990116F0533B004179FE /* LYSelectItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C9F990016F0533B004179FE /* LYSelectItemViewController.m */; };
+		4C9F990C16F2AF5F004179FE /* LYBHUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C9F990B16F2AF5E004179FE /* LYBHUtility.m */; };
 		4CC05B2916E048EA00521F78 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC05B2816E048EA00521F78 /* MBProgressHUD.m */; };
 		4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */; };
 		4CCF789516DC5DD1001E6413 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789416DC5DD1001E6413 /* Icon.png */; };
@@ -105,7 +106,6 @@
 		4C5F85B916EDD4D400D1592F /* LYSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYSettingViewController.m; sourceTree = "<group>"; };
 		4C61891216DF47E6004FEE93 /* loginCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = loginCell.xib; sourceTree = "<group>"; };
 		4C61891416DF56B7004FEE93 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		4C61892116E040C0004FEE93 /* ChannInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannInfo.h; sourceTree = "<group>"; };
 		4C61892716E040C0004FEE93 /* LYAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYAppDelegate.h; sourceTree = "<group>"; };
 		4C61892816E040C0004FEE93 /* LYAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYAppDelegate.m; sourceTree = "<group>"; };
 		4C61892916E040C0004FEE93 /* LYCellviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYCellviewCell.h; sourceTree = "<group>"; };
@@ -152,6 +152,9 @@
 		4C9F98FD16F019D9004179FE /* LYUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYUtility.m; sourceTree = "<group>"; };
 		4C9F98FF16F0533B004179FE /* LYSelectItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYSelectItemViewController.h; sourceTree = "<group>"; };
 		4C9F990016F0533B004179FE /* LYSelectItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYSelectItemViewController.m; sourceTree = "<group>"; };
+		4C9F990916F2AEE8004179FE /* ChannInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannInfo.h; sourceTree = "<group>"; };
+		4C9F990A16F2AF5E004179FE /* LYBHUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYBHUtility.h; sourceTree = "<group>"; };
+		4C9F990B16F2AF5E004179FE /* LYBHUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYBHUtility.m; sourceTree = "<group>"; };
 		4CC05B2316E0467F00521F78 /* bh-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "bh-Info.plist"; sourceTree = "<group>"; };
 		4CC05B2716E048EA00521F78 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		4CC05B2816E048EA00521F78 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -293,7 +296,6 @@
 				4C9F990416F2ACEA004179FE /* plantview */,
 				4C9F990316F2ACBC004179FE /* login */,
 				4C9F990216F2AC86004179FE /* wave */,
-				4C61892116E040C0004FEE93 /* ChannInfo.h */,
 				4C61892716E040C0004FEE93 /* LYAppDelegate.h */,
 				4C61892816E040C0004FEE93 /* LYAppDelegate.m */,
 				4C61893B16E040C0004FEE93 /* LYViewController.h */,
@@ -306,10 +308,13 @@
 		4C61895516E040DA004FEE93 /* BhApp */ = {
 			isa = PBXGroup;
 			children = (
+				4C9F990916F2AEE8004179FE /* ChannInfo.h */,
 				4C61895616E040DA004FEE93 /* LYGlobalSettings.h */,
 				4C61895716E040DA004FEE93 /* LYGlobalSettings.m */,
 				4C9F98FC16F019D9004179FE /* LYUtility.h */,
 				4C9F98FD16F019D9004179FE /* LYUtility.m */,
+				4C9F990A16F2AF5E004179FE /* LYBHUtility.h */,
+				4C9F990B16F2AF5E004179FE /* LYBHUtility.m */,
 			);
 			name = BhApp;
 			path = inc/BhApp;
@@ -806,6 +811,7 @@
 				4C361CE016EF1773007D760F /* LYFilterViewController.m in Sources */,
 				4C9F98FE16F019D9004179FE /* LYUtility.m in Sources */,
 				4C9F990116F0533B004179FE /* LYSelectItemViewController.m in Sources */,
+				4C9F990C16F2AF5F004179FE /* LYBHUtility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
