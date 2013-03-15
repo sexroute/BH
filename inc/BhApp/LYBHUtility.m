@@ -38,7 +38,51 @@
     
     return lnMachine_Type;
 }
++(int)GetChannType:(int)anType
+{
+    switch(anType)
+	{
+        case GE_ALLPROC:
+        case GE_PRESSCHANN:
+        case GE_TEMPCHANN:
+        case GE_FLUXCHANN:
+        case GE_OTHERCHANN:
+        case GE_IMPACTCHANN:
+            return E_TBL_CHANNTYPE_PROC;
+        case GE_VIBCHANN:
+        case GE_AXIALCHANN:
+        case GE_AXISLOCATIONCHANN:
+            return E_TBL_CHANNTYPE_VIB;
+        case GE_DYNPRESSCHANN:
+        case GE_RODSINKCHANN:
+        case GE_DYNSTRESSCHANN:
+            return E_TBL_CHANNTYPE_DYN;
+        default:
+            return E_TBL_CHANNTYPE_VIB;
+	};
+}
++(NSString *)GetChannTypeName:(int)anType
+{
+    int lnChannType = [LYBHUtility GetChannType:anType];
+    NSString * lpRet = @"";
+    switch (lnChannType)
+    {
+        case E_TBL_CHANNTYPE_PROC:
+            lpRet = CHANN_TYPE_PROC;
+            break;
+        case E_TBL_CHANNTYPE_VIB:
+            lpRet = CHANN_TYPE_VIB;
+            break;
+        case E_TBL_CHANNTYPE_DYN:
+            lpRet = CHANN_TYPE_DYN;
+            break;
 
+        default:
+            break;
+    }
+    
+    return  [lpRet autorelease];
+}
 + (NSString *) GetPlantTypeName:(int)anType
 {
     NSString * lpPlantType = nil;

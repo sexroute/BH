@@ -23,4 +23,6 @@
 @property (retain, nonatomic) NSString * m_pStrFactory;
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) NSString * m_pStrPlant;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oNavigateButton;
+@property ( nonatomic) int m_nChannType;
 @end

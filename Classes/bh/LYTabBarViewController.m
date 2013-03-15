@@ -55,6 +55,7 @@
        
     }
     //3.报警日志视图
+   
     [[self.tabBar.items objectAtIndex:lnAlarmLogViewIndex] setTitle:@"报警"];
 
     //4.设置视图
@@ -64,7 +65,7 @@
 {
     [super viewDidLoad];
     [self InitUI];
-   
+    
 	// Do any additional setup after loading the view.
 }
 

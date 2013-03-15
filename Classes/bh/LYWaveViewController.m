@@ -8,6 +8,7 @@
 
 #import "LYWaveViewController.h"
 #import "LYGlobalSettings.h"
+#import "ChannInfo.h"
 @interface LYWaveViewController ()
 
 @end
@@ -28,9 +29,10 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
-         self->HUD = nil;
+        self->HUD = nil;
         self.hostView = nil;
         self.m_pStrChann = nil;
         self.m_pStrCompany =  nil;
@@ -38,7 +40,7 @@
         self.m_pStrGroup = nil;
         self.m_pStrPlant = nil;
         self.hostView = nil;
-
+        
     }
     return self;
 }
@@ -61,15 +63,15 @@
         [self.hostView initGraph];
         [self PopUpIndicator];
         [self LoadDataFromMiddleWare];
-
+        
     }else
     {
         [self.hostView setDrawDataMode:nDrawMode];
         [self LoadDataFromMiddleWare];
         
     }
-       
-    NSLog(@"%d",hostView.retainCount);    
+    
+    NSLog(@"%d",hostView.retainCount);
 }
 
 
@@ -85,7 +87,7 @@
 
 - (void)viewDidUnload
 {
- //   [self.m_plotView.subviews release];
+    //   [self.m_plotView.subviews release];
     [self setHostView:nil];
     
     [self setM_pChartViewParent:nil];
@@ -103,19 +105,19 @@
 
 - (void)dealloc
 {
-
+    
     NSLog(@"dealloc self :%d",self.retainCount);
     NSLog(@"dealloc hostview :%d",self.hostView.retainCount);
-
+    
     self.m_pStrChann = nil;
     self.m_pStrCompany =  nil;
     self.m_pStrFactory = nil;
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
-     self.hostView = nil;
+    self.hostView = nil;
     [m_pChartViewParent release];
     [m_plotView release];
-   
+    
     [_m_oToolbar release];
     [super dealloc];
 }
@@ -160,7 +162,7 @@
 #pragma mark ButtonPress methods
 - (IBAction)OnWavePressed:(UIBarButtonItem *)sender
 {
-
+    
     [self PopUpIndicator];
     [self initPlot:WAVE];
 }
@@ -185,7 +187,7 @@
     NSString * lpStr = [NSString stringWithFormat:@"获取数据失败,重试?"];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
 												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-
+    
     
     [alert show];
     [alert release];
@@ -204,7 +206,7 @@
 {
 	//弹出网络错误对话框
     [self alertLoadFailed:@""];
-
+    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -217,6 +219,10 @@
 {
     [self.hostView initData];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    if (self.m_nChannType == GE_RODSINKCHANN)
+    {
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/rodsink.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    }
     NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl

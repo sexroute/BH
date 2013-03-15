@@ -14,4 +14,6 @@
 }
 + (int) GetPlantType:(int)anType;
 + (NSString *) GetPlantTypeName:(int)anType;
++(int)GetChannType:(int)anType;
++(NSString *)GetChannTypeName:(int)anType;
 @end

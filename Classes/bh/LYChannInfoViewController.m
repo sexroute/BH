@@ -8,7 +8,7 @@
 
 #import "LYChannInfoViewController.h"
 #import "LYWaveViewController.h"
-
+#import "LYBHUtility.h"
 
 
 @implementation LYChannInfoViewController
@@ -34,7 +34,21 @@
     {
          self.navigationItem.title = [self.m_pData objectForKey:@"name"];
     }
-   
+    int lnChanntype  = [self GetChanntype];
+    lnChanntype = [LYBHUtility GetChannType:lnChanntype];
+    switch (lnChanntype)
+    {
+        case E_TBL_CHANNTYPE_VIB:
+        case E_TBL_CHANNTYPE_DYN:
+            self.m_oNavigateButton.title = @"波形/频谱";
+            break;
+        case E_TBL_CHANNTYPE_PROC:
+            self.m_oNavigateButton.title = @"历史趋势";
+            break;
+        default:
+            break;
+    }
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -42,11 +56,21 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+-(int)GetChanntype
+{
+    id lpObj = [self.m_pData objectForKey:@"chann_type"];
+    NSNumber * lpVal = lpObj;
+    int lnChanType = [lpVal intValue];
+    return  lnChanType;
+}
+
 - (void)viewDidUnload
 {
+    [self setM_oNavigateButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -140,6 +164,7 @@
                     lpObj = [self.m_pData objectForKey:@"chann_type"];
                     NSNumber * lpVal = lpObj;
                     int lnChanType = [lpVal intValue];
+                    self.m_nChannType = lnChanType;
                     switch (lnChanType) {
                         case GE_ALLPROC:
                             lpObj = @"过程量测点";
@@ -339,9 +364,14 @@
         lpChannView.m_pStrFactory = self.m_pStrFactory;
         lpChannView.m_pStrChann = self.m_pStrChann;
         lpChannView.m_pStrPlant = self.m_pStrPlant;
+        lpChannView.m_nChannType = self.m_nChannType;
         NSLog(@"%@",lpChannView.m_pStrGroup);
     }
     
 }
 
+- (void)dealloc {
+    [_m_oNavigateButton release];
+    [super dealloc];
+}
 @end

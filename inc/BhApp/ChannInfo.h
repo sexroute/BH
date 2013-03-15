@@ -26,6 +26,19 @@ enum CHANNTYPE
 	GE_AXISLOCATIONCHANN= 100       /*!轴心位置*/
 };
 
+///测点通道的大类。是振动，过程量，动态测点
+enum E_TBL_CHANNTYPE
+{
+	E_TBL_CHANNTYPE_VIB=0,         ///振动通道。“VIB”
+	E_TBL_CHANNTYPE_PROC,          ///过程量通道。“PROC”
+	E_TBL_CHANNTYPE_DYN            ///动态测点通道。“DYN”
+};
+
+#define CHANN_TYPE_VIB @"振动测点"
+#define CHANN_TYPE_DYN @"动态测点"
+#define CHANN_TYPE_PROC @"过程量测点"
+
+
 enum MACHINETYPE
 {
 	GE_MACHINETYPE_COMPR=0,    ///离心压缩机compressor
