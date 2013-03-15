@@ -78,7 +78,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.m_oToolbar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
     [self initPlot:WAVE];
+    
 }
 
 - (void)viewDidUnload
@@ -88,6 +90,7 @@
     
     [self setM_pChartViewParent:nil];
     [self setM_plotView:nil];
+    [self setM_oToolbar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -113,6 +116,7 @@
     [m_pChartViewParent release];
     [m_plotView release];
    
+    [_m_oToolbar release];
     [super dealloc];
 }
 

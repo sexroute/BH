@@ -28,5 +28,6 @@
 @property (retain, nonatomic) NSString * m_pStrCompany;
 @property (retain, nonatomic) NSString * m_pStrFactory;
 @property (retain, nonatomic) NSString * m_pStrChann;
+@property (retain, nonatomic) IBOutlet UIToolbar *m_oToolbar;
 @property (retain, nonatomic) NSString * m_pStrPlant;
 @end

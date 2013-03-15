@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    self.navigationController.navigationBar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
 
 }
 

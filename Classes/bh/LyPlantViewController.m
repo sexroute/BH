@@ -66,8 +66,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-      [self.m_oActiveIndicator stopAnimating];
-  [self.navigationController setToolbarHidden:YES animated:NO];
+    [self.m_oActiveIndicator stopAnimating];
+    [self.navigationController setToolbarHidden:YES animated:NO];
+    self.navigationController.navigationBar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
     //1.拖拽刷新
     if (_refreshHeaderView == nil)
     {
@@ -79,18 +80,18 @@
         [view release];
         
     }
-       //2.报警、危险、停车等
+    //2.报警、危险、停车等
     //  update the last update date
     [_refreshHeaderView refreshLastUpdatedDate];
     self.navigationItem.title = @"设备列表";
-   
+    
     [self.navigationController setToolbarHidden:FALSE animated:FALSE];
     
     self.m_pButtonAll = [[ UIBarButtonItem alloc ] initWithTitle:   @"全部"
                                                            style: UIBarButtonItemStyleDone
                                                           target: self
                                                           action: @selector(onButtonAllDeviceSelected:) ];
- 
+    
     self->m_nFilterStatus = ALL;
     
     self.m_pButtonAlarm  = [[ UIBarButtonItem alloc ] initWithTitle: @"报警"
@@ -111,13 +112,13 @@
                                                               style: UIBarButtonItemStylePlain
                                                              target: self
                                                              action: @selector(onButtonNormalDeviceSelected:) ];
-      
+    
     //3.segment view
     if (nil ==self.m_pSegmentMap)
     {
         self.m_pSegmentMap = [[[NSMutableArray alloc] init]autorelease];
         
-        LYSegmentMsgMap * lpVal =[[[LYSegmentMsgMap alloc]init]autorelease];        
+        LYSegmentMsgMap * lpVal =[[[LYSegmentMsgMap alloc]init]autorelease];
         lpVal.m_pSegmentMsgIndex = [NSNumber numberWithInt:0];
         lpVal.m_pSegmentMsgHandle = @selector(onButtonAllDeviceSelected:);
         lpVal.m_pSegmentTitle = @"全部";
@@ -128,7 +129,7 @@
         lpValDangrous.m_pSegmentMsgIndex = [NSNumber numberWithInt:1];
         lpValDangrous.m_pSegmentMsgHandle = @selector(onButtonDangerDeviceSelected:);
         lpValDangrous.m_pSegmentTitle = @"危险";
-         [self.m_pSegmentMap addObject:lpValDangrous];
+        [self.m_pSegmentMap addObject:lpValDangrous];
         
         
         LYSegmentMsgMap * lpValAlarm =[[[LYSegmentMsgMap alloc]init]autorelease];
@@ -136,33 +137,33 @@
         lpValAlarm.m_pSegmentMsgHandle = @selector(onButtonAlarmDeviceSelected:);
         lpValAlarm.m_pSegmentTitle = @"报警";
         [self.m_pSegmentMap addObject:lpValAlarm];
-
+        
         
         LYSegmentMsgMap * lpValNormal =[[[LYSegmentMsgMap alloc]init]autorelease];
         lpValNormal.m_pSegmentMsgIndex = [NSNumber numberWithInt:3];
         lpValNormal.m_pSegmentMsgHandle = @selector(onButtonNormalDeviceSelected:);
         lpValNormal.m_pSegmentTitle = @"正常";
-         [self.m_pSegmentMap addObject:lpValNormal];
-
-
+        [self.m_pSegmentMap addObject:lpValNormal];
+        
+        
         
         LYSegmentMsgMap * lpValStopped =[[[LYSegmentMsgMap alloc]init]autorelease];
         lpValStopped.m_pSegmentMsgIndex = [NSNumber numberWithInt:4];
         lpValStopped.m_pSegmentMsgHandle = @selector(onButtonStopDeviceSelected:);
         lpValStopped.m_pSegmentTitle = @"停车";
-         [self.m_pSegmentMap addObject:lpValStopped];
-
+        [self.m_pSegmentMap addObject:lpValStopped];
+        
         
         
         LYSegmentMsgMap * lpValNoval =[[[LYSegmentMsgMap alloc]init]autorelease];
         lpValNoval.m_pSegmentMsgIndex = [NSNumber numberWithInt:5];
         lpValNoval.m_pSegmentMsgHandle = @selector(onButtonStopDeviceSelected:);
         lpValNoval.m_pSegmentTitle = @"断网";
-        [self.m_pSegmentMap addObject:lpValNoval];     
+        [self.m_pSegmentMap addObject:lpValNoval];
         
     }
     
-  
+    
     NSMutableArray * segmentItems  = [[[NSMutableArray alloc]init]autorelease];
     for (int i =0; i<self.m_pSegmentMap.count; i++)
     {
@@ -170,7 +171,7 @@
         [segmentItems addObject:lpFired.m_pSegmentTitle];
     }
     
-   UISegmentedControl * segmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] autorelease];
+    UISegmentedControl * segmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] autorelease];
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     segmentedControl.selectedSegmentIndex = 0;
     [segmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
@@ -178,7 +179,7 @@
     
     //4.bottom button
     
-   
+    
 }
 
 - (void) onSegmentedControlChanged:(UISegmentedControl *) sender
@@ -196,12 +197,12 @@
         SEL lpFun = lpFired.m_pSegmentMsgHandle;
         [self performSelector:lpFun];
     }
-   
+    
 }
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.navigationController setToolbarHidden:YES animated:NO];
- 
+    
     [self.m_oTableView reloadData];
 }
 
@@ -396,7 +397,7 @@
         case NORMAL:
             lpPlants = self.m_oNormalPlants;
             break;
-
+            
         default:
             lpPlants = self.m_oPlantItems;
             break;
@@ -426,7 +427,7 @@
         {
             lnSelectedMachineType = MACHINE_TYPE_WIND_GENERIC;
         }
-
+        
     }
     
     NSMutableArray * lpPlantsRet = [NSMutableArray arrayWithCapacity:0];
@@ -443,10 +444,10 @@
         lofactoryid = [((NSString*) lofactoryid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         losetid = [((NSString*) losetid) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-//        lpPlantType = [((NSString*) lpPlantType) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        //        lpPlantType = [((NSString*) lpPlantType) stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         int lnMachine_Type = [lpPlantType intValue];
-              
+        
         if (![LYUtility IsStringEmpty:lpSelectedGroup])
         {
             if ([lpSelectedGroup compare:logroupid]!= NSOrderedSame)
@@ -720,7 +721,7 @@
     
     if (nil!=lpListOfItems && [lpListOfItems count] != 0)
     {
-
+        
         
         self.m_oPlantItems = lpListOfItems;
         [self PreparePlantsData];
@@ -773,7 +774,7 @@
     lpviewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     
     [self.navigationController pushViewController:lpviewController animated:YES];
-        
+    
     [UIView commitAnimations];
 }
 

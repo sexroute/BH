@@ -189,6 +189,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="nKo-wh-J0n"/>
                     <connections>
+                        <outlet property="m_oToolbar" destination="1fB-Y1-Y6I" id="b61-Rj-FvW"/>
                         <outlet property="m_pChartViewParent" destination="2a8-96-jPV" id="hRD-PW-MLb"/>
                         <outlet property="m_plotView" destination="2a8-96-jPV" id="jVC-tg-BVD"/>
                     </connections>
@@ -811,9 +812,16 @@ Ew
         <class className="LYWaveViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
+                <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oToolbar" candidateClass="UIToolbar"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>
+        </class>
+        <class className="NSMutableArray" superclassName="NSArray">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSMutableArray.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
