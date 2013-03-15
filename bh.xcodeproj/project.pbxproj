@@ -13,6 +13,10 @@
 		4C29BAB316E0423C006B2E41 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB116E0423C006B2E41 /* DetailView.xib */; };
 		4C29BAB616E04246006B2E41 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB416E04246006B2E41 /* MainStoryboard.storyboard */; };
 		4C29BAB716E043C0006B2E41 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC784D216D46E5B0019B95C /* libCorePlot-CocoaTouch.a */; };
+		4C2AFB9D16F2D54400C99FDE /* house.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2AFB9B16F2D54400C99FDE /* house.png */; };
+		4C2AFB9E16F2D54400C99FDE /* house@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2AFB9C16F2D54400C99FDE /* house@2x.png */; };
+		4C2AFBA116F2D54C00C99FDE /* cog_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2AFB9F16F2D54C00C99FDE /* cog_02.png */; };
+		4C2AFBA216F2D54C00C99FDE /* cog_02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2AFBA016F2D54C00C99FDE /* cog_02@2x.png */; };
 		4C361CE016EF1773007D760F /* LYFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C361CDF16EF1772007D760F /* LYFilterViewController.m */; };
 		4C54FBF816E9ED6700A0FAA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C54FBF716E9ED6700A0FAA1 /* Icon-72.png */; };
 		4C54FBFA16E9EDDD00A0FAA1 /* logo-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C54FBF916E9EDDD00A0FAA1 /* logo-144.png */; };
@@ -91,6 +95,10 @@
 		4C29BAB016E0423C006B2E41 /* cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cell.xib; sourceTree = "<group>"; };
 		4C29BAB116E0423C006B2E41 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		4C29BAB516E04246006B2E41 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		4C2AFB9B16F2D54400C99FDE /* house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = house.png; sourceTree = "<group>"; };
+		4C2AFB9C16F2D54400C99FDE /* house@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house@2x.png"; sourceTree = "<group>"; };
+		4C2AFB9F16F2D54C00C99FDE /* cog_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cog_02.png; sourceTree = "<group>"; };
+		4C2AFBA016F2D54C00C99FDE /* cog_02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cog_02@2x.png"; sourceTree = "<group>"; };
 		4C361CDE16EF1771007D760F /* LYFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYFilterViewController.h; sourceTree = "<group>"; };
 		4C361CDF16EF1772007D760F /* LYFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYFilterViewController.m; sourceTree = "<group>"; };
 		4C54FBF716E9ED6700A0FAA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
@@ -583,6 +591,10 @@
 		A46A586F154FDF7400EDA973 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4C2AFB9F16F2D54C00C99FDE /* cog_02.png */,
+				4C2AFBA016F2D54C00C99FDE /* cog_02@2x.png */,
+				4C2AFB9B16F2D54400C99FDE /* house.png */,
+				4C2AFB9C16F2D54400C99FDE /* house@2x.png */,
 				4C29BAB416E04246006B2E41 /* MainStoryboard.storyboard */,
 				4C29BAB016E0423C006B2E41 /* cell.xib */,
 				4C29BAB116E0423C006B2E41 /* DetailView.xib */,
@@ -762,6 +774,10 @@
 				4C5F85AD16EAD6F000D1592F /* Default-Portrait~ipad.png in Resources */,
 				4C5F85AF16EADDE100D1592F /* Default-Landscape~ipad.png in Resources */,
 				4C5F85B116EADDE900D1592F /* Default-Landscape@2x~ipad.png in Resources */,
+				4C2AFB9D16F2D54400C99FDE /* house.png in Resources */,
+				4C2AFB9E16F2D54400C99FDE /* house@2x.png in Resources */,
+				4C2AFBA116F2D54C00C99FDE /* cog_02.png in Resources */,
+				4C2AFBA216F2D54C00C99FDE /* cog_02@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -958,8 +974,8 @@
 				"PROVISIONING_PROFILE[sdk=*]" = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				WRAPPER_EXTENSION = app;
@@ -991,8 +1007,8 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SKIP_INSTALL = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				WRAPPER_EXTENSION = app;

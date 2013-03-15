@@ -9,6 +9,7 @@
 #import "LYTabBarViewController.h"
 #import "LyPlantViewController.h"
 #import "LYNVController.h"
+#import "LYUtility.h"
 
 @interface LYTabBarViewController ()
 
@@ -36,7 +37,13 @@
     [self.navigationController setNavigationBarHidden:YES];
     
     //2.设置设备数据
-    
+    if (IS_RETINA)
+    {
+        [[self.tabBar.items objectAtIndex:lnPlantViewIndex] setImage:[UIImage imageNamed:@"house@2x.png"]];
+    }else
+    {
+        [[self.tabBar.items objectAtIndex:lnPlantViewIndex] setImage:[UIImage imageNamed:@"house.png"]];
+    }
     [[self.tabBar.items objectAtIndex:lnPlantViewIndex] setTitle:@"设备"];
     LYNVController * lplantNavicator = (LYNVController*)[self.viewControllers objectAtIndex:lnPlantViewIndex];
     
@@ -55,9 +62,15 @@
        
     }
     //3.报警日志视图
-   
-    [[self.tabBar.items objectAtIndex:lnAlarmLogViewIndex] setTitle:@"报警"];
 
+    if (IS_RETINA)
+    {
+        [[self.tabBar.items objectAtIndex:lnSettingViewIndex] setImage:[UIImage imageNamed:@"cog_02@2x.png"]];
+    }else
+    {
+        [[self.tabBar.items objectAtIndex:lnSettingViewIndex] setImage:[UIImage imageNamed:@"cog_02.png```"]];
+    }
+    
     //4.设置视图
     [[self.tabBar.items objectAtIndex:lnSettingViewIndex] setTitle:@"设置"];
 }
