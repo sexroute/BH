@@ -160,19 +160,19 @@
                                 <rect key="frame" x="0.0" y="372" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="频谱" width="99" id="qwj-g9-hYP">
+                                    <barButtonItem title="频谱" width="99" style="plain" id="qwj-g9-hYP">
                                         <connections>
                                             <action selector="onFreqPressed:" destination="eE5-jO-Msr" id="lvr-Rn-pNo"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="fTC-G0-t4k"/>
-                                    <barButtonItem title="波形" width="99" id="vAe-we-Njf">
+                                    <barButtonItem title="波形" width="99" style="plain" id="vAe-we-Njf">
                                         <connections>
                                             <action selector="OnWavePressed:" destination="eE5-jO-Msr" id="s8p-8M-HEo"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="9KA-j9-RS3"/>
-                                    <barButtonItem title="刷新" width="99" id="z6q-mJ-WUi">
+                                    <barButtonItem title="刷新" width="99" style="plain" id="z6q-mJ-WUi">
                                         <connections>
                                             <action selector="OnRefreshPressed:" destination="eE5-jO-Msr" id="I2v-FH-83F"/>
                                         </connections>
@@ -189,6 +189,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="nKo-wh-J0n"/>
                     <connections>
+                        <outlet property="m_oButtonFreq" destination="qwj-g9-hYP" id="Y1q-ni-6bE"/>
+                        <outlet property="m_oButtonFresh" destination="z6q-mJ-WUi" id="pAR-im-CHd"/>
+                        <outlet property="m_oButtonWave" destination="vAe-we-Njf" id="31w-de-F6J"/>
                         <outlet property="m_oToolbar" destination="1fB-Y1-Y6I" id="b61-Rj-FvW"/>
                         <outlet property="m_pChartViewParent" destination="2a8-96-jPV" id="hRD-PW-MLb"/>
                         <outlet property="m_plotView" destination="2a8-96-jPV" id="jVC-tg-BVD"/>
@@ -821,10 +824,18 @@ Ew
         <class className="LYWaveViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
             <relationships>
+                <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oButtonFreq" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oButtonWave" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_oToolbar" candidateClass="UIToolbar"/>
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>
+        </class>
+        <class className="NSMutableArray" superclassName="NSArray">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSMutableArray.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

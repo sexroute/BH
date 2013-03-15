@@ -30,5 +30,8 @@
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) IBOutlet UIToolbar *m_oToolbar;
 @property (retain, nonatomic) NSString * m_pStrPlant;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oButtonFreq;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oButtonWave;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oButtonFresh;
 @property ( nonatomic) int m_nChannType;
 @end

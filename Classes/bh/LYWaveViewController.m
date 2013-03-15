@@ -82,6 +82,9 @@
 	// Do any additional setup after loading the view.
     self.m_oToolbar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
     [self initPlot:WAVE];
+    self.m_oButtonWave.style = UIBarButtonItemStyleBordered;
+    self.m_oButtonFreq.style = UIBarButtonItemStylePlain;
+    self.m_oButtonFresh.style = UIBarButtonItemStylePlain;
     
 }
 
@@ -93,6 +96,9 @@
     [self setM_pChartViewParent:nil];
     [self setM_plotView:nil];
     [self setM_oToolbar:nil];
+    [self setM_oButtonFreq:nil];
+    [self setM_oButtonWave:nil];
+    [self setM_oButtonFresh:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -119,6 +125,9 @@
     [m_plotView release];
     
     [_m_oToolbar release];
+    [_m_oButtonFreq release];
+    [_m_oButtonWave release];
+    [_m_oButtonFresh release];
     [super dealloc];
 }
 
@@ -162,19 +171,23 @@
 #pragma mark ButtonPress methods
 - (IBAction)OnWavePressed:(UIBarButtonItem *)sender
 {
-    
+    self.m_oButtonWave.style = UIBarButtonItemStyleBordered;
+    self.m_oButtonFreq.style = UIBarButtonItemStylePlain;
     [self PopUpIndicator];
     [self initPlot:WAVE];
 }
 
 -(IBAction)OnRefreshPressed:(UIBarButtonItem *)sender
 {
+    
     [self PopUpIndicator];
     [self initPlot:[self.hostView getDrawDataMode]];
 }
 
 - (IBAction)onFreqPressed:(UIBarButtonItem *)sender
 {
+    self.m_oButtonFreq.style = UIBarButtonItemStyleBordered;
+    self.m_oButtonWave.style = UIBarButtonItemStylePlain;
     [self PopUpIndicator];
     [self initPlot:FREQUENCE];
 }
