@@ -68,7 +68,7 @@
         [[self.tabBar.items objectAtIndex:lnSettingViewIndex] setImage:[UIImage imageNamed:@"cog_02@2x.png"]];
     }else
     {
-        [[self.tabBar.items objectAtIndex:lnSettingViewIndex] setImage:[UIImage imageNamed:@"cog_02.png```"]];
+        [[self.tabBar.items objectAtIndex:lnSettingViewIndex] setImage:[UIImage imageNamed:@"cog_02.png"]];
     }
     
     //4.设置视图
