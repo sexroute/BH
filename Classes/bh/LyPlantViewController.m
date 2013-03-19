@@ -80,6 +80,8 @@
         [view release];
         
     }
+    
+   
     //2.报警、危险、停车等
     //  update the last update date
     [_refreshHeaderView refreshLastUpdatedDate];
@@ -178,7 +180,9 @@
     self.navigationItem.titleView = segmentedControl;
     
     //4.bottom button
-    
+    self.navigationController.toolbar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
+
+     [self.navigationController setToolbarHidden:YES animated:NO];
     
 }
 
@@ -201,7 +205,7 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self.navigationController setToolbarHidden:YES animated:NO];
+   
     
     [self.m_oTableView reloadData];
 }

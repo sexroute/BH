@@ -262,6 +262,15 @@ UITextField * g_pTextPassword = nil;
 }
 - (void)handleSingleFingerEvent:(UITapGestureRecognizer *)sender
 {
+    if (nil == g_pTextUserName.text)
+    {
+        g_pTextUserName.text = @"";
+    }
+    
+    if (nil == g_pTextPassword.text)
+    {
+         g_pTextPassword.text = @"";
+    }
     [LYGlobalSettings SetSettingString:SETTING_KEY_USER apVal:g_pTextUserName.text];
     [LYGlobalSettings SetSettingString:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
     [self.m_oLoginTableView setHidden:YES];

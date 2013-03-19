@@ -10,6 +10,7 @@
 #import "LyPlantViewController.h"
 #import "LYNVController.h"
 #import "LYUtility.h"
+#import "LYGlobalSettings.h"
 
 @interface LYTabBarViewController ()
 
@@ -73,6 +74,10 @@
     
     //4.设置视图
     [[self.tabBar.items objectAtIndex:lnSettingViewIndex] setTitle:@"设置"];
+    
+    //5.
+     self.navigationController.navigationBar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
+    
 }
 - (void)viewDidLoad
 {
