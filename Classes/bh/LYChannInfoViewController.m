@@ -9,6 +9,7 @@
 #import "LYChannInfoViewController.h"
 #import "LYWaveViewController.h"
 #import "LYBHUtility.h"
+#import "LYTrendViewController.h"
 
 
 @implementation LYChannInfoViewController
@@ -353,25 +354,101 @@
 
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    //    NSString *Title;
-    NSLog(@"%@",[segue identifier]);
-    if ([[segue identifier] isEqualToString:@"PushToWave"])
-    {
-        LYWaveViewController * lpChannView = [segue destinationViewController];
-        lpChannView.m_pStrGroup = self.m_pStrGroup;
-        lpChannView.m_pStrCompany = self.m_pStrCompany;
-        lpChannView.m_pStrFactory = self.m_pStrFactory;
-        lpChannView.m_pStrChann = self.m_pStrChann;
-        lpChannView.m_pStrPlant = self.m_pStrPlant;
-        lpChannView.m_nChannType = self.m_nChannType;
-        NSLog(@"%@",lpChannView.m_pStrGroup);
-    }
-    
-}
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    //    NSString *Title;
+//    NSLog(@"%@",[segue identifier]);
+//    if ([[segue identifier] isEqualToString:@"PushToWave"])
+//    {
+//        LYWaveViewController * lpChannView = nil;
+//        LYTrendViewController * lpTrendView = nil;
+//        
+//        UIStoryboard *mainStoryboard = nil;
+//        
+//        
+//
+//        NSLog(@"%@",lpChannView.m_pStrGroup);
+//        int lnChanntype  = [self GetChanntype];
+//        lnChanntype = [LYBHUtility GetChannType:lnChanntype];
+//        switch (lnChanntype)
+//        {
+//            case E_TBL_CHANNTYPE_VIB:
+//            case E_TBL_CHANNTYPE_DYN:
+//                lpChannView =[segue destinationViewController];
+//                lpChannView.m_pStrGroup = self.m_pStrGroup;
+//                lpChannView.m_pStrCompany = self.m_pStrCompany;
+//                lpChannView.m_pStrFactory = self.m_pStrFactory;
+//                lpChannView.m_pStrChann = self.m_pStrChann;
+//                lpChannView.m_pStrPlant = self.m_pStrPlant;
+//                lpChannView.m_nChannType = self.m_nChannType;
+//
+//                break;
+//            case E_TBL_CHANNTYPE_PROC:
+//                mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+//                                                           bundle: nil];
+//                
+//                lpTrendView =(LYTrendViewController *)[mainStoryboard
+//                              instantiateViewControllerWithIdentifier: @"LYTrendViewController"];
+//                [self.navigationController pushViewController:lpTrendView animated:NO];
+//               
+//                break;
+//            default:
+//                break;
+//        }
+//
+//    }
+//    
+//}
 
 - (void)dealloc {
     [_m_oNavigateButton release];
     [super dealloc];
+}
+- (IBAction)onButtonPressed:(UIBarButtonItem *)sender {
+    
+    LYWaveViewController * lpChannView = nil;
+    LYTrendViewController * lpTrendView = nil;
+    
+    UIStoryboard *mainStoryboard = nil;
+    
+    mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                               bundle: nil];
+    
+    NSLog(@"%@",lpChannView.m_pStrGroup);
+    int lnChanntype  = [self GetChanntype];
+    lnChanntype = [LYBHUtility GetChannType:lnChanntype];
+    switch (lnChanntype)
+    {
+        case E_TBL_CHANNTYPE_VIB:
+        case E_TBL_CHANNTYPE_DYN:
+            lpChannView =(LYWaveViewController *)[mainStoryboard
+                                                   instantiateViewControllerWithIdentifier: @"LYWaveViewController"];;
+            lpChannView.m_pStrGroup = self.m_pStrGroup;
+            lpChannView.m_pStrCompany = self.m_pStrCompany;
+            lpChannView.m_pStrFactory = self.m_pStrFactory;
+            lpChannView.m_pStrChann = self.m_pStrChann;
+            lpChannView.m_pStrPlant = self.m_pStrPlant;
+            lpChannView.m_nChannType = self.m_nChannType;
+            [self.navigationController pushViewController:lpChannView animated:YES];
+            break;
+        case E_TBL_CHANNTYPE_PROC:
+          
+            
+            lpTrendView =(LYTrendViewController *)[mainStoryboard
+                                                   instantiateViewControllerWithIdentifier: @"LYTrendViewController"];
+            lpTrendView.m_pStrGroup = self.m_pStrGroup;
+            lpTrendView.m_pStrCompany = self.m_pStrCompany;
+            lpTrendView.m_pStrFactory = self.m_pStrFactory;
+            lpTrendView.m_pStrChann = self.m_pStrChann;
+            lpTrendView.m_pStrPlant = self.m_pStrPlant;
+            lpTrendView.m_nChannType = self.m_nChannType;
+            [self.navigationController pushViewController:lpTrendView animated:YES];
+            
+            break;
+        default:
+            break;
+    }
+    
+
 }
 @end

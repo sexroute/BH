@@ -58,6 +58,14 @@
 		4CC7BB4216C228F600E78C3C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */; };
 		4CCF789516DC5DD1001E6413 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789416DC5DD1001E6413 /* Icon.png */; };
 		4CCF789716DC5DD5001E6413 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCF789616DC5DD5001E6413 /* Icon@2x.png */; };
+		4CFA92B516F9BA2600733FC3 /* AreaChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92A516F9BA2600733FC3 /* AreaChartModel.m */; };
+		4CFA92B616F9BA2600733FC3 /* CandleChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92A716F9BA2600733FC3 /* CandleChartModel.m */; };
+		4CFA92B716F9BA2600733FC3 /* Chart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92A916F9BA2600733FC3 /* Chart.m */; };
+		4CFA92B816F9BA2600733FC3 /* ChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92AB16F9BA2600733FC3 /* ChartModel.m */; };
+		4CFA92B916F9BA2600733FC3 /* ColumnChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92AD16F9BA2600733FC3 /* ColumnChartModel.m */; };
+		4CFA92BA16F9BA2600733FC3 /* LineChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B016F9BA2600733FC3 /* LineChartModel.m */; };
+		4CFA92BB16F9BA2600733FC3 /* Section.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B216F9BA2600733FC3 /* Section.m */; };
+		4CFA92BC16F9BA2600733FC3 /* YAxis.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B416F9BA2600733FC3 /* YAxis.m */; };
 		A46A5878154FDF7400EDA973 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5870154FDF7400EDA973 /* blackArrow.png */; };
 		A46A5879154FDF7400EDA973 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5871154FDF7400EDA973 /* blackArrow@2x.png */; };
 		A46A587A154FDF7400EDA973 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5872154FDF7400EDA973 /* blueArrow.png */; };
@@ -247,6 +255,23 @@
 		4CC7BB4116C228F600E78C3C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		4CCF789416DC5DD1001E6413 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4CCF789616DC5DD5001E6413 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		4CFA92A416F9BA2600733FC3 /* AreaChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaChartModel.h; sourceTree = "<group>"; };
+		4CFA92A516F9BA2600733FC3 /* AreaChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaChartModel.m; sourceTree = "<group>"; };
+		4CFA92A616F9BA2600733FC3 /* CandleChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CandleChartModel.h; sourceTree = "<group>"; };
+		4CFA92A716F9BA2600733FC3 /* CandleChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CandleChartModel.m; sourceTree = "<group>"; };
+		4CFA92A816F9BA2600733FC3 /* Chart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chart.h; sourceTree = "<group>"; };
+		4CFA92A916F9BA2600733FC3 /* Chart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Chart.m; sourceTree = "<group>"; };
+		4CFA92AA16F9BA2600733FC3 /* ChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChartModel.h; sourceTree = "<group>"; };
+		4CFA92AB16F9BA2600733FC3 /* ChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChartModel.m; sourceTree = "<group>"; };
+		4CFA92AC16F9BA2600733FC3 /* ColumnChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnChartModel.h; sourceTree = "<group>"; };
+		4CFA92AD16F9BA2600733FC3 /* ColumnChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnChartModel.m; sourceTree = "<group>"; };
+		4CFA92AE16F9BA2600733FC3 /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		4CFA92AF16F9BA2600733FC3 /* LineChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineChartModel.h; sourceTree = "<group>"; };
+		4CFA92B016F9BA2600733FC3 /* LineChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineChartModel.m; sourceTree = "<group>"; };
+		4CFA92B116F9BA2600733FC3 /* Section.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Section.h; sourceTree = "<group>"; };
+		4CFA92B216F9BA2600733FC3 /* Section.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Section.m; sourceTree = "<group>"; };
+		4CFA92B316F9BA2600733FC3 /* YAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAxis.h; sourceTree = "<group>"; };
+		4CFA92B416F9BA2600733FC3 /* YAxis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YAxis.m; sourceTree = "<group>"; };
 		A46A5870154FDF7400EDA973 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
 		A46A5871154FDF7400EDA973 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
 		A46A5872154FDF7400EDA973 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
@@ -300,6 +325,7 @@
 		4C61891D16E040C0004FEE93 /* bh */ = {
 			isa = PBXGroup;
 			children = (
+				4CFA92A316F9BA2600733FC3 /* chartee */,
 				4C9F990D16F2C997004179FE /* trend */,
 				4C9F990816F2AD9A004179FE /* tabbar */,
 				4C9F990716F2AD62004179FE /* chann */,
@@ -579,6 +605,30 @@
 			name = Thirdparty;
 			sourceTree = "<group>";
 		};
+		4CFA92A316F9BA2600733FC3 /* chartee */ = {
+			isa = PBXGroup;
+			children = (
+				4CFA92A416F9BA2600733FC3 /* AreaChartModel.h */,
+				4CFA92A516F9BA2600733FC3 /* AreaChartModel.m */,
+				4CFA92A616F9BA2600733FC3 /* CandleChartModel.h */,
+				4CFA92A716F9BA2600733FC3 /* CandleChartModel.m */,
+				4CFA92A816F9BA2600733FC3 /* Chart.h */,
+				4CFA92A916F9BA2600733FC3 /* Chart.m */,
+				4CFA92AA16F9BA2600733FC3 /* ChartModel.h */,
+				4CFA92AB16F9BA2600733FC3 /* ChartModel.m */,
+				4CFA92AC16F9BA2600733FC3 /* ColumnChartModel.h */,
+				4CFA92AD16F9BA2600733FC3 /* ColumnChartModel.m */,
+				4CFA92AE16F9BA2600733FC3 /* constants.h */,
+				4CFA92AF16F9BA2600733FC3 /* LineChartModel.h */,
+				4CFA92B016F9BA2600733FC3 /* LineChartModel.m */,
+				4CFA92B116F9BA2600733FC3 /* Section.h */,
+				4CFA92B216F9BA2600733FC3 /* Section.m */,
+				4CFA92B316F9BA2600733FC3 /* YAxis.h */,
+				4CFA92B416F9BA2600733FC3 /* YAxis.m */,
+			);
+			path = chartee;
+			sourceTree = "<group>";
+		};
 		A46A5869154FDF6900EDA973 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -842,6 +892,14 @@
 				4C9F990116F0533B004179FE /* LYSelectItemViewController.m in Sources */,
 				4C9F990C16F2AF5F004179FE /* LYBHUtility.m in Sources */,
 				4C9F991016F2C9BB004179FE /* LYTrendViewController.m in Sources */,
+				4CFA92B516F9BA2600733FC3 /* AreaChartModel.m in Sources */,
+				4CFA92B616F9BA2600733FC3 /* CandleChartModel.m in Sources */,
+				4CFA92B716F9BA2600733FC3 /* Chart.m in Sources */,
+				4CFA92B816F9BA2600733FC3 /* ChartModel.m in Sources */,
+				4CFA92B916F9BA2600733FC3 /* ColumnChartModel.m in Sources */,
+				4CFA92BA16F9BA2600733FC3 /* LineChartModel.m in Sources */,
+				4CFA92BB16F9BA2600733FC3 /* Section.m in Sources */,
+				4CFA92BC16F9BA2600733FC3 /* YAxis.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

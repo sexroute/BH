@@ -85,6 +85,7 @@
     self.m_oButtonWave.style = UIBarButtonItemStyleBordered;
     self.m_oButtonFreq.style = UIBarButtonItemStylePlain;
     self.m_oButtonFresh.style = UIBarButtonItemStylePlain;
+    self.m_oButtonTrend.title = @"历史趋势";
     
 }
 
@@ -99,6 +100,7 @@
     [self setM_oButtonFreq:nil];
     [self setM_oButtonWave:nil];
     [self setM_oButtonFresh:nil];
+    [self setM_oButtonTrend:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -128,6 +130,7 @@
     [_m_oButtonFreq release];
     [_m_oButtonWave release];
     [_m_oButtonFresh release];
+    [_m_oButtonTrend release];
     [super dealloc];
 }
 
@@ -246,5 +249,22 @@
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
+}
+- (IBAction)onTrendButtonPressed:(UIBarButtonItem *)sender
+{
+    UIStoryboard *mainStoryboard = nil;
+    
+    mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                               bundle: nil];
+
+    LYTrendViewController * lpTrendView =(LYTrendViewController *)[mainStoryboard
+                                           instantiateViewControllerWithIdentifier: @"LYTrendViewController"];
+    lpTrendView.m_pStrGroup = self.m_pStrGroup;
+    lpTrendView.m_pStrCompany = self.m_pStrCompany;
+    lpTrendView.m_pStrFactory = self.m_pStrFactory;
+    lpTrendView.m_pStrChann = self.m_pStrChann;
+    lpTrendView.m_pStrPlant = self.m_pStrPlant;
+    lpTrendView.m_nChannType = self.m_nChannType;
+    [self.navigationController pushViewController:lpTrendView animated:YES];
 }
 @end

@@ -24,5 +24,6 @@
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) NSString * m_pStrPlant;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oNavigateButton;
+- (IBAction)onButtonPressed:(UIBarButtonItem *)sender;
 @property ( nonatomic) int m_nChannType;
 @end
