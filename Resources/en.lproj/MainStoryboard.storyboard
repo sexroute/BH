@@ -827,6 +827,7 @@ Ew
                 <relationship kind="action" name="OnRefreshPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="OnWavePressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="onFreqPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="onTrendButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_oButtonFreq" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_oButtonFresh" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="m_oButtonTrend" candidateClass="UIBarButtonItem"/>
@@ -835,6 +836,9 @@ Ew
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>
+        </class>
+        <class className="NSMutableArray" superclassName="NSArray">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSMutableArray.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

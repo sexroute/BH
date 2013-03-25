@@ -274,7 +274,29 @@
         NSNumber *lpValue = [lpText objectForKey:@"val"];
         float lfValue = [lpValue floatValue];
         NSString * lpUnit = [lpText objectForKey:@"unit"];
+        
+        NSString * lpObj = [lpText objectForKey:@"alarm_status"];
+        int lnAlarmStatus = [(NSNumber *)lpObj intValue];
+        
+        switch (lnAlarmStatus) {
+            case 0:
+                
+                break;
+            case 1:
+                
+                cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0]autorelease];
+                break;
+            case 2:
+               
+                cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]autorelease];
+                break;
+            default:
+                break;
+        }
+
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %6.2f%@",lpName,lfValue ,lpUnit];
+        
+                                   
 
     }
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
@@ -383,12 +405,14 @@
     ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
     ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
     ChanninfoDetailViewController.m_pData = loObj;
-    
+    self.navigationItem.title = @"返回";
     [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
 }
 
-- (void)dealloc {
-    if (nil!=self->responseData) {
+- (void)dealloc
+{
+    if (nil!=self->responseData)
+    {
         [self->responseData release];
         self->responseData = nil;
     }

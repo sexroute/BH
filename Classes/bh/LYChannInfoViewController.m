@@ -19,11 +19,16 @@
 @synthesize m_pStrFactory;
 @synthesize m_pStrChann;
 @synthesize m_pStrPlant;
+@synthesize m_pStrChannUnit;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.m_fHH = .0;
+        self.m_fHL = .0;
+        self.m_fLL = .0;
+        self.m_fLH = .0;
     }
     return self;
 }
@@ -226,6 +231,7 @@
                 case 6:
                     lpTitle = @"单   位";
                     lpObj = [self.m_pData objectForKey:@"unit"];
+                    self.m_pStrChannUnit = lpObj;
                     break;
                 case 7:
                     lpTitle = @"报警状态";
@@ -237,9 +243,11 @@
                             break;
                         case 1:
                             lpObj = @"报警";
+                            cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0]autorelease];
                             break;
                         case 2:
                             lpObj = @"危险";
+                             cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]autorelease];
                             break;
                         default:
                             break;
@@ -255,18 +263,22 @@
                 case 2:
                     lpTitle = @"高高报线";
                     lpObj = [self.m_pData objectForKey:@"HH"];
+                    self.m_fHH = [lpObj floatValue];
                     break;
                 case 3:
                     lpTitle = @"高低报线";
                     lpObj = [self.m_pData objectForKey:@"HL"];
+                     self.m_fHL = [lpObj floatValue];
                     break;
                 case 4:
                     lpTitle = @"低低报线";
                     lpObj = [self.m_pData objectForKey:@"LL"];
+                     self.m_fLL = [lpObj floatValue];
                     break;
                 case 5:
                     lpTitle = @"低高报线";
                     lpObj = [self.m_pData objectForKey:@"LH"];
+                     self.m_fLH = [lpObj floatValue];
                     break;
                 case 0:
                     lpTitle = @"当 前 值";
@@ -429,6 +441,11 @@
             lpChannView.m_pStrChann = self.m_pStrChann;
             lpChannView.m_pStrPlant = self.m_pStrPlant;
             lpChannView.m_nChannType = self.m_nChannType;
+            lpChannView.m_pStrChannUnit = self.m_pStrChannUnit;
+            lpChannView.m_fHH = self.m_fHH;
+            lpChannView.m_fHL = self.m_fHL;
+            lpChannView.m_fLL = self.m_fLL;
+            lpChannView.m_fLH = self.m_fLH;
             [self.navigationController pushViewController:lpChannView animated:YES];
             break;
         case E_TBL_CHANNTYPE_PROC:
@@ -442,6 +459,11 @@
             lpTrendView.m_pStrChann = self.m_pStrChann;
             lpTrendView.m_pStrPlant = self.m_pStrPlant;
             lpTrendView.m_nChannType = self.m_nChannType;
+            lpTrendView.m_pStrChannUnit = self.m_pStrChannUnit;
+            lpTrendView.m_fHH = self.m_fHH;
+            lpTrendView.m_fHL = self.m_fHL;
+            lpTrendView.m_fLL = self.m_fLL;
+            lpTrendView.m_fLH = self.m_fLH;
             [self.navigationController pushViewController:lpTrendView animated:YES];
             
             break;

@@ -23,7 +23,7 @@
 @synthesize m_pStrFactory;
 @synthesize m_pStrChann;
 @synthesize m_pStrPlant;
-
+@synthesize m_pStrChannUnit;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -40,6 +40,12 @@
         self.m_pStrGroup = nil;
         self.m_pStrPlant = nil;
         self.hostView = nil;
+        
+        self.m_fHH = .0;
+        self.m_fHL = .0;
+        self.m_fLL = .0;
+        self.m_fLH = .0;
+
         
     }
     return self;
@@ -123,6 +129,7 @@
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
     self.hostView = nil;
+    self.m_pStrChannUnit = nil;
     [m_pChartViewParent release];
     [m_plotView release];
     
@@ -265,6 +272,12 @@
     lpTrendView.m_pStrChann = self.m_pStrChann;
     lpTrendView.m_pStrPlant = self.m_pStrPlant;
     lpTrendView.m_nChannType = self.m_nChannType;
+    lpTrendView.m_pStrChannUnit = self.m_pStrChannUnit;
+    lpTrendView.m_fHH = self.m_fHH;
+    lpTrendView.m_fHL = self.m_fHL;
+    lpTrendView.m_fLL = self.m_fLL;
+    lpTrendView.m_fLH = self.m_fLH;
+    self.navigationItem.title = @"返回";
     [self.navigationController pushViewController:lpTrendView animated:YES];
 }
 @end

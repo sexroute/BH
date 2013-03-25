@@ -792,14 +792,15 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+
     self.m_pStrFontName = nil;
-	[borderColor release];
-	[padding release];
-	[series release];
-	[title release];
-	[sections release];
-	[ratios release];
+//	[borderColor release];
+//	[padding release];
+//	[series release];
+//	[title release];
+//	[sections release];
+//	[ratios release];
+    [super dealloc];
 }
 
 #pragma mark -

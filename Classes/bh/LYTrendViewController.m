@@ -7,6 +7,12 @@
 //
 
 #import "LYTrendViewController.h"
+#import "LYGlobalSettings.h"
+#import "ChannInfo.h"
+#import "LYBHUtility.h"
+#import "LYUtility.h"
+#import "JSON.h"
+#import "MBProgressHUD.h"
 
 @interface LYTrendViewController ()
 
@@ -18,25 +24,89 @@
 @synthesize m_pStrFactory;
 @synthesize m_pStrChann;
 @synthesize m_pStrPlant;
+@synthesize m_oResponseData;
+@synthesize listOfItems;
+@synthesize m_pStrChannUnit;
+
+#pragma mark 初始化
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self->HUD = nil;
+        self.m_pStrChannUnit =nil;
+        self.m_oResponseData =nil;
+        self.m_pStrChann = nil;
+        self.m_pStrCompany = nil;
+        self.m_pStrFactory = nil;
+        self.m_pStrGroup = nil;
+        self.m_pStrPlant = nil;
+        self.m_fHH = .0;
+        self.m_fHL = .0;
+        self.m_fLL = .0;
+        self.m_fLH = .0;
+        
     }
     return self;
 }
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-40)]autorelease];
+
     
-    [self.view addSubview:self.candleChart];
-    [self initChart];
-    [self InitData];
+    [self.navigationController.toolbar setHidden:TRUE];
+    
+    self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
+    
+    [self.view addSubview:self.candleChart];    
+   
+    [self PopUpIndicator];
+    [self LoadData];
+    
+
+    
 	// Do any additional setup after loading the view.
+}
+
+
+-(void)viewDidAppear:(BOOL)animated
+{
+     
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"test");
+}
+
+-(void)LoadData
+{
+    self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
+    self.listOfItems = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+    NSString * lstrTimeEnd = [LYUtility GetDateFormat:nil];
+    NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/vib.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    
+    int lnChannCat = [LYBHUtility GetChannType:self.m_nChannType];
+    if (lnChannCat == E_TBL_CHANNTYPE_PROC)
+    {
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/proc.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    }
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@&channtype=%d&timestart=%@&timeend=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann,self.m_nChannType,lstrTimeStart,lstrTimeEnd];
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
+                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                       timeoutInterval:NETWORK_TIMEOUT];
+    NSLog(@"%@\r\n",lpUrl);
+    NSLog(@"%@\r\n",lpPostData);
+    
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
+	[[NSURLConnection alloc] initWithRequest:request delegate:self];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,6 +124,46 @@
     self.m_pStrPlant = nil;
     [super viewDidUnload];
 }
+
+#pragma mark HUD指示器
+-(void)PopUpIndicator
+{
+    self->HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    self->HUD.mode = MBProgressHUDModeIndeterminate;
+	[self.navigationController.view addSubview:self->HUD];
+    self->HUD.dimBackground = YES;
+    self->HUD.labelText = @"刷新中";
+	// Regiser for HUD callbacks so we can remove it from the window at the right time
+	self->HUD.delegate = self;
+	// Show the HUD while the provided method executes in a new thread
+	[self->HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
+}
+
+-(void) HiddeIndicator
+{
+    if (nil!=self->HUD)
+    {
+        [self->HUD hide:YES];
+    }
+}
+
+- (void)OnHudCallBack
+{
+    sleep(NETWORK_TIMEOUT);
+}
+
+- (void)hudWasHidden:(MBProgressHUD *)aphud
+{
+    if (nil!=aphud)
+    {
+        NSLog(@"hudWasHidden self :%d",aphud.retainCount);
+        [aphud removeFromSuperview];
+        [aphud release];
+    }
+}
+
+
+#pragma mark 绘图
 
 -(void)setData:(NSDictionary *)dic
 {
@@ -97,7 +207,7 @@
 {
 	NSMutableArray *padding = [NSMutableArray arrayWithObjects:@"20",@"20",@"20",@"20",nil];
 	[self.candleChart setPadding:padding];
-	NSMutableArray *secs = [[NSMutableArray alloc] init];
+	NSMutableArray *secs = [[[NSMutableArray alloc] init]autorelease];
     //分区，数值大小代表分区的高低
 	[secs addObject:@"4"]; //占位4/7
 	[secs addObject:@"2"]; //占位2/7
@@ -129,12 +239,12 @@
 	[serie setObject:@"0" forKey:@"section"];
 	[serie setObject:@"0,0,255" forKey:@"color"];
 	[serie setObject:@"255,0,0" forKey:@"negativeColor"];
-	[serie setObject:@"255,0,0" forKey:@"selectedColor"];
-	[serie setObject:@"255,0,0" forKey:@"negativeSelectedColor"];
+	[serie setObject:@"0,255,0" forKey:@"selectedColor"];
+	[serie setObject:@"0,255,0" forKey:@"negativeSelectedColor"];
 	[serie setObject:@"255,255,0" forKey:KEY_LABEL_COLOR];
     [serie setObject:@"255,255,255" forKey:KEY_LABEL_DETAIL_INFO_COLOR];
-	[serie setObject:@"255,0,0" forKey:@"labelNegativeColor"];
-    [serie setObject:@"um" forKey:KEY_UNIT];
+	[serie setObject:@"0,255,0" forKey:@"labelNegativeColor"];
+    [serie setObject:self.m_pStrChannUnit forKey:KEY_UNIT];
 	[series addObject:serie];
 	[secOne addObject:serie];
 	[data release];
@@ -261,7 +371,7 @@
 }
 -(void)InitData
 {
-    int lnDataSize = 10;
+    int lnDataSize = self.listOfItems.count;
     NSMutableArray *   lpArray= [NSMutableArray arrayWithCapacity:lnDataSize];
     
     NSLocale *locale = [NSLocale currentLocale];
@@ -271,12 +381,16 @@
     NSString *dateFormat = [NSDateFormatter dateFormatFromTemplate:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'" options:0 locale:nil];
     [formatter setDateFormat:dateFormat];
     [formatter setLocale:locale];
-    for (int i=0; i<lnDataSize; i++)
+    for (int i=0; i<self.listOfItems.count; i++)
     {
+       NSArray * lpEigenvalues =   [(NSDictionary *)[self.listOfItems objectAtIndex:i] objectForKey:@"eigenvalue"];
+        float lfval = [[lpEigenvalues objectForKey:@"featureValue1"] floatValue];
+        int ldRev = [[lpEigenvalues objectForKey:@"Rev"] intValue];
         NSMutableArray * lpDataArray = [NSMutableArray arrayWithCapacity:6];
-        [lpDataArray addObject:[NSString  stringWithFormat:@"%f",i*1.0]];
-        [lpDataArray addObject:[NSString  stringWithFormat:@"时间 %@",[formatter stringFromDate:[NSDate date]]]];
-        [lpDataArray addObject:[NSString  stringWithFormat:@"转速 %d RPM",3980]];
+        NSString * lpDateTime = [(NSDictionary *)[self.listOfItems objectAtIndex:i] objectForKey:@"datetime"];
+        [lpDataArray addObject:[NSString  stringWithFormat:@"%f",lfval]];
+        [lpDataArray addObject:[NSString  stringWithFormat:@"时间 %@",lpDateTime]];
+        [lpDataArray addObject:[NSString  stringWithFormat:@"转速 %d RPM",ldRev]];
         
         
         
@@ -289,10 +403,98 @@
     
     [self.candleChart appendToData:lpArray forName:@"price"];
     [self.candleChart setRange:lnDataSize];
+   
+
 }
+
+#pragma mark 析构
 -(void) dealloc
 {
+    self.m_oResponseData = nil;
+    self.m_pStrChann = nil;
+    self.m_pStrCompany = nil;
+    self.m_pStrFactory = nil;
+    self.m_pStrGroup = nil;
+    self.m_pStrPlant = nil;
+    self.listOfItems = nil;
     [super dealloc];
+}
+#pragma mark 读取网络数据
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[m_oResponseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+	[m_oResponseData appendData:data];
+}
+
+- (void) alertLoadFailed:(NSString * )apstrError
+{
+    NSString * lpStr = [NSString stringWithFormat:@"获取数据失败,重试?"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
+												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    
+    [alert show];
+    [alert release];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    [self HiddeIndicator];
+	//弹出网络错误对话框
+    [self alertLoadFailed:[error localizedDescription]];
+}
+
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // the user clicked one of the OK/Cancel buttons
+    if (buttonIndex == 0)
+    {
+        
+    }
+    else
+    {
+
+    }
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+	
+    [self HiddeIndicator];
+//	[self.m_pProgressBar stopAnimating];
+	NSString *responseString = [[NSString alloc] initWithData:m_oResponseData encoding:NSUTF8StringEncoding];
+    NSLog(@"Trend Log: %@\r\n",responseString);
+	NSError *error = nil;
+	SBJSON *json = [[SBJSON new] autorelease];
+
+	self.listOfItems = [json objectWithString:responseString error:&error];
+	
+	if (listOfItems == nil || [listOfItems count] == 0)
+	{
+        //弹出网络错误对话框
+    }
+	else
+    {
+        [self.candleChart removeFromSuperview];
+
+        self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
+        
+        [self.view addSubview:self.candleChart];
+        [self initChart];
+        [self InitData];
+       
+        [self.candleChart setNeedsDisplay];
+        
+        [self.view setNeedsDisplay];
+    
+	}
+    [responseString release];
+ 
+    self.m_oResponseData = nil;
+    
+    [connection release];
+
+    
 }
 
 @end

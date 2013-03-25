@@ -143,7 +143,9 @@ int g_ResolutionYMax = 960;
     // 大刻度线间距： 50 单位
     x. majorIntervalLength = CPTDecimalFromString (@"200");
     // 坐标原点： 0
-    x. orthogonalCoordinateDecimal = CPTDecimalFromString ( @"0" );
+    x. orthogonalCoordinateDecimal = CPTDecimalFromString ( @"0.00" );
+    
+    //x.title = @"um";
     
     CPTXYAxis *y = axisSet.yAxis ;
     //y 轴：不显示小刻度线
@@ -151,7 +153,7 @@ int g_ResolutionYMax = 960;
     // 大刻度线间距： 50 单位
     y. majorIntervalLength = CPTDecimalFromString ( @"50" );
     // 坐标原点： 0
-    y. orthogonalCoordinateDecimal = CPTDecimalFromString (@"0");
+    y. orthogonalCoordinateDecimal = CPTDecimalFromString (@"0.00");
     
     //创建绿色区域
     dataSourceLinePlot = [[[CPTScatterPlot alloc] init] autorelease];
@@ -159,7 +161,7 @@ int g_ResolutionYMax = 960;
     
     //设置绿色区域边框的样式
     CPTMutableLineStyle *lineStyle = [[dataSourceLinePlot.dataLineStyle mutableCopy] autorelease];
-    lineStyle.lineWidth = 1.f;
+    lineStyle.lineWidth = 0.5f;
     lineStyle.lineColor = [CPTColor greenColor];
     dataSourceLinePlot.dataLineStyle = lineStyle;
     //设置透明实现添加动画

@@ -682,7 +682,7 @@
 				4CC784D116D46E420019B95C /* lib */,
 				A46A586F154FDF7400EDA973 /* Resources */,
 				A46A5869154FDF6900EDA973 /* Classes */,
-				A4D10842154ED4ED00E73642 /* bhTests */,
+				A4D10842154ED4ED00E73642 /* bhTest */,
 				A4D1081D154ED4EC00E73642 /* Frameworks */,
 				A4D1081B154ED4EC00E73642 /* Products */,
 			);
@@ -709,13 +709,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A4D10842154ED4ED00E73642 /* bhTests */ = {
+		A4D10842154ED4ED00E73642 /* bhTest */ = {
 			isa = PBXGroup;
 			children = (
 				A4D10848154ED4ED00E73642 /* bhTests.h */,
 				A4D10849154ED4ED00E73642 /* bhTests.m */,
 				A4D10843154ED4ED00E73642 /* Supporting Files */,
 			);
+			name = bhTest;
 			path = bhTests;
 			sourceTree = "<group>";
 		};
