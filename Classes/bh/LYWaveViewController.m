@@ -65,6 +65,7 @@
         self.hostView.m_pStrPlant = self.m_pStrPlant;
         self.hostView.m_pStrChann = [self.m_pStrChann stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         self.hostView.m_pParent = self.m_plotView;
+        self.hostView.m_pStrChannUnit = self.m_pStrChannUnit;
         [self.hostView setDrawDataMode:nDrawMode];
         [self.hostView initGraph];
         [self PopUpIndicator];

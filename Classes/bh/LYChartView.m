@@ -16,6 +16,7 @@
 @synthesize m_pStrFactory;
 @synthesize m_pStrChann;
 @synthesize m_pStrPlant;
+@synthesize m_pStrChannUnit;
 
 @synthesize dataForPlot1;
 int g_ResolutionXMax = 210;
@@ -154,6 +155,8 @@ int g_ResolutionYMax = 960;
     y. majorIntervalLength = CPTDecimalFromString ( @"50" );
     // 坐标原点： 0
     y. orthogonalCoordinateDecimal = CPTDecimalFromString (@"0.00");
+    y.title = self.m_pStrChannUnit;
+   
     
     //创建绿色区域
     dataSourceLinePlot = [[[CPTScatterPlot alloc] init] autorelease];
@@ -188,7 +191,7 @@ int g_ResolutionYMax = 960;
     r = 0;
     
 }
-- (void)DrawData:(id )wave_data wave_lenx:(int)wave_len maxPoint:(int)anMaxPoint axis_x_max:(double)adblAxisXMax axis_x_delta:(double)adblAxisXDelta
+- (void)DrawData:(id )wave_data wave_lenx:(int)wave_len maxPoint:(int)anMaxPoint axis_x_max:(double)adblAxisXMax axis_x_delta:(double)adblAxisXDelta type:(int)anType
 {
     [dataForPlot1 removeAllObjects];
     if (0!= wave_len )
@@ -401,6 +404,14 @@ int g_ResolutionYMax = 960;
             // 坐标原点： 0
             y. orthogonalCoordinateDecimal = CPTDecimalFromString (@"0");
             
+            if (anType == 0)
+            {
+                y.title = self.m_pStrChannUnit;
+            }else
+            {
+                 y.title = @"HZ";
+            }
+            
         }
         
     }
@@ -452,7 +463,7 @@ int g_ResolutionYMax = 960;
             ldblAxisXDelta = ldblXAxisMax/g_ResolutionXMax;
         }
         
-        [self DrawData:wave wave_lenx:lnWave_Len maxPoint:g_ResolutionXMax axis_x_max:ldblXAxisMax axis_x_delta:ldblAxisXDelta];
+        [self DrawData:wave wave_lenx:lnWave_Len maxPoint:g_ResolutionXMax axis_x_max:ldblXAxisMax axis_x_delta:ldblAxisXDelta type:1];
         
         return 1;
     }
@@ -502,7 +513,7 @@ int g_ResolutionYMax = 960;
             ldblAxisXDelta = ldblXAxisMax/g_ResolutionXMax;
         }
         
-        [self DrawData:wave wave_lenx:lnWave_Len maxPoint:g_ResolutionXMax axis_x_max:ldblXAxisMax axis_x_delta:ldblAxisXDelta];
+        [self DrawData:wave wave_lenx:lnWave_Len maxPoint:g_ResolutionXMax axis_x_max:ldblXAxisMax axis_x_delta:ldblAxisXDelta type:0];
         
         return 1;
     }

@@ -47,6 +47,7 @@ typedef enum {
 @property (retain, nonatomic) NSString * m_pStrFactory;
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) NSString * m_pStrPlant;
+@property (retain, nonatomic) NSString * m_pStrChannUnit;
 -(void) initGraph;
 
 
