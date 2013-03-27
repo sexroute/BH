@@ -274,9 +274,9 @@
 {
     [self PopUpIndicator];
     self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
-    self.listOfItems = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-    NSString * lstrTimeEnd = self.m_pStrTimeStart;
-    NSString * lstrTimeStart = self.m_pStrTimeStart;
+    self.listOfItems = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+    NSString * lstrTimeEnd = [LYUtility GetDateFormat:nil];
+    NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/diag/diag.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     
 
