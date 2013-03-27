@@ -10,6 +10,8 @@
 #import "LYChannInfoViewController.h"
 #import "ChannInfo.h"
 #import "LYGlobalSettings.h"
+#import "LYDiagViewController.h"
+#import "LYUtility.h"
 @interface LYChannViewController ()
 
 
@@ -27,6 +29,8 @@
 @synthesize VibChanns;
 @synthesize DynChanns;
 @synthesize ProcChanns;
+@synthesize m_pStrTimeStart;
+@synthesize m_strChannDiaged;
 
 
 
@@ -243,6 +247,23 @@
     return 0;
 }
 
+-(void)addDiagButtonToCell:(UITableViewCell *)cell
+{
+    if (nil!= cell)
+    {
+        CGRect frame =CGRectMake(150,2,100,40);
+        UIButton *button=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button.frame=frame;
+        [button setTitle:@"故障诊断" forState:UIControlStateNormal];
+        button.backgroundColor=[UIColor clearColor];
+        button.tag=2000;
+        [button addTarget:self action:@selector(DiagButtonClicked:)
+         forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:button];
+        
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -276,6 +297,9 @@
         NSString * lpUnit = [lpText objectForKey:@"unit"];
         
         NSString * lpObj = [lpText objectForKey:@"alarm_status"];
+       
+        
+        
         int lnAlarmStatus = [(NSNumber *)lpObj intValue];
         
         switch (lnAlarmStatus) {
@@ -285,10 +309,19 @@
             case 1:
                 
                 cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0]autorelease];
-                break;
+                
+                self.m_strChannDiaged = lpName;
+                self.m_pStrTimeStart = [lpText objectForKey:@"datetime"];
+                [self addDiagButtonToCell:cell];
+              break;
             case 2:
                
                 cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]autorelease];
+                
+                self.m_strChannDiaged = lpName;
+                self.m_pStrTimeStart = [lpText objectForKey:@"datetime"];
+                [self addDiagButtonToCell:cell];
+                
                 break;
             default:
                 break;
@@ -302,6 +335,29 @@
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
 
+}
+
+- (IBAction)DiagButtonClicked:(UIBarButtonItem *)sender
+{
+    LYDiagViewController * lpChannView = nil;
+
+    
+    UIStoryboard *mainStoryboard = nil;
+    
+    mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                               bundle: nil];
+    lpChannView =(LYDiagViewController *)[mainStoryboard
+                                          instantiateViewControllerWithIdentifier: @"LYDiagViewController"];
+    lpChannView.m_pStrChann = self.m_strChannDiaged;
+    lpChannView.m_pStrCompany = self.m_pStrCompany;
+    lpChannView.m_pStrFactory = self.m_pStrFactory;
+    lpChannView.m_pStrGroup = self.m_pStrGroup;
+    lpChannView.m_pStrPlant = self.m_pStrPlant;
+    lpChannView.m_pStrSet = self.m_pStrSet;
+    lpChannView.m_pStrTimeStart = self.m_pStrTimeStart;
+    lpChannView.m_nPlantType = self.m_nPlantType;
+    self.title = @"返回";
+    [self.navigationController pushViewController:lpChannView animated:YES];
 }
 
 /*
@@ -425,6 +481,8 @@
     self.VibChanns = nil;
     self.DynChanns = nil;
     self.ProcChanns = nil;
+    self.m_pStrTimeStart = nil;
+    self.m_strChannDiaged = nil;
     [m_pProgressBar release];
     [super dealloc];
 }

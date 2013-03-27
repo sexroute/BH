@@ -304,6 +304,9 @@
         lpChannView.m_pStrFactory = [NSString stringWithString: [ self.m_pData objectForKey:@"factoryid"]];
         lpChannView.m_pStrSet = [NSString stringWithString: [ self.m_pData objectForKey:@"setid"]];
         lpChannView.m_pStrPlant = [NSString stringWithString: [ self.m_pData objectForKey:@"plantid"]];
+        NSString * lpMachinetype =[ self.m_pData objectForKey:@"machine_type"];
+        
+       lpChannView.m_nPlantType = [[ self.m_pData objectForKey:@"machine_type"]intValue];
         NSLog(@"%@",lpChannView.m_pStrCompany);
     }
     

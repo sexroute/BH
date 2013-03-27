@@ -288,12 +288,12 @@ static NSString * databasePath = nil;
         
         [g_pSettingsDic setObject:@"1" forKey:SETTING_KEY_STYLE];
          
-        
-//        [g_pSettingsDic setObject:@"http://192.168.12.100/api" forKey:(SETTING_KEY_SERVER_ADDRESS)];
-//        [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
-//        [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
-        
-        //3.初始化用户名密码-测试用
+    /*
+       [g_pSettingsDic setObject:@"http://192.168.12.100/api" forKey:(SETTING_KEY_SERVER_ADDRESS)];
+        [g_pSettingsDic setObject:@"192.168.123.213" forKey:(SETTING_KEY_MIDDLE_WARE_IP)];
+        [g_pSettingsDic setObject:@"7001" forKey:(SETTING_KEY_MIDDLE_WARE_PORT)];
+      */  
+     //3.初始化用户名密码-测试用
 //        NSString * lpVal = [LYGlobalSettings GetValFromDatabase:SETTING_KEY_USER];
 //        [g_pSettingsDic setObject:lpVal forKey:(SETTING_KEY_USER)];
 //        

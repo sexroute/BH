@@ -33,4 +33,8 @@
 @property (retain, nonatomic) NSMutableArray * VibChanns;
 @property (retain, nonatomic) NSMutableArray * DynChanns;
 @property (retain, nonatomic) NSMutableArray * ProcChanns;
+@property (nonatomic) int m_nPlantType;
+@property (retain, nonatomic) NSString * m_pStrTimeStart;
+@property (retain, nonatomic) NSString * m_strChannDiaged;
+
 @end

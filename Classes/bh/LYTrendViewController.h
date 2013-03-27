@@ -11,7 +11,7 @@
 #import "Chart.h"
 #import "MBProgressHUD.h"
 
-@interface LYTrendViewController : UIViewController
+@interface LYTrendViewController : UIViewController<MBProgressHUDDelegate>
 {
     MBProgressHUD *HUD;
 }

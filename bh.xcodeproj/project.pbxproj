@@ -66,6 +66,7 @@
 		4CFA92BA16F9BA2600733FC3 /* LineChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B016F9BA2600733FC3 /* LineChartModel.m */; };
 		4CFA92BB16F9BA2600733FC3 /* Section.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B216F9BA2600733FC3 /* Section.m */; };
 		4CFA92BC16F9BA2600733FC3 /* YAxis.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B416F9BA2600733FC3 /* YAxis.m */; };
+		4CFA92C01702BF1D00733FC3 /* LYDiagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92BF1702BF1D00733FC3 /* LYDiagViewController.m */; };
 		A46A5878154FDF7400EDA973 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5870154FDF7400EDA973 /* blackArrow.png */; };
 		A46A5879154FDF7400EDA973 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5871154FDF7400EDA973 /* blackArrow@2x.png */; };
 		A46A587A154FDF7400EDA973 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5872154FDF7400EDA973 /* blueArrow.png */; };
@@ -272,6 +273,8 @@
 		4CFA92B216F9BA2600733FC3 /* Section.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Section.m; sourceTree = "<group>"; };
 		4CFA92B316F9BA2600733FC3 /* YAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YAxis.h; sourceTree = "<group>"; };
 		4CFA92B416F9BA2600733FC3 /* YAxis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YAxis.m; sourceTree = "<group>"; };
+		4CFA92BE1702BF1D00733FC3 /* LYDiagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYDiagViewController.h; sourceTree = "<group>"; };
+		4CFA92BF1702BF1D00733FC3 /* LYDiagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYDiagViewController.m; sourceTree = "<group>"; };
 		A46A5870154FDF7400EDA973 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
 		A46A5871154FDF7400EDA973 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
 		A46A5872154FDF7400EDA973 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
@@ -325,6 +328,7 @@
 		4C61891D16E040C0004FEE93 /* bh */ = {
 			isa = PBXGroup;
 			children = (
+				4CFA92BD1702BF0100733FC3 /* diag */,
 				4CFA92A316F9BA2600733FC3 /* chartee */,
 				4C9F990D16F2C997004179FE /* trend */,
 				4C9F990816F2AD9A004179FE /* tabbar */,
@@ -629,6 +633,15 @@
 			path = chartee;
 			sourceTree = "<group>";
 		};
+		4CFA92BD1702BF0100733FC3 /* diag */ = {
+			isa = PBXGroup;
+			children = (
+				4CFA92BE1702BF1D00733FC3 /* LYDiagViewController.h */,
+				4CFA92BF1702BF1D00733FC3 /* LYDiagViewController.m */,
+			);
+			name = diag;
+			sourceTree = "<group>";
+		};
 		A46A5869154FDF6900EDA973 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -901,6 +914,7 @@
 				4CFA92BA16F9BA2600733FC3 /* LineChartModel.m in Sources */,
 				4CFA92BB16F9BA2600733FC3 /* Section.m in Sources */,
 				4CFA92BC16F9BA2600733FC3 /* YAxis.m in Sources */,
+				4CFA92C01702BF1D00733FC3 /* LYDiagViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
