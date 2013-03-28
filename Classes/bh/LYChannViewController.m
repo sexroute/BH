@@ -298,19 +298,20 @@
     return  50;
 }
 
--(void)addDiagButtonToCell:(LYAlarmedChannCell *)cell
+-(void)addDiagButtonToCell:(LYAlarmedChannCell *)cell buttonColor:(UIColor *) buttonColor textcolor:(UIColor *) textcolor buttonTitle:(NSString *) buttonTitle
 {
     if (nil!= cell)
     {
-        CGRect frame =CGRectMake(20,50,120,40);
+        CGRect frame =CGRectMake(22,45,200,35);
+
         NVUIGradientButton *button=[[[NVUIGradientButton alloc]initWithFrame:frame ]autorelease];
         button.frame=frame;
-        button.text = @"故障诊断";
+        button.text = buttonTitle;
         button.backgroundColor=[UIColor clearColor];
         button.tag=2000;
-        button.textColor = [UIColor whiteColor];
+        button.textColor =textcolor;
         button.textShadowColor = [UIColor darkGrayColor];
-        button.tintColor = [UIColor colorWithRed:(CGFloat)78/255 green:123.0/255.0 blue:167.0/255.0 alpha:1];
+        button.tintColor = buttonColor;
         button.highlightedTintColor = [UIColor colorWithRed:(CGFloat)190/255 green:(CGFloat)190/255 blue:(CGFloat)190/255 alpha:1];
         button.rightAccessoryImage = [UIImage imageNamed:@"arrow"];
 
@@ -365,9 +366,9 @@
         NSString * lpUnit = [lpText objectForKey:@"unit"];
         
         NSString * lpObj = [lpText objectForKey:@"alarm_status"];
-       
+        UIColor * buttonColor = nil;
         
-        
+        NSString * lpTitle = nil;
         int lnAlarmStatus = [(NSNumber *)lpObj intValue];
         
         switch (lnAlarmStatus) {
@@ -376,19 +377,27 @@
                 break;
             case 1:
                 
-                cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0]autorelease];
+              
                 
                 self.m_strChannDiaged = lpName;
                 self.m_pStrTimeStart = [lpText objectForKey:@"updatedatetime"];
-                [self addDiagButtonToCell:(LYAlarmedChannCell *)cell];
+                 buttonColor = [[[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0]autorelease];
+                lpTitle = [NSString stringWithFormat:@"自动诊断%@测点",@"报警"];
+                [self addDiagButtonToCell:(LYAlarmedChannCell *)cell  buttonColor:buttonColor textcolor:[UIColor blackColor] buttonTitle:lpTitle];
+//                ((LYAlarmedChannCell *)cell).m_oStatus.textColor = buttonColor;
+//                ((LYAlarmedChannCell *)cell).m_oStatus.text = [NSString stringWithFormat:@"状态: 报警"];
               break;
             case 2:
                
-                cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]autorelease];
+              
                 
                 self.m_strChannDiaged = lpName;
                 self.m_pStrTimeStart = [lpText objectForKey:@"updatedatetime"];
-                [self addDiagButtonToCell:(LYAlarmedChannCell *)cell];
+                 buttonColor =[ [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]autorelease];
+                lpTitle = [NSString stringWithFormat:@"自动诊断%@测点",@"危险"];
+                [self addDiagButtonToCell:(LYAlarmedChannCell *)cell  buttonColor:buttonColor textcolor:[UIColor whiteColor] buttonTitle:lpTitle];
+//                ((LYAlarmedChannCell *)cell).m_oStatus.textColor = buttonColor;
+//                ((LYAlarmedChannCell *)cell).m_oStatus.text = [NSString stringWithFormat:@"状态: 危险"];
                 
                 break;
             default:

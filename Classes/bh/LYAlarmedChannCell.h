@@ -10,5 +10,6 @@
 
 @interface LYAlarmedChannCell : UITableViewCell
 @property (retain, nonatomic) IBOutlet UILabel *m_oLabel;
+@property (retain, nonatomic) IBOutlet UILabel *m_oStatus;
 
 @end

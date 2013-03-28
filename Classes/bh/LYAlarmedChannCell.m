@@ -28,6 +28,7 @@
 
 - (void)dealloc {
     [_m_oLabel release];
+    [_m_oStatus release];
     [super dealloc];
 }
 @end
