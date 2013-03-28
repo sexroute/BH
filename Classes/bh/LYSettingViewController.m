@@ -26,7 +26,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%f", cell.contentView.frame.size.width);
+
 }
 - (void)viewDidLoad
 {
@@ -69,7 +69,7 @@
 
 -(void)doLogoOut
 {
-    NSLog(@"logOut");
+    
     //1.将登录状态设置为0
     [LYGlobalSettings SetSettingString:SETTING_KEY_LOGIN apVal:@"0"];
     //2.导航至splash window

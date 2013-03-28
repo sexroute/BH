@@ -194,42 +194,80 @@
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // the user clicked one of the OK/Cancel buttons
+    //not to reload data
     if (buttonIndex == 0)
     {
-        
+       
     }
     else
     {
-        
+         [self LoadData];
     }
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
 	
     [self HiddeIndicator];
     //	[self.m_pProgressBar stopAnimating];
-	NSString *responseString = [[NSString alloc] initWithData:m_oResponseData encoding:NSUTF8StringEncoding];
-    NSLog(@"Trend Log: %@\r\n",responseString);
+	NSString *responseString = [[[NSString alloc] initWithData:m_oResponseData encoding:NSUTF8StringEncoding]autorelease];
+#ifdef DEBUG
+    NSLog(@"Diag Response: %@\r\n",responseString);
+#endif
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
     
-	self.listOfItems = [json objectWithString:responseString error:&error];
+	id loResponse = [json objectWithString:responseString error:&error];
+    
+    if ([loResponse isKindOfClass:[NSMutableDictionary class]])
+    {
+        self.listOfItems = loResponse;
+    }else
+    {
+        self.listOfItems = nil;
+    }
 	
-	if (listOfItems == nil || [listOfItems count] == 0)
+    self.m_oResponseData = nil;
+    [connection release];
+	
+    if (self.listOfItems == nil || [self.listOfItems count] == 0)
 	{
         //弹出网络错误对话框
+        [self alertLoadFailed:nil];
+        
+
     }
 	else
     {
-       
+        NSMutableArray * lpFaults = [self.listOfItems objectForKey:SETTING_KEY_FAULT];
+        if (nil == lpFaults|| [lpFaults count] == 0)
+        {
+            lpFaults = [NSMutableArray arrayWithCapacity:1];
+            [lpFaults addObject:SETTING_DEAULT_FAULT];
+            [self.listOfItems setObject:lpFaults forKey:SETTING_KEY_FAULT];
+            
+        }
+        if ([lpFaults count] == 2)
+        {
+            NSString * lpData1 = [lpFaults objectAtIndex:0];
+            NSString * lpData2 = [lpFaults objectAtIndex:1];
+            
+            if (([lpData1 isEqualToString:@"转子不平衡" ]) && ([lpData2 isEqualToString:@"旋转失速"]) )
+            {
+                [lpFaults removeObjectAtIndex:1];
+                
+            }
+            
+            else if (([lpData2 isEqualToString:@"转子不平衡" ]) && ([lpData1 isEqualToString:@"旋转失速"]) )
+            {
+                [lpFaults removeObjectAtIndex:0];
+                
+            }
+        }
+        
+        [self.tableView reloadData];
 	}
-    [responseString release];
     
-    self.m_oResponseData = nil;
-    
-    [connection release];
-    
-    [self.tableView reloadData];
     
 }
 
@@ -264,7 +302,9 @@
 {
     if (nil!=aphud)
     {
+#ifdef DEBUG
         NSLog(@"hudWasHidden self :%d",aphud.retainCount);
+#endif
         [aphud removeFromSuperview];
         [aphud release];
     }
@@ -275,8 +315,8 @@
     [self PopUpIndicator];
     self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
     self.listOfItems = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
-    NSString * lstrTimeEnd = [LYUtility GetDateFormat:nil];
-    NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
+    NSString * lstrTimeEnd = [LYUtility GetRequestDateByString:GE_LAST_SAME apDate:self.m_pStrTimeStart];
+    NSString * lstrTimeStart = [LYUtility GetRequestDateByString:GE_LAST_ONE_HOUR apDate:self.m_pStrTimeStart];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/diag/diag.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     
 

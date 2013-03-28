@@ -10,6 +10,8 @@
 #import "MBProgressHUD.h"
 #import "LYGlobalSettings.h"
 #import "JSON.h"
+
+
 @interface LYDiagViewController : UITableViewController<MBProgressHUDDelegate>
 {
     MBProgressHUD *HUD;

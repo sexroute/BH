@@ -32,7 +32,7 @@
 @synthesize m_pStrTimeStart;
 @synthesize m_strChannDiaged;
 
-
+#pragma mark init
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -44,10 +44,40 @@
     return self;
 }
 
+
+
+- (void)viewDidLoad
+{
+    
+    [super viewDidLoad];
+    [self.m_pProgressBar stopAnimating];
+    [self loadData];
+
+}
+
+- (void)viewDidUnload
+{
+    
+    self.m_pProgressBar = nil;
+    [self setM_pProgressBar:nil];
+    
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
+#pragma mark network affairs
+
 -(void)loadData
 {
-    [self.m_pProgressBar startAnimating];
-  
+    //[self.m_pProgressBar startAnimating];
+    [self PopUpIndicator];
     self.ProcChanns = [[[NSMutableArray alloc]initWithCapacity:10] autorelease];
     self.VibChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     self.DynChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
@@ -55,9 +85,10 @@
     responseData = [[NSMutableData data] retain];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/pointalarm/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     NSString * lpPostData = [NSString stringWithFormat:@"%@&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
-
+#ifdef DEBUG
     NSLog(@"%@",lpUrl);
     NSLog(@"%@",[self.m_pStrPlant class]);
+#endif
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
@@ -68,13 +99,6 @@
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
-- (void)viewDidLoad
-{
-    
-    [super viewDidLoad];
-    [self loadData];
-
-}
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[responseData setLength:0];
 }
@@ -88,10 +112,7 @@
     NSString * lpStr = [NSString stringWithFormat:@"获取数据失败,重试?"];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
 												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
-    if (nil!=self.m_pProgressBar)
-    {
-        [self.m_pProgressBar stopAnimating];        
-    }
+
    
     [alert show];
     [alert release];
@@ -101,6 +122,7 @@
 {
     
 	//弹出网络错误对话框
+    [self HiddeIndicator];
     [self alertLoadFailed:[error localizedDescription]];
 }
 
@@ -119,11 +141,12 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	
-	[self.m_pProgressBar stopAnimating];
+	[self HiddeIndicator];
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
-    if (nil!= self->listOfItems) {
+    if (nil!= self->listOfItems)
+    {
         [self->listOfItems release];
         self->listOfItems = nil;
     }
@@ -183,21 +206,7 @@
 }
 
 
-- (void)viewDidUnload
-{
-    [m_pProgressBar release];
-    m_pProgressBar = nil;
-    [self setM_pProgressBar:nil];
-   
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
 
 #pragma mark - Table view data source
 
@@ -311,7 +320,7 @@
                 cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0]autorelease];
                 
                 self.m_strChannDiaged = lpName;
-                self.m_pStrTimeStart = [lpText objectForKey:@"datetime"];
+                self.m_pStrTimeStart = [lpText objectForKey:@"updatedatetime"];
                 [self addDiagButtonToCell:cell];
               break;
             case 2:
@@ -319,7 +328,7 @@
                 cell.backgroundColor =[ [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]autorelease];
                 
                 self.m_strChannDiaged = lpName;
-                self.m_pStrTimeStart = [lpText objectForKey:@"datetime"];
+                self.m_pStrTimeStart = [lpText objectForKey:@"updatedatetime"];
                 [self addDiagButtonToCell:cell];
                 
                 break;
@@ -358,6 +367,45 @@
     lpChannView.m_nPlantType = self.m_nPlantType;
     self.title = @"返回";
     [self.navigationController pushViewController:lpChannView animated:YES];
+}
+
+#pragma mark HUD指示器
+-(void)PopUpIndicator
+{
+    self->HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    self->HUD.mode = MBProgressHUDModeIndeterminate;
+	[self.navigationController.view addSubview:self->HUD];
+    self->HUD.dimBackground = YES;
+    self->HUD.labelText = @"加载中";
+	// Regiser for HUD callbacks so we can remove it from the window at the right time
+	self->HUD.delegate = self;
+	// Show the HUD while the provided method executes in a new thread
+	[self->HUD showWhileExecuting:@selector(OnHudCallBack) onTarget:self withObject:nil animated:YES];
+}
+
+-(void) HiddeIndicator
+{
+    if (nil!=self->HUD)
+    {
+        [self->HUD hide:YES];
+    }
+}
+
+- (void)OnHudCallBack
+{
+    sleep(NETWORK_TIMEOUT);
+}
+
+- (void)hudWasHidden:(MBProgressHUD *)aphud
+{
+    if (nil!=aphud)
+    {
+#ifdef DEBUG
+        NSLog(@"hudWasHidden self :%d",aphud.retainCount);
+#endif
+        [aphud removeFromSuperview];
+        [aphud release];
+    }
 }
 
 /*
@@ -483,7 +531,7 @@
     self.ProcChanns = nil;
     self.m_pStrTimeStart = nil;
     self.m_strChannDiaged = nil;
-    [m_pProgressBar release];
+    
     [super dealloc];
 }
 @end

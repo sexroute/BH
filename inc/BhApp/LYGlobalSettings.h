@@ -43,5 +43,10 @@
 #define SETTING_KEY_SELECTED_PLANT_TYPE          @"SELECTED_PLANT_TYPE"
 #define SETTING_KEY_STYLE                 @"STYLE"
 
+#pragma mark 诊断相关
+#define SETTING_DEAULT_FAULT @"对中不良"
+#define SETTING_KEY_FAULT @"faults"
+#define SETTING_KEY_ADVICE @"advice"
+
 #define NETWORK_TIMEOUT 10
 #endif

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "JSON.h"
 #import "ChannInfo.h"
+#import "MBProgressHUD.h"
 
-@interface LYChannViewController : UITableViewController
+@interface LYChannViewController : UITableViewController<MBProgressHUDDelegate>
 {
     NSString * m_pStrGroup;
     NSString * m_pStrCompany;
@@ -22,6 +23,7 @@
     NSMutableArray *VibChanns;
     NSMutableArray *DynChanns;
     NSMutableArray *ProcChanns;
+    MBProgressHUD *HUD;
     
 }
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *m_pProgressBar;

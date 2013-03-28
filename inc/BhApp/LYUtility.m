@@ -20,6 +20,22 @@
     
 }
 
++(NSString *)GetRequestDateByString:(int) anType apDate:(NSString *)apDate
+{
+    NSDate * lpDate = nil;
+    if (nil== apDate || !([apDate isKindOfClass:[NSString class]]))
+    {
+        lpDate = [NSDate date];
+    }else
+    {
+        NSDateFormatter *df = [[[NSDateFormatter alloc] init]autorelease];
+        [df setDateFormat:@"yyyy-MM-dd hh:mm:ss a"];
+        lpDate = [df dateFromString: apDate];
+    }
+    
+    return [LYUtility GetRequestDate:anType apDate:lpDate];
+}
+
 + (NSString *)StringTrim:(NSString *)apStr
 {
     if (nil== apStr || !([apStr isKindOfClass:[NSString class]]))
@@ -33,7 +49,7 @@
     
 }
 
-+(NSString *) GetDateFormat:(NSDate *)apDate
++(NSString *) GetRequestDate:(NSDate *)apDate
 {
     NSLocale *locale = [NSLocale currentLocale];
     NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
@@ -69,20 +85,36 @@
         case GE_LAST_ONE_HOUR:
             lpDateRet = [NSDate dateWithTimeInterval:-60*60 sinceDate:lpDate];
             break;
+        case GE_LAST_DAY:
+            lpDateRet = [NSDate dateWithTimeInterval:-1*24*60*60 sinceDate:lpDate];
+            break;
         case GE_LAST_WEEK:
             lpDateRet = [NSDate dateWithTimeInterval:-7*24*60*60 sinceDate:lpDate];
             break;
+        case GE_LAST_HALF_MONTH:
+            lpDateRet = [NSDate dateWithTimeInterval:-15*24*60*60 sinceDate:lpDate];
+            break;
         case GE_LAST_MONTH:
+            lpDateRet = [NSDate dateWithTimeInterval:30*24*60*60 sinceDate:lpDate];
+            break;
+        case GE_LAST_3_MONTH:
+            lpDateRet = [NSDate dateWithTimeInterval:123*24*60*60 sinceDate:lpDate];
+            break;
+        case GE_LAST_HALF_YEAR:
             lpDateRet = [NSDate dateWithTimeInterval:183*24*60*60 sinceDate:lpDate];
             break;
         case GE_LAST_YEAR:
             lpDateRet = [NSDate dateWithTimeInterval:365*24*60*60 sinceDate:lpDate];
             break;
+        case GE_LAST_3_YEAR:
+            lpDateRet = [NSDate dateWithTimeInterval:3*365*24*60*60 sinceDate:lpDate];
+            break;
         default:
+            lpDateRet = lpDate;
             break;
     }
     
-    NSString *lpRet = [LYUtility GetDateFormat:lpDateRet];
+    NSString *lpRet = [LYUtility GetRequestDate:lpDateRet];
     return lpRet;
 }
 @end

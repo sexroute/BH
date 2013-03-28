@@ -57,7 +57,9 @@
     if (nil == self.hostView)
     {
         self.hostView = [[[LYChartView alloc] init]autorelease];
+    #ifdef DEBUG
         NSLog(@"%d",hostView.retainCount);
+#endif
         
         //self.hostView.bounds = self.m_pChartViewParent.bounds;
         self.hostView.m_pStrCompany = self.m_pStrCompany;
@@ -77,8 +79,9 @@
         [self LoadDataFromMiddleWare];
         
     }
-    
+   #ifdef DEBUG   
     NSLog(@"%d",hostView.retainCount);
+    #endif
 }
 
 
@@ -120,10 +123,10 @@
 
 - (void)dealloc
 {
-    
+    #ifdef DEBUG
     NSLog(@"dealloc self :%d",self.retainCount);
     NSLog(@"dealloc hostview :%d",self.hostView.retainCount);
-    
+     #endif
     self.m_pStrChann = nil;
     self.m_pStrCompany =  nil;
     self.m_pStrFactory = nil;
@@ -173,7 +176,9 @@
 {
     if (nil!=aphud)
     {
+         #ifdef DEBUG
         NSLog(@"hudWasHidden self :%d",aphud.retainCount);
+#endif
         [aphud removeFromSuperview];
         [aphud release];
     }

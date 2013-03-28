@@ -79,14 +79,14 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"test");
+   
 }
 
 -(void)LoadData
 {
     self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
     self.listOfItems = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-    NSString * lstrTimeEnd = [LYUtility GetDateFormat:nil];
+    NSString * lstrTimeEnd = [LYUtility GetRequestDate:nil];
     NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/vib.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     
@@ -100,8 +100,10 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                        timeoutInterval:NETWORK_TIMEOUT];
+#ifdef DEBUG
     NSLog(@"%@\r\n",lpUrl);
     NSLog(@"%@\r\n",lpPostData);
+#endif
     
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
@@ -156,7 +158,9 @@
 {
     if (nil!=aphud)
     {
+#ifdef DEBUG
         NSLog(@"hudWasHidden self :%d",aphud.retainCount);
+#endif
         [aphud removeFromSuperview];
         [aphud release];
     }
@@ -463,7 +467,9 @@
     [self HiddeIndicator];
 //	[self.m_pProgressBar stopAnimating];
 	NSString *responseString = [[NSString alloc] initWithData:m_oResponseData encoding:NSUTF8StringEncoding];
+#ifdef DEBUG
     NSLog(@"Trend Log: %@\r\n",responseString);
+#endif
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
 

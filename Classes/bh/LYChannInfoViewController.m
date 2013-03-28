@@ -425,8 +425,9 @@
     
     mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
                                                bundle: nil];
-    
+#ifdef DEBUG
     NSLog(@"%@",lpChannView.m_pStrGroup);
+#endif
     int lnChanntype  = [self GetChanntype];
     lnChanntype = [LYBHUtility GetChannType:lnChanntype];
     switch (lnChanntype)

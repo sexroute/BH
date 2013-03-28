@@ -294,7 +294,9 @@
 //Segue begin
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     //    NSString *Title;
+#ifdef DEBUG
     NSLog(@"%@",[segue identifier]);
+#endif
     if ([[segue identifier] isEqualToString:@"SegueToChann"])
     {
 
@@ -307,7 +309,8 @@
         NSString * lpMachinetype =[ self.m_pData objectForKey:@"machine_type"];
         
        lpChannView.m_nPlantType = [[ self.m_pData objectForKey:@"machine_type"]intValue];
-        NSLog(@"%@",lpChannView.m_pStrCompany);
+        
+       
     }
     
 }
