@@ -67,6 +67,9 @@
 		4CFA92BB16F9BA2600733FC3 /* Section.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B216F9BA2600733FC3 /* Section.m */; };
 		4CFA92BC16F9BA2600733FC3 /* YAxis.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92B416F9BA2600733FC3 /* YAxis.m */; };
 		4CFA92C01702BF1D00733FC3 /* LYDiagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA92BF1702BF1D00733FC3 /* LYDiagViewController.m */; };
+		4CFA93351704438100733FC3 /* LYAlarmedChannCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA93341704438000733FC3 /* LYAlarmedChannCell.m */; };
+		4CFA9337170443CA00733FC3 /* lyAlarmedChannCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CFA9336170443CA00733FC3 /* lyAlarmedChannCell.xib */; };
+		4CFA933B17044ABA00733FC3 /* NVUIGradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFA933A17044ABA00733FC3 /* NVUIGradientButton.m */; };
 		A46A5878154FDF7400EDA973 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5870154FDF7400EDA973 /* blackArrow.png */; };
 		A46A5879154FDF7400EDA973 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5871154FDF7400EDA973 /* blackArrow@2x.png */; };
 		A46A587A154FDF7400EDA973 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = A46A5872154FDF7400EDA973 /* blueArrow.png */; };
@@ -275,6 +278,11 @@
 		4CFA92B416F9BA2600733FC3 /* YAxis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YAxis.m; sourceTree = "<group>"; };
 		4CFA92BE1702BF1D00733FC3 /* LYDiagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYDiagViewController.h; sourceTree = "<group>"; };
 		4CFA92BF1702BF1D00733FC3 /* LYDiagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYDiagViewController.m; sourceTree = "<group>"; };
+		4CFA93331704438000733FC3 /* LYAlarmedChannCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYAlarmedChannCell.h; sourceTree = "<group>"; };
+		4CFA93341704438000733FC3 /* LYAlarmedChannCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYAlarmedChannCell.m; sourceTree = "<group>"; };
+		4CFA9336170443CA00733FC3 /* lyAlarmedChannCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = lyAlarmedChannCell.xib; sourceTree = "<group>"; };
+		4CFA933917044ABA00733FC3 /* NVUIGradientButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NVUIGradientButton.h; path = Thirdparty/Button/NVUIGradientButton.h; sourceTree = "<group>"; };
+		4CFA933A17044ABA00733FC3 /* NVUIGradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NVUIGradientButton.m; path = Thirdparty/Button/NVUIGradientButton.m; sourceTree = "<group>"; };
 		A46A5870154FDF7400EDA973 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
 		A46A5871154FDF7400EDA973 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
 		A46A5872154FDF7400EDA973 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
@@ -459,6 +467,8 @@
 				4C61892C16E040C0004FEE93 /* LYChannInfoViewController.m */,
 				4C61892D16E040C0004FEE93 /* LYChannViewController.h */,
 				4C61892E16E040C0004FEE93 /* LYChannViewController.m */,
+				4CFA93331704438000733FC3 /* LYAlarmedChannCell.h */,
+				4CFA93341704438000733FC3 /* LYAlarmedChannCell.m */,
 			);
 			name = chann;
 			sourceTree = "<group>";
@@ -602,6 +612,7 @@
 		4CC7852116D477110019B95C /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
+				4CFA933817044A9600733FC3 /* Button */,
 				4CC05B2616E048EA00521F78 /* MBProgressHUD */,
 				4C6189A516E04103004FEE93 /* View */,
 				4C61899116E040F7004FEE93 /* JSON */,
@@ -642,6 +653,15 @@
 			name = diag;
 			sourceTree = "<group>";
 		};
+		4CFA933817044A9600733FC3 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				4CFA933917044ABA00733FC3 /* NVUIGradientButton.h */,
+				4CFA933A17044ABA00733FC3 /* NVUIGradientButton.m */,
+			);
+			name = Button;
+			sourceTree = "<group>";
+		};
 		A46A5869154FDF6900EDA973 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,6 +695,7 @@
 				A46A5876154FDF7400EDA973 /* whiteArrow.png */,
 				A46A5877154FDF7400EDA973 /* whiteArrow@2x.png */,
 				4C61891216DF47E6004FEE93 /* loginCell.xib */,
+				4CFA9336170443CA00733FC3 /* lyAlarmedChannCell.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -842,6 +863,7 @@
 				4C2AFB9E16F2D54400C99FDE /* house@2x.png in Resources */,
 				4C2AFBA116F2D54C00C99FDE /* cog_02.png in Resources */,
 				4C2AFBA216F2D54C00C99FDE /* cog_02@2x.png in Resources */,
+				4CFA9337170443CA00733FC3 /* lyAlarmedChannCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -915,6 +937,8 @@
 				4CFA92BB16F9BA2600733FC3 /* Section.m in Sources */,
 				4CFA92BC16F9BA2600733FC3 /* YAxis.m in Sources */,
 				4CFA92C01702BF1D00733FC3 /* LYDiagViewController.m in Sources */,
+				4CFA93351704438100733FC3 /* LYAlarmedChannCell.m in Sources */,
+				4CFA933B17044ABA00733FC3 /* NVUIGradientButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -336,7 +336,8 @@
                     [cell.m_plblOrg sizeToFit];
                     NSString * lpStreRpm = [self GetStringFromID:loRpm];
                     int lnValueRpm = [lpStreRpm integerValue];
-                    if (lnValueRpm<0) {
+                    if (lnValueRpm<0)
+                    {
                         lpStreRpm = [[[NSString alloc] initWithUTF8String:"0"]autorelease];
                         cell.m_plblRpm.text = lpStreRpm;
                     }else {
@@ -351,17 +352,21 @@
 #ifdef DEBUG
                     //                    NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
 #endif
-                    if (nil != lpAlarmStatus) {
-                        if (2 == lnAlarmStatus) {
+                    if (nil != lpAlarmStatus)
+                    {
+                        if (2 == lnAlarmStatus)
+                        {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1]autorelease];
-                        }else if (1 == lnAlarmStatus) {
+                        }else if (1 == lnAlarmStatus)
+                        {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:1 blue:0 alpha:1]autorelease];
                         } if (1 == lnStopStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1]autorelease];
                         }
                         
-                    }else {
+                    }else
+                    {
                         if (1 == lnStopStatus )
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:200 green:200 blue:200 alpha:1]autorelease];

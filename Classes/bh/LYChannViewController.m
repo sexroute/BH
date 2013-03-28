@@ -12,6 +12,8 @@
 #import "LYGlobalSettings.h"
 #import "LYDiagViewController.h"
 #import "LYUtility.h"
+#import "LYAlarmedChannCell.h"
+#import "NVUIGradientButton.h"
 @interface LYChannViewController ()
 
 
@@ -152,9 +154,13 @@
     }
 	self->listOfItems = [json objectWithString:responseString error:&error];
 	
-	if (listOfItems == nil || [listOfItems count] == 0)
+	if (listOfItems == nil  || [listOfItems count] == 0)
 	{
-        //弹出网络错误对话框
+        [responseString release];
+        [self->responseData release];
+        self->responseData = nil;
+        [connection release];
+        [self alertLoadFailed:nil];
     }
 	else
     {
@@ -196,12 +202,14 @@
             }
            
         }
+        
+        [responseString release];
+        [self->responseData release];
+        self->responseData = nil;
+        [connection release];
+        [self.tableView reloadData];
 	}
-    [responseString release];
-    [self->responseData release];
-     self->responseData = nil;
-    [connection release];
-    [self.tableView reloadData];
+
     
 }
 
@@ -256,31 +264,82 @@
     return 0;
 }
 
--(void)addDiagButtonToCell:(UITableViewCell *)cell
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id lpText = nil;
+    switch (indexPath.section) {
+        case 0:
+            lpText = [ self.VibChanns objectAtIndex:indexPath.row];
+            break;
+        case 1:
+            lpText = [ self.DynChanns objectAtIndex:indexPath.row];
+            break;
+        case 2:
+            lpText = [ self.ProcChanns objectAtIndex:indexPath.row];
+            break;
+        default:
+            
+            break;
+    }
+    
+    if (nil!= lpText)
+    {
+        NSString * lpObj = [lpText objectForKey:@"alarm_status"];
+        int lnAlarmStatus = [(NSNumber *)lpObj intValue];
+        if (lnAlarmStatus >0)
+        {
+            return  100;
+        }else
+        {
+            return  50;
+        }
+    }
+    
+    return  50;
+}
+
+-(void)addDiagButtonToCell:(LYAlarmedChannCell *)cell
 {
     if (nil!= cell)
     {
-        CGRect frame =CGRectMake(150,2,100,40);
-        UIButton *button=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+        CGRect frame =CGRectMake(20,50,120,40);
+        NVUIGradientButton *button=[[[NVUIGradientButton alloc]initWithFrame:frame ]autorelease];
         button.frame=frame;
-        [button setTitle:@"故障诊断" forState:UIControlStateNormal];
+        button.text = @"故障诊断";
         button.backgroundColor=[UIColor clearColor];
         button.tag=2000;
+        button.textColor = [UIColor whiteColor];
+        button.textShadowColor = [UIColor darkGrayColor];
+        button.tintColor = [UIColor colorWithRed:(CGFloat)78/255 green:123.0/255.0 blue:167.0/255.0 alpha:1];
+        button.highlightedTintColor = [UIColor colorWithRed:(CGFloat)190/255 green:(CGFloat)190/255 blue:(CGFloat)190/255 alpha:1];
+        button.rightAccessoryImage = [UIImage imageNamed:@"arrow"];
+
         [button addTarget:self action:@selector(DiagButtonClicked:)
          forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:button];
+
         
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"ChannCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier]autorelease];
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"lyAlarmedChannCell" owner:nil options:nil];
+        
+        for(id currentObject in topLevelObjects)
+        {
+            if([currentObject isKindOfClass:[LYAlarmedChannCell class]])
+            {
+                cell = (LYAlarmedChannCell *)currentObject;
+                
+                break;
+            }
+        }
     }
     
     id lpText = nil;
@@ -321,7 +380,7 @@
                 
                 self.m_strChannDiaged = lpName;
                 self.m_pStrTimeStart = [lpText objectForKey:@"updatedatetime"];
-                [self addDiagButtonToCell:cell];
+                [self addDiagButtonToCell:(LYAlarmedChannCell *)cell];
               break;
             case 2:
                
@@ -329,14 +388,15 @@
                 
                 self.m_strChannDiaged = lpName;
                 self.m_pStrTimeStart = [lpText objectForKey:@"updatedatetime"];
-                [self addDiagButtonToCell:cell];
+                [self addDiagButtonToCell:(LYAlarmedChannCell *)cell];
                 
                 break;
             default:
                 break;
         }
 
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %6.2f%@",lpName,lfValue ,lpUnit];
+        ((LYAlarmedChannCell *)cell).m_oLabel.text = [NSString stringWithFormat:@"%@    %6.2f%@",lpName,lfValue ,lpUnit];
+       
         
                                    
 
