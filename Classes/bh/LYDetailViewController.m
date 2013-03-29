@@ -32,10 +32,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -109,11 +109,11 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
         
-       
+        
     }
     
     id lpText = nil;
-
+    
     NSString * lpTitle = nil;
     switch (indexPath.section) {
         case 0:
@@ -169,17 +169,17 @@
                 case 2:
                     lpText = [ self.m_pData objectForKey:@"smpfreq"];
                     lpTitle =@"采样频率:";
-                     break;
+                    break;
                 case 3:
                     lpText = [ self.m_pData objectForKey:@"smpnum"];
                     lpTitle =@"采样点:";
                     break;
-
+                    
                 default:
                     
                     break;
             }
-            break;           
+            break;
         case 2:
             switch (indexPath.row) {
                 case 0:
@@ -188,7 +188,7 @@
                     break;
                 case 1:
                     lpText = [ self.m_pData objectForKey:@"machine_type"];
-                     NSString * lpData = [lpText description];
+                    NSString * lpData = [lpText description];
                     if (nil!= lpData)
                     {
                         int lnMachineType = [lpData intValue];
@@ -215,7 +215,7 @@
                     
                     break;
             }
-            break; 
+            break;
         default:
             
             break;
@@ -223,54 +223,54 @@
     
     NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@" "];;
     [lpStrGroupNo appendFormat:@"%@ %@",lpTitle,lpText];
-    NSString * lpResult = [lpStrGroupNo substringFromIndex:0];  
+    NSString * lpResult = [lpStrGroupNo substringFromIndex:0];
     lpResult  = [[lpResult
                   stringByReplacingOccurrencesOfString:@"+" withString:@" "]
                  stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
+    
     cell.textLabel.text = lpResult;
-   
+    
     return cell;
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - Table view delegate
 
@@ -287,8 +287,8 @@
 }
 
 - (void)dealloc {
-
-   
+    
+    
     [super dealloc];
 }
 //Segue begin
@@ -299,7 +299,7 @@
 #endif
     if ([[segue identifier] isEqualToString:@"SegueToChann"])
     {
-
+        
         LYChannViewController * lpChannView = [segue destinationViewController];
         lpChannView.m_pStrGroup = [NSString stringWithString: [ self.m_pData objectForKey:@"groupid"]];
         lpChannView.m_pStrCompany = [NSString stringWithString: [ self.m_pData objectForKey:@"companyid"]];
@@ -308,9 +308,9 @@
         lpChannView.m_pStrPlant = [NSString stringWithString: [ self.m_pData objectForKey:@"plantid"]];
         NSString * lpMachinetype =[ self.m_pData objectForKey:@"machine_type"];
         
-       lpChannView.m_nPlantType = [[ self.m_pData objectForKey:@"machine_type"]intValue];
+        lpChannView.m_nPlantType = [[ self.m_pData objectForKey:@"machine_type"]intValue];
         
-       
+        
     }
     
 }

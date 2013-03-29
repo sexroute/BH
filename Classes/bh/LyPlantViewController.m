@@ -704,13 +704,14 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     
+    
     [self doneLoadingTableViewData];
     self.responseData = nil;
     if (nil!=HUD)
     {
         [HUD hide:YES];
     }
-    
+    [connection release];
 }
 
 

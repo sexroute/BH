@@ -395,7 +395,7 @@ UITextField * g_pTextPassword = nil;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	label.text = [NSString stringWithFormat:@"Connection failed: %@", [error description]];
+    [connection release];
     
     [self alertLoadFailed];
 }

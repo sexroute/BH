@@ -38,10 +38,11 @@ int g_ResolutionYMax = 960;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	//弹出网络错误对话框
-    #ifdef DEBUG
+    [connection release];
+#ifdef DEBUG
     NSLog(@"%@",error.description);
 #endif
-
+    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -124,7 +125,7 @@ int g_ResolutionYMax = 960;
     hostingView.hostedGraph = graph;
 #ifdef DEBUG
     NSLog(@"graph :%d",self->graph.retainCount);
-#endif    
+#endif
 	[self.m_pParent addSubview:hostingView];
 #ifdef DEBUG
     NSLog(@"hostingView :%d",hostingView.retainCount);
@@ -170,7 +171,7 @@ int g_ResolutionYMax = 960;
     // 坐标原点： 0
     y. orthogonalCoordinateDecimal = CPTDecimalFromString (@"0.00");
     y.title = self.m_pStrChannUnit;
-   
+    
     
     //创建绿色区域
     dataSourceLinePlot = [[[CPTScatterPlot alloc] init] autorelease];
@@ -219,23 +220,23 @@ int g_ResolutionYMax = 960;
             short binChars [lnWave_Len];
             char byte_chars[5] = {'\0','\0','\0','\0','\0'};
             NSString * lpWave = (NSString *)wave;
-           
+            
             int lnWaveRealLength = [lpWave length];
             if (lnWaveRealLength<=lnWave_Len*4) {
                 lnWave_Len = lnWaveRealLength/4;
             }
             
             for (NSUInteger i = 0; i < lnWave_Len; i++)
-            {                
+            {
                 byte_chars[2] = [lpWave characterAtIndex:(i*4)];
                 byte_chars[3] = [lpWave characterAtIndex:(i*4+1)];
                 byte_chars[0] = [lpWave characterAtIndex:(i*4+2)];
                 byte_chars[1] = [lpWave characterAtIndex:(i*4+3)];
-
+                
                 short lTest = strtol(byte_chars, NULL, 16);
                 binChars[i] = lTest;
             }
-                        
+            
             int lnMaxPoint = anMaxPoint;
             int lnPointNumber = lnWave_Len;
             double ldblAxisMax = 0;
@@ -247,11 +248,11 @@ int g_ResolutionYMax = 960;
             
             
             
-                        
+            
             double ldblXAxisMax = adblAxisXMax;
             double ldblAxisXDelta = adblAxisXDelta;
-
-   
+            
+            
             Boolean lbOuterCheck = true;
             int lnInterval = lnPointNumber*2/lnMaxPoint;
             
@@ -397,8 +398,8 @@ int g_ResolutionYMax = 960;
             
             //plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(g_ResolutionXMax*1.1)];
             
-            plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(ldblXAxisMax)];
-            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(ldblAxisMin*1.2) length:CPTDecimalFromFloat((ldblAxisMax-ldblAxisMin)*1.2)];
+            plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(ldblXAxisMax*1.1)];
+            plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(ldblAxisMin) length:CPTDecimalFromFloat((ldblAxisMax-ldblAxisMin)*1.2)];
             
             
             CPTXYAxisSet *axisSet = (CPTXYAxisSet *) graph.axisSet ;
@@ -420,16 +421,60 @@ int g_ResolutionYMax = 960;
             
             if (anType == 0)
             {
+
+                CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
+                textStyle.color = [CPTColor greenColor];
+                textStyle.fontSize = 16.0f;
+                textStyle.fontName = @"Gill Sans";
+                x.titleTextStyle = textStyle;
+                y.titleTextStyle = textStyle;
+                x.titleLocation = CPTDecimalFromFloat(ldblXAxisMax*1.08);
+                x.titleOffset = - 20;
+                y.titleLocation = CPTDecimalFromFloat(ldblAxisMax*1.5);
+                y.titleOffset = 7;
+                y.titleRotation = 2*M_PI;
+                
+                CPTMutableTextStyle *labeltextStyle = [CPTMutableTextStyle textStyle];
+                labeltextStyle.color = [CPTColor whiteColor];
+                labeltextStyle.fontSize = 12.0f;
+                labeltextStyle.fontName = @"Gill Sans";
+                y.labelTextStyle = labeltextStyle;
+                x.labelTextStyle = labeltextStyle;
+                
                 y.title = self.m_pStrChannUnit;
+                x.title = @"S";
             }else
             {
-                 y.title = @"HZ";
+
+                
+                CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
+                textStyle.color = [CPTColor greenColor];
+                textStyle.fontSize = 12.0f;
+                textStyle.fontName = @"Gill Sans";
+                x.titleTextStyle = textStyle;
+                y.titleTextStyle = textStyle;
+                x.titleLocation = CPTDecimalFromFloat(ldblXAxisMax*1.05);
+                x.titleOffset = - 20;
+                y.titleLocation = CPTDecimalFromFloat(ldblAxisMax*1.3);
+                y.titleOffset = 7;
+                y.titleRotation = 2*M_PI;
+                
+                CPTMutableTextStyle *labeltextStyle = [CPTMutableTextStyle textStyle];
+                labeltextStyle.color = [CPTColor whiteColor];
+                labeltextStyle.fontSize = 12.0f;
+                labeltextStyle.fontName = @"Gill Sans";
+                y.labelTextStyle = labeltextStyle;
+                x.labelTextStyle = labeltextStyle;
+                
+                y.title = self.m_pStrChannUnit;
+                x.title = @"HZ";
+
             }
             
         }
         
     }
-
+    
 }
 - (int) DrawFreq
 {
@@ -483,7 +528,7 @@ int g_ResolutionYMax = 960;
     }
     
     return 0;
-   
+    
 }
 - (int) DrawWave
 {
@@ -594,7 +639,7 @@ int gCount = 0;
     self = [super init];
     self->graph = nil;
     self->listOfItems = nil;
-   
+    
     self.m_pParent = nil;
     self.m_pStrChann = nil;
     self.m_pStrCompany =  nil;
@@ -621,7 +666,7 @@ int gCount = 0;
 {
 #ifdef DEBUG
     NSLog(@"LYChartView  dealloc Count:%d",--gCount);
-
+    
     NSLog(@"LYChartView dealloc graph.retainCount %d",self->graph.retainCount);
 #endif
     self.m_pParent = nil;

@@ -176,7 +176,7 @@
 
 - (void) alertLoadFailed:(NSString * )apstrError
 {
-    NSString * lpStr = [NSString stringWithFormat:@"获取数据失败,重试?"];
+    NSString * lpStr = [NSString stringWithFormat:@"无诊断结果,重试?"];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
 												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
     
@@ -186,6 +186,8 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    [connection release];
+    
     [self HiddeIndicator];
 	//弹出网络错误对话框
     [self alertLoadFailed:[error localizedDescription]];

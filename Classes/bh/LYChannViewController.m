@@ -122,7 +122,7 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    
+     [connection release];
 	//弹出网络错误对话框
     [self HiddeIndicator];
     [self alertLoadFailed:[error localizedDescription]];

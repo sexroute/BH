@@ -444,6 +444,8 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    [connection release];
+    
     [self HiddeIndicator];
 	//弹出网络错误对话框
     [self alertLoadFailed:[error localizedDescription]];
