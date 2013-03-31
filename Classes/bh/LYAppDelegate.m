@@ -12,9 +12,29 @@
 
 @synthesize window = _window;
 
+
+-(void)DealWithNotification:(UILocalNotification *) apNotification
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+
+-(void)DealWithNotification2:(NSDictionary*) apNotification
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |    UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
+    
+    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (localNotif)
+    {
+        [self DealWithNotification:localNotif];
+        // Parse your string to dictionary
+    }
     return YES;
 }
 							
@@ -38,13 +58,33 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+#pragma mark notification
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
+{
+#ifdef DEBUG
+    NSLog(@"%@",[NSString stringWithFormat:@"Error in registration. Error: %@", err]);
+#endif
+}
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+#ifdef DEBUG
+    NSLog(@"devToken=%@",deviceToken);
+#endif
 
-
+}
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
+{
+#ifdef DEBUG
+	NSLog(@"Received notification: %@", userInfo);
+#endif
+	[self DealWithNotification2:userInfo];
+}
 
 @end
