@@ -84,7 +84,10 @@
     #endif
 }
 
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    self.navigationItem.title = self.m_pStrChann;
+}
 
 - (void)viewDidLoad
 {
@@ -207,6 +210,29 @@
     [self PopUpIndicator];
     [self initPlot:FREQUENCE];
 }
+- (IBAction)onTrendButtonPressed:(UIBarButtonItem *)sender
+{
+    UIStoryboard *mainStoryboard = nil;
+    
+    mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                               bundle: nil];
+    
+    LYTrendViewController * lpTrendView =(LYTrendViewController *)[mainStoryboard
+                                                                   instantiateViewControllerWithIdentifier: @"LYTrendViewController"];
+    lpTrendView.m_pStrGroup = self.m_pStrGroup;
+    lpTrendView.m_pStrCompany = self.m_pStrCompany;
+    lpTrendView.m_pStrFactory = self.m_pStrFactory;
+    lpTrendView.m_pStrChann = self.m_pStrChann;
+    lpTrendView.m_pStrPlant = self.m_pStrPlant;
+    lpTrendView.m_nChannType = self.m_nChannType;
+    lpTrendView.m_pStrChannUnit = self.m_pStrChannUnit;
+    lpTrendView.m_fHH = self.m_fHH;
+    lpTrendView.m_fHL = self.m_fHL;
+    lpTrendView.m_fLL = self.m_fLL;
+    lpTrendView.m_fLH = self.m_fLH;
+    self.navigationItem.title = @"返回";
+    [self.navigationController pushViewController:lpTrendView animated:YES];
+}
 
 
 #pragma mark - NSURLConnection
@@ -264,27 +290,5 @@
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 }
-- (IBAction)onTrendButtonPressed:(UIBarButtonItem *)sender
-{
-    UIStoryboard *mainStoryboard = nil;
-    
-    mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-                                               bundle: nil];
 
-    LYTrendViewController * lpTrendView =(LYTrendViewController *)[mainStoryboard
-                                           instantiateViewControllerWithIdentifier: @"LYTrendViewController"];
-    lpTrendView.m_pStrGroup = self.m_pStrGroup;
-    lpTrendView.m_pStrCompany = self.m_pStrCompany;
-    lpTrendView.m_pStrFactory = self.m_pStrFactory;
-    lpTrendView.m_pStrChann = self.m_pStrChann;
-    lpTrendView.m_pStrPlant = self.m_pStrPlant;
-    lpTrendView.m_nChannType = self.m_nChannType;
-    lpTrendView.m_pStrChannUnit = self.m_pStrChannUnit;
-    lpTrendView.m_fHH = self.m_fHH;
-    lpTrendView.m_fHL = self.m_fHL;
-    lpTrendView.m_fLL = self.m_fLL;
-    lpTrendView.m_fLH = self.m_fLH;
-    self.navigationItem.title = @"返回";
-    [self.navigationController pushViewController:lpTrendView animated:YES];
-}
 @end

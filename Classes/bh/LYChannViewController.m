@@ -302,7 +302,15 @@
 {
     if (nil!= cell)
     {
-        CGRect frame =CGRectMake(22,45,200,35);
+         CGRect frame =CGRectMake(22,45,200,35);
+        
+         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+         {
+             int lnOffset = 30;
+            frame =CGRectMake(22+lnOffset,45,200,35);
+
+         }
+        
 
         NVUIGradientButton *button=[[[NVUIGradientButton alloc]initWithFrame:frame ]autorelease];
         button.frame=frame;
@@ -403,8 +411,13 @@
             default:
                 break;
         }
-
-        ((LYAlarmedChannCell *)cell).m_oLabel.text = [NSString stringWithFormat:@"%@    %6.2f%@",lpName,lfValue ,lpUnit];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            ((LYAlarmedChannCell *)cell).m_oLabel.text = [NSString stringWithFormat:@"       %@    %6.2f%@",lpName,lfValue ,lpUnit];
+        }else
+        {
+             ((LYAlarmedChannCell *)cell).m_oLabel.text = [NSString stringWithFormat:@"%@    %6.2f%@",lpName,lfValue ,lpUnit];
+        }
        
         
                                    
