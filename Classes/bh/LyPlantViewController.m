@@ -680,7 +680,7 @@
     self.responseData = [[[NSMutableData alloc]initWithCapacity:10]autorelease];
     NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
     NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:lpServerAddress] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:lpServerAddress] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:NETWORK_TIMEOUT];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
@@ -878,6 +878,6 @@
 - (void)OnHudCallBack
 {
 	// Do something usefull in here instead of sleeping ...
-	sleep(3600);
+	sleep(NETWORK_TIMEOUT);
 }
 @end

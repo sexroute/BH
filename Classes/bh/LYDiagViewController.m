@@ -185,12 +185,12 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    [connection release];
-    
+{   
     [self HiddeIndicator];
 	//弹出网络错误对话框
     [self alertLoadFailed:[error localizedDescription]];
+    
+    [connection release];
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -327,9 +327,10 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                        timeoutInterval:NETWORK_TIMEOUT];
+#ifdef DEBUG
     NSLog(@"%@\r\n",lpUrl);
     NSLog(@"%@\r\n",lpPostData);
-    
+#endif    
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];

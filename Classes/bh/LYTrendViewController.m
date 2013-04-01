@@ -442,13 +442,13 @@
     [alert release];
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)connection:(NSURLConnection *)connection v:(NSError *)error
 {
-    [connection release];
-    
+ 
     [self HiddeIndicator];
 	//弹出网络错误对话框
     [self alertLoadFailed:[error localizedDescription]];
+       [connection release];
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

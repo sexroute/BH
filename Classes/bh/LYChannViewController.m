@@ -94,7 +94,7 @@
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                       timeoutInterval:10.0];
+                                                       timeoutInterval:NETWORK_TIMEOUT];
     
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
@@ -122,10 +122,11 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-     [connection release];
+
 	//弹出网络错误对话框
     [self HiddeIndicator];
     [self alertLoadFailed:[error localizedDescription]];
+    [connection release];
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

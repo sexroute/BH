@@ -395,9 +395,10 @@ UITextField * g_pTextPassword = nil;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    [connection release];
+   
     
     [self alertLoadFailed];
+     [connection release];
 }
 
 #define kDuration 0.7   // 动画持续时间(秒)

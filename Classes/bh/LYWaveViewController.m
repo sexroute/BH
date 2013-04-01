@@ -260,8 +260,9 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	//弹出网络错误对话框
-    [connection release];
+
     [self alertLoadFailed:@""];
+     [connection release];
     
 }
 
