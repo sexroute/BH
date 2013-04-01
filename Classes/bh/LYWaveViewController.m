@@ -9,6 +9,9 @@
 #import "LYWaveViewController.h"
 #import "LYGlobalSettings.h"
 #import "ChannInfo.h"
+#import "ASIFormDataRequest.h"
+
+
 @interface LYWaveViewController ()
 
 @end
@@ -234,6 +237,46 @@
     [self.navigationController pushViewController:lpTrendView animated:YES];
 }
 
+- (void)LoadDataFromMiddleWare
+{
+    [self LoadDataASIHTTPRequest];
+}
+#pragma mark ASIHTTPRequest Methods
+- (void)LoadDataASIHTTPRequest
+{
+    [self.hostView initData];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    if (self.m_nChannType == GE_RODSINKCHANN)
+    {
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/rodsink.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    }
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    
+    ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:aUrl];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
+    [request appendPostData:requestBody];
+    [request setDelegate:self];
+    [request setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    
+    [self HiddeIndicator];
+    [self.hostView connectionDidFinishLoadingASIHTTPRequest:request];
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+     [self HiddeIndicator];
+    [self alertLoadFailed:@""];
+}
+
+
 
 #pragma mark - NSURLConnection
 
@@ -261,8 +304,7 @@
 {
 	//弹出网络错误对话框
 
-    [self alertLoadFailed:@""];
-     [connection release];
+
     
 }
 
@@ -272,7 +314,7 @@
     [self.hostView connectionDidFinishLoading:connection];
 }
 
-- (void) LoadDataFromMiddleWare
+- (void) LoadDataFromMiddleWareNSURLConnection
 {
     [self.hostView initData];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];

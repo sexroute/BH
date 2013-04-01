@@ -14,6 +14,7 @@
 #import "LYUtility.h"
 #import "LYAlarmedChannCell.h"
 #import "NVUIGradientButton.h"
+#import "ASIFormDataRequest.h"
 @interface LYChannViewController ()
 
 
@@ -53,7 +54,7 @@
     
     [super viewDidLoad];
     [self.m_pProgressBar stopAnimating];
-    [self loadData];
+    [self LoadData];
 
 }
 
@@ -79,9 +80,126 @@
 }
 
 
-#pragma mark network affairs
+- (void)LoadData
+{
+    [self LoadDataASIHTTPRequest];
+}
+#pragma mark ASIHTTPRequest Methods
+- (void)LoadDataASIHTTPRequest
+{
+    [self PopUpIndicator];
+    self.ProcChanns = [[[NSMutableArray alloc]initWithCapacity:10] autorelease];
+    self.VibChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
+    self.DynChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
+    
+    self->responseData = [[NSMutableData data] retain];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/pointalarm/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
+#ifdef DEBUG
+    NSLog(@"%@",lpUrl);
+    NSLog(@"%@",[self.m_pStrPlant class]);
+#endif
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    
+    
+    ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:aUrl];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
+    [request appendPostData:requestBody];
+    [request setDelegate:self];
+    [request setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[request startAsynchronous];
+}
 
--(void)loadData
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    
+    [self HiddeIndicator];
+    
+    self->responseData =[NSMutableData dataWithData:[request responseData]] ;
+    //	[self.m_pProgressBar stopAnimating];
+	[self HiddeIndicator];
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	NSError *error = nil;
+	SBJSON *json = [[SBJSON new] autorelease];
+    if (nil!= self->listOfItems)
+    {
+        [self->listOfItems release];
+        self->listOfItems = nil;
+    }
+	self->listOfItems = [json objectWithString:responseString error:&error];
+	
+	if (listOfItems == nil  || [listOfItems count] == 0)
+	{
+        [responseString release];
+
+        self->responseData = nil;
+  
+        [self alertLoadFailed:nil];
+    }
+	else
+    {
+        NSMutableArray * loDatas = [[listOfItems objectAtIndex:0] objectForKey:@"data"];
+        for (int i=0;i<[loDatas count];i++)
+        {
+            
+            // id loChannName = [[loDatas objectAtIndex:i] objectForKey:@"name"];
+            id loChannType = [[loDatas objectAtIndex:i] objectForKey:@"chann_type"];
+            // NSLog(@"%@|%@",loChannName,[loDatas objectAtIndex:i]);
+            
+            NSNumber *val = loChannType;
+            int lnChannType = [val intValue];
+            id loObj = [loDatas objectAtIndex:i];
+            switch (lnChannType) {
+                case GE_ALLPROC:
+                case GE_PRESSCHANN:
+                case GE_TEMPCHANN:
+                case GE_FLUXCHANN:
+                case GE_OTHERCHANN:
+                case GE_IMPACTCHANN:
+                    [self.ProcChanns addObject:loObj];
+                    continue;
+                    break;
+                case GE_VIBCHANN:
+                case GE_AXIALCHANN:
+                case GE_AXISLOCATIONCHANN:
+                    [self.VibChanns addObject:loObj];
+                    continue;
+                    break;
+                case GE_DYNPRESSCHANN:
+                case GE_RODSINKCHANN:
+                case GE_DYNSTRESSCHANN:
+                    [self.DynChanns addObject:loObj];
+                    continue;
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+        
+        [responseString release];
+
+         self->responseData = nil;
+
+        [self.tableView reloadData];
+	}
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    [self HiddeIndicator];
+	//弹出网络错误对话框
+    [self alertLoadFailed:nil];
+    
+    
+}
+
+
+#pragma mark NSURLConnection affairs
+
+-(void)loadDataNSURLConnection
 {
     //[self.m_pProgressBar startAnimating];
     [self PopUpIndicator];
@@ -89,7 +207,7 @@
     self.VibChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     self.DynChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     
-    responseData = [[NSMutableData data] retain];
+    self->responseData = nil;
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/pointalarm/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     NSString * lpPostData = [NSString stringWithFormat:@"%@&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
 #ifdef DEBUG
@@ -143,7 +261,7 @@
     }
     else
     {
-        [self loadData];
+        [self LoadData];
     }
 }
 

@@ -8,6 +8,7 @@
 #import "CorePlot-CocoaTouch.h"
 #import "CPTGraphHostingView.h"
 #import "MBProgressHUD.h"
+#import "ASIFormDataRequest.h"
 typedef enum {
     WAVE,
     FREQUENCE,
@@ -55,6 +56,7 @@ typedef enum {
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response ;
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
+- (void)connectionDidFinishLoadingASIHTTPRequest:(ASIHTTPRequest *)request;
 
 -(DrawMode)getDrawDataMode;
 

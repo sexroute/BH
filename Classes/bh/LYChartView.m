@@ -9,6 +9,8 @@
 #import "LYChartView.h"
 #import "JSON.h"
 #import "LYGlobalSettings.h"
+#import "ASIFormDataRequest.h"
+
 @implementation LYChartView
 @synthesize m_pParent;
 @synthesize m_pStrGroup;
@@ -42,6 +44,56 @@ int g_ResolutionYMax = 960;
 #ifdef DEBUG
     NSLog(@"%@",error.description);
 #endif
+    
+}
+
+- (void)connectionDidFinishLoadingASIHTTPRequest:(ASIHTTPRequest *)request
+{
+#ifdef DEBUG
+    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
+#endif
+	//[self.m_pProgressBar stopAnimating];
+    self->responseData =[NSMutableData dataWithData:[request responseData]] ;
+	NSString *responseString = [[NSString alloc] initWithData:self->responseData encoding:NSUTF8StringEncoding];
+    
+    if (self->responseData!=nil)
+    {
+        self->responseData = nil;
+    }
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self->listOfItems = [json objectWithString:responseString error:&error];
+    
+    if (nil== self->listOfItems || ![self->listOfItems isKindOfClass:[NSDictionary class]]  )
+    {
+        [responseString release];
+       
+        return;
+    }else
+    {
+#ifdef DEBUG
+        NSLog(@"%@",[self->listOfItems class]);
+#endif
+    }
+    int lnDrawResult = 0;
+    switch ([self getDrawDataMode])
+    {
+        case WAVE:
+            lnDrawResult = [self DrawWave];
+            break;
+        case FREQUENCE:
+            lnDrawResult = [self DrawFreq];
+            break;
+        default:
+            break;
+    }
+    self->responseData = nil;
+    [responseString release];
+  
+    if (lnDrawResult)
+    {
+        [graph reloadData];
+    }
     
 }
 
@@ -94,6 +146,7 @@ int g_ResolutionYMax = 960;
     }
     
 }
+
 
 
 

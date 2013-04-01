@@ -13,6 +13,7 @@
 #import "LYUtility.h"
 #import "JSON.h"
 #import "MBProgressHUD.h"
+#import "ASIFormDataRequest.h"
 
 @interface LYTrendViewController ()
 
@@ -82,34 +83,7 @@
    
 }
 
--(void)LoadData
-{
-    self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
-    self.listOfItems = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-    NSString * lstrTimeEnd = [LYUtility GetRequestDate:nil];
-    NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
-    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/vib.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
-    
-    int lnChannCat = [LYBHUtility GetChannType:self.m_nChannType];
-    if (lnChannCat == E_TBL_CHANNTYPE_PROC)
-    {
-        lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/proc.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
-    }
-    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@&channtype=%d&timestart=%@&timeend=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann,self.m_nChannType,lstrTimeStart,lstrTimeEnd];
-    NSURL *aUrl = [NSURL URLWithString:lpUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
-                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                       timeoutInterval:NETWORK_TIMEOUT];
-#ifdef DEBUG
-    NSLog(@"%@\r\n",lpUrl);
-    NSLog(@"%@\r\n",lpPostData);
-#endif
-    
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
-	[[NSURLConnection alloc] initWithRequest:request delegate:self];
 
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -418,7 +392,120 @@
     self.listOfItems = nil;
     [super dealloc];
 }
-#pragma mark 读取网络数据
+
+- (void)LoadData
+{
+    [self LoadDataASIHTTPRequest];
+}
+#pragma mark ASIHTTPRequest Methods
+- (void)LoadDataASIHTTPRequest
+{
+  //  [self PopUpIndicator];
+    self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
+    self.listOfItems = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+    NSString * lstrTimeEnd = [LYUtility GetRequestDate:nil];
+    NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/vib.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    
+    int lnChannCat = [LYBHUtility GetChannType:self.m_nChannType];
+    if (lnChannCat == E_TBL_CHANNTYPE_PROC)
+    {
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/proc.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    }
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@&channtype=%d&timestart=%@&timeend=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann,self.m_nChannType,lstrTimeStart,lstrTimeEnd];
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    
+    
+    ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:aUrl];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
+    [request appendPostData:requestBody];
+    [request setDelegate:self];
+    [request setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    
+    [self HiddeIndicator];
+    
+    self.m_oResponseData =[NSMutableData dataWithData:[request responseData]] ;
+    //	[self.m_pProgressBar stopAnimating];
+	NSString *responseString = [[NSString alloc] initWithData:m_oResponseData encoding:NSUTF8StringEncoding];
+#ifdef DEBUG
+    NSLog(@"Trend Log: %@\r\n",responseString);
+#endif
+	NSError *error = nil;
+	SBJSON *json = [[SBJSON new] autorelease];
+    
+	self.listOfItems = [json objectWithString:responseString error:&error];
+	
+	if (listOfItems == nil || [listOfItems count] == 0)
+	{
+        //弹出网络错误对话框
+    }
+	else
+    {
+        [self.candleChart removeFromSuperview];
+        
+        self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
+        
+        [self.view addSubview:self.candleChart];
+        [self initChart];
+        [self InitData];
+        
+        [self.candleChart setNeedsDisplay];
+        
+        [self.view setNeedsDisplay];
+        
+	}
+    [responseString release];
+    
+    self.m_oResponseData = nil;
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    [self HiddeIndicator];
+	//弹出网络错误对话框
+    [self alertLoadFailed:nil];
+
+    
+}
+
+
+#pragma mark NSURLConnection methonds
+
+-(void)LoadDataNSURLConnection
+{
+    self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
+    self.listOfItems = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+    NSString * lstrTimeEnd = [LYUtility GetRequestDate:nil];
+    NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/vib.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    
+    int lnChannCat = [LYBHUtility GetChannType:self.m_nChannType];
+    if (lnChannCat == E_TBL_CHANNTYPE_PROC)
+    {
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/proc.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    }
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@&channtype=%d&timestart=%@&timeend=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann,self.m_nChannType,lstrTimeStart,lstrTimeEnd];
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl
+                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                       timeoutInterval:NETWORK_TIMEOUT];
+#ifdef DEBUG
+    NSLog(@"%@\r\n",lpUrl);
+    NSLog(@"%@\r\n",lpPostData);
+#endif
+    
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
+	[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+}
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[m_oResponseData setLength:0];
 }
@@ -437,7 +524,7 @@
     [alert release];
 }
 
-- (void)connection:(NSURLConnection *)connection v:(NSError *)error
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
  
     [self HiddeIndicator];
