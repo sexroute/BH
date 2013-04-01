@@ -302,14 +302,9 @@
 
 - (void)hudWasHidden:(MBProgressHUD *)aphud
 {
-    if (nil!=aphud)
-    {
-#ifdef DEBUG
-        NSLog(@"hudWasHidden self :%d",aphud.retainCount);
-#endif
-        [aphud removeFromSuperview];
-        [aphud release];
-    }
+	[HUD removeFromSuperview];
+	[HUD release];
+	HUD = nil;
 }
 
 -(void)LoadData

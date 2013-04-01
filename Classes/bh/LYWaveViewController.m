@@ -86,7 +86,12 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    self.navigationItem.title = self.m_pStrChann;
+   
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+     self.navigationItem.title = self.m_pStrChann;
 }
 
 - (void)viewDidLoad
@@ -177,14 +182,9 @@
 
 - (void)hudWasHidden:(MBProgressHUD *)aphud
 {
-    if (nil!=aphud)
-    {
-         #ifdef DEBUG
-        NSLog(@"hudWasHidden self :%d",aphud.retainCount);
-#endif
-        [aphud removeFromSuperview];
-        [aphud release];
-    }
+	[HUD removeFromSuperview];
+	[HUD release];
+	HUD = nil;
 }
 
 #pragma mark ButtonPress methods
