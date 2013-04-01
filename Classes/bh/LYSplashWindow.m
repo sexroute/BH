@@ -10,6 +10,7 @@
 #import "JSON.h"
 #import "LYGlobalSettings.h"
 #import "LYTabBarViewController.h"
+#import "ASIFormDataRequest.h"
 
 
 
@@ -143,10 +144,10 @@ UITextField * g_pTextPassword = nil;
 #pragma mark 视图初始化
 - (void)viewDidLoad
 {
-   
+    
     [super viewDidLoad];
     [self InitUI];
-
+    
 }
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -161,7 +162,7 @@ UITextField * g_pTextPassword = nil;
         [self.m_oLabelLogin setHidden:NO];
         [self.m_oLogginButton setHidden:NO];
     }
-
+    
 }
 
 -(void) InitUI
@@ -220,13 +221,13 @@ UITextField * g_pTextPassword = nil;
     
     
     [self.view insertSubview:self.m_oImageView atIndex:0];
-     
+    
     frame = self.m_oActivityProgressbar.frame;
     frame.origin.x = self.view.frame.size.width / 2 - frame.size.width / 2;
     frame.origin.y = self.view.frame.size.height /2 - frame.size.height / 2;
     self.m_oActivityProgressbar.frame = frame;
     //2.判断是否已经登陆
-   self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 80);
+    self.m_oLoginTableView.bounds  =CGRectMake(164, 220, 240, 80);
     if ([self IsLogin])
     {
         [self.m_oActivityProgressbar setHidden:NO];
@@ -243,7 +244,7 @@ UITextField * g_pTextPassword = nil;
         self.m_oLoginTableView.delegate = self;
         self.m_oLoginTableView.dataSource = self;
         
-
+        
         [self.m_oLogginButton setHidden:NO];
     }
     
@@ -269,7 +270,7 @@ UITextField * g_pTextPassword = nil;
     
     if (nil == g_pTextPassword.text)
     {
-         g_pTextPassword.text = @"";
+        g_pTextPassword.text = @"";
     }
     [LYGlobalSettings SetSettingString:SETTING_KEY_USER apVal:g_pTextUserName.text];
     [LYGlobalSettings SetSettingString:SETTING_KEY_PASSWORD apVal:g_pTextPassword.text];
@@ -296,10 +297,86 @@ UITextField * g_pTextPassword = nil;
     
     return lbLogin;
 }
-
-#pragma mark 数据加载
-
 - (void)LoadData
+{
+    [self LoadDataASIHTTPRequest];
+}
+#pragma mark ASIHTTPRequest Methods 
+- (void)LoadDataASIHTTPRequest
+{
+    if(nil !=  responseData)
+    {
+        [self->responseData release];
+    }
+    responseData = [[NSMutableData data] retain];
+    
+    NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    NSURL* url = [NSURL URLWithString:lpServerAddress];
+    
+    
+    ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:url];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
+    [request appendPostData:requestBody];
+    [request setDelegate:self];
+    [request setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    self->responseData =[NSMutableData dataWithData:[request responseData]] ;
+    
+    NSString *responseString = [[NSString alloc] initWithData:self->responseData encoding:NSUTF8StringEncoding];
+
+
+	
+	NSError *error = nil;
+	SBJSON *json = [[SBJSON new] autorelease];
+	self.m_oListAllPlantsItem = [json objectWithString:responseString error:&error];
+    
+	if (![self IsReturnDataValid:self.m_oListAllPlantsItem])
+	{
+        BOOL isNetworkError = NO;
+        //1.网络等错误
+        if ([error isKindOfClass:[NSError class]])
+        {
+            label.text = [NSString stringWithFormat:@"JSON parsing failed: %@", [error localizedDescription]];
+            isNetworkError=YES;
+        }
+        
+        if (isNetworkError)
+        {
+            [self alertLoadFailed];
+            
+        }else
+        {
+            [self alertWrongLogin];
+            [self.m_oLoginTableView setHidden:NO];
+            [LYGlobalSettings SetSettingString:SETTING_KEY_LOGIN apVal:@"0"];
+        }
+        
+    }
+	else
+    {
+        [LYGlobalSettings SetSettingString:SETTING_KEY_LOGIN apVal:@"1"];
+        [self.m_oLoginTableView setHidden:YES];
+        [self navigateToPlantView];
+	}
+    [responseString release];
+    self->responseData = nil;
+
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+        [self alertLoadFailed];
+}
+#pragma mark NSURLRequest Methods
+
+- (void)LoadDataNSURLRequest
 {
     if(nil !=  responseData)
     {
@@ -313,7 +390,7 @@ UITextField * g_pTextPassword = nil;
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    }
+}
 
 
 
@@ -352,7 +429,7 @@ UITextField * g_pTextPassword = nil;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	[connection release];
+	
 	
 	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 	
@@ -391,14 +468,15 @@ UITextField * g_pTextPassword = nil;
     [responseString release];
     [responseData release];
     self->responseData = nil;
+    [connection release];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-   
+    
     
     [self alertLoadFailed];
-     [connection release];
+    [connection release];
 }
 
 #define kDuration 0.7   // 动画持续时间(秒)
@@ -434,7 +512,7 @@ UITextField * g_pTextPassword = nil;
 }
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-   
+    
     
     if (nil!=actionSheet && actionSheet.tag== 1)
     {
@@ -490,11 +568,11 @@ UITextField * g_pTextPassword = nil;
         lpviewController.m_oListView = self.m_oListAllPlantsItem;
         
         lpviewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-
+        
         [self presentViewController:lpviewController animated:YES completion:nil];
-
+        
         [UIView commitAnimations];
-        return;        
+        return;
     }
 }
 

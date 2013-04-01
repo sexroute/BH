@@ -8,7 +8,7 @@
 
 #import "LYDiagViewController.h"
 #import "LYUtility.h"
-
+#import "ASIFormDataRequest.h"
 @interface LYDiagViewController ()
 
 @end
@@ -164,8 +164,114 @@
      */
 }
 
+- (void)LoadData
+{
+    [self LoadDataASIHTTPRequest];
+}
+#pragma mark ASIHTTPRequest Methods
+- (void)LoadDataASIHTTPRequest
+{
+    [self PopUpIndicator];
+    self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
+    self.listOfItems = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+    NSString * lstrTimeEnd = [LYUtility GetRequestDateByString:GE_LAST_SAME apDate:self.m_pStrTimeStart];
+    NSString * lstrTimeStart = [LYUtility GetRequestDateByString:GE_LAST_ONE_HOUR apDate:self.m_pStrTimeStart];
+    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/diag/diag.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    
+    
+    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@&machinetype=%d&timestart=%@&timeend=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann,self.m_nPlantType,lstrTimeStart,lstrTimeEnd];
+    NSURL *aUrl = [NSURL URLWithString:lpUrl];
+    
+    
+    ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:aUrl];
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
+    [request appendPostData:requestBody];
+    [request setDelegate:self];
+    [request setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[request startAsynchronous];
+}
 
-#pragma mark 读取网络数据
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+
+  
+    [self HiddeIndicator];
+    
+   self.m_oResponseData =[NSMutableData dataWithData:[request responseData]] ;
+
+	NSString *responseString = [[[NSString alloc] initWithData:m_oResponseData encoding:NSUTF8StringEncoding]autorelease];
+#ifdef DEBUG
+    NSLog(@"Diag Response: %@\r\n",responseString);
+#endif
+	NSError *error = nil;
+	SBJSON *json = [[SBJSON new] autorelease];
+    
+	id loResponse = [json objectWithString:responseString error:&error];
+    
+    if ([loResponse isKindOfClass:[NSMutableDictionary class]])
+    {
+        self.listOfItems = loResponse;
+    }else
+    {
+        self.listOfItems = nil;
+    }
+	
+    self.m_oResponseData = nil;
+
+	
+    if (self.listOfItems == nil || [self.listOfItems count] == 0)
+	{
+        //弹出网络错误对话框
+        [self alertLoadEmptyDiag:nil];
+        
+        
+    }
+	else
+    {
+        NSMutableArray * lpFaults = [self.listOfItems objectForKey:SETTING_KEY_FAULT];
+        if (nil == lpFaults|| [lpFaults count] == 0)
+        {
+            lpFaults = [NSMutableArray arrayWithCapacity:1];
+            [lpFaults addObject:SETTING_DEAULT_FAULT];
+            [self.listOfItems setObject:lpFaults forKey:SETTING_KEY_FAULT];
+            
+        }
+        if ([lpFaults count] == 2)
+        {
+            NSString * lpData1 = [lpFaults objectAtIndex:0];
+            NSString * lpData2 = [lpFaults objectAtIndex:1];
+            
+            if (([lpData1 isEqualToString:@"转子不平衡" ]) && ([lpData2 isEqualToString:@"旋转失速"]) )
+            {
+                [lpFaults removeObjectAtIndex:1];
+                
+            }
+            
+            else if (([lpData2 isEqualToString:@"转子不平衡" ]) && ([lpData1 isEqualToString:@"旋转失速"]) )
+            {
+                [lpFaults removeObjectAtIndex:0];
+                
+            }
+        }
+        
+        [self.tableView reloadData];
+	}
+
+    
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    [self HiddeIndicator];
+	//弹出网络错误对话框
+    [self alertLoadFailed:nil];
+
+}
+#pragma mark NSURLRequest Methods
+
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[m_oResponseData setLength:0];
 }
@@ -178,6 +284,16 @@
 {
     NSString * lpStr = [NSString stringWithFormat:@"无诊断结果,重试?"];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误" message:lpStr
+												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+    
+    [alert show];
+    [alert release];
+}
+
+- (void) alertLoadEmptyDiag:(NSString * )apstrError
+{
+    NSString * lpStr = [NSString stringWithFormat:@"未诊断出结果,重试?"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:lpStr
 												   delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
     
     [alert show];
@@ -307,7 +423,7 @@
 	HUD = nil;
 }
 
--(void)LoadData
+-(void)LoadDataNSConnectionRequest
 {
     [self PopUpIndicator];
     self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];

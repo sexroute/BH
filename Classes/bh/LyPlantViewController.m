@@ -16,6 +16,7 @@
 #import "LYUtility.h"
 #import "ChannInfo.h"
 #import "LYBHUtility.h"
+#import "ASIFormDataRequest.h"
 
 @interface LYPlantViewController ()
 
@@ -671,11 +672,79 @@
     //NSLog(@"%d %d %d %d",[self.m_oAlarmPlants count],[self.m_oDangerPlants count],[self.m_oStopPlants count],[self.m_oNormalPlants count]);
 }
 
-
-
-#pragma mark
-#pragma mark NSURLRequest Methods
 - (void) doLoadData
+{
+    [self doLoadDataUseASIHTTP];
+}
+
+#pragma mark ASIHTTPRequest Methods
+- (void) doLoadDataUseASIHTTP
+{
+    self.responseData = [[[NSMutableData alloc]initWithCapacity:10]autorelease];
+    NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
+    NSURL* url = [NSURL URLWithString:lpServerAddress];
+    
+	ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:url];
+    
+    [request setRequestMethod:@"POST"];
+    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    [request appendPostData:requestBody];
+    [request setDelegate:self];
+    [request setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    // Use when fetching binary data
+    self.responseData =[NSMutableData dataWithData:[request responseData]] ;
+    
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	
+    self.responseData = nil;
+    
+	//NSLog(@"%s",[responseString2 cString] );
+	NSError *error;
+	SBJSON *json = [[SBJSON new] autorelease];
+    
+    NSMutableArray * lpListOfItems = [json objectWithString:responseString error:&error];
+    
+    if (nil!=lpListOfItems && [lpListOfItems count] != 0)
+    {
+        
+        
+        self.m_oPlantItems = lpListOfItems;
+        [self PreparePlantsData];
+        [self.m_oTableView reloadData];
+    }
+    [responseString release];
+    
+    [self doneLoadingTableViewData];
+    [self.m_oActiveIndicator stopAnimating];
+    
+    if (nil != HUD)
+    {
+        [HUD hide:YES afterDelay:0];
+    }
+    
+ 
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    [self doneLoadingTableViewData];
+    self.responseData = nil;
+    if (nil!=HUD)
+    {
+        [HUD hide:YES];
+    }
+}
+
+
+#pragma mark NSURLRequest Methods
+-(void) doLoadDataUseNSConnection
 {
     self.responseData = [[[NSMutableData alloc]initWithCapacity:10]autorelease];
     NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
@@ -685,6 +754,7 @@
     [request setHTTPBody:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]];
 	[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
+
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
