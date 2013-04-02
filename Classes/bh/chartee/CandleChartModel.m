@@ -336,7 +336,7 @@
         [tmp setObject:clr forKey:KEY_COLOR];
         
         //position
-        [tmp setObject:@"-11" forKey:KEY_PADDING_TOP];
+        [tmp setObject:@"-15" forKey:KEY_PADDING_TOP];
         [label addObject:tmp];
         
         //2.add unit
@@ -356,7 +356,7 @@
         [tmp setObject:[NSString stringWithFormat:@"%d",KEY_LABEL_TYPE_UNIT] forKey:KEY_LABEL_TYPE];
         
         //position
-        [tmp setObject:@"7" forKey:KEY_PADDING_TOP];
+        [tmp setObject:@"4" forKey:KEY_PADDING_TOP];
         [label addObject:tmp];
         
         
