@@ -14,10 +14,10 @@
 -(void)drawSerie:(Chart *)chart serie:(NSMutableDictionary *)serie
 {
     // return [self drawSerie_0:chart serie:serie];
-    [serie setObject:@"176,52,52" forKey:@"color"];
-    [serie setObject:@"77,143,42" forKey:@"negativeColor"];
-    [serie setObject:@"176,52,52" forKey:@"selectedColor"];
-    [serie setObject:@"77,143,42" forKey:@"negativeSelectedColor"];
+    //[serie setObject:@"176,52,52" forKey:@"color"];
+    //[serie setObject:@"77,143,42" forKey:@"negativeColor"];
+    //[serie setObject:@"176,52,52" forKey:@"selectedColor"];
+    //[serie setObject:@"77,143,42" forKey:@"negativeSelectedColor"];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetShouldAntialias(context, NO);

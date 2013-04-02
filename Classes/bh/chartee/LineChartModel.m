@@ -30,7 +30,8 @@
     
 	Section *sec = [chart.sections objectAtIndex:section];
 	
-    if(chart.selectedIndex!=-1 && chart.selectedIndex < data.count && [data objectAtIndex:chart.selectedIndex]!=nil){
+    if(chart.selectedIndex!=-1 && chart.selectedIndex < data.count && [data objectAtIndex:chart.selectedIndex]!=nil)
+    {
         float value = [[[data objectAtIndex:chart.selectedIndex] objectAtIndex:0] floatValue];
         CGContextSetShouldAntialias(context, NO);
         CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]autorelease].CGColor);
@@ -46,11 +47,14 @@
     }
     
     CGContextSetShouldAntialias(context, YES);
-    for(int i=chart.rangeFrom;i<chart.rangeTo;i++){
-        if(i == data.count-1){
+    for(int i=chart.rangeFrom;i<chart.rangeTo;i++)
+    {
+        if(i == data.count-1)
+        {
             break;
         }
-        if([data objectAtIndex:i] == nil){
+        if([data objectAtIndex:i] == nil)
+        {
             continue;
         }
         if (i<chart.rangeTo-1 && [data objectAtIndex:(i+1)] != nil) {

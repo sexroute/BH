@@ -354,14 +354,16 @@
     [model setLabel:self label:label forSerie:serie];
 }
 
--(void)drawSerie:(NSMutableDictionary *)serie{
+-(void)drawSerie:(NSMutableDictionary *)serie
+{
     NSString   *type  = [serie objectForKey:@"type"];
     ChartModel *model = [self getModel:type];
     [model drawSerie:self serie:serie];
     
     NSEnumerator *enumerator = [self.models keyEnumerator];
     id key;
-    while ((key = [enumerator nextObject])){
+    while ((key = [enumerator nextObject]))
+    {
         ChartModel *m = [self.models objectForKey:key];
         [m drawTips:self serie:serie];
     }
@@ -372,7 +374,8 @@
 	CGContextSetShouldAntialias(context, NO );
 	CGContextSetLineWidth(context, 1.0f);
 	
-	for(int secIndex=0;secIndex<[self.sections count];secIndex++){
+	for(int secIndex=0;secIndex<[self.sections count];secIndex++)
+    {
 		Section *sec = [self.sections objectAtIndex:secIndex];
 		if(sec.hidden){
 			continue;
@@ -391,7 +394,8 @@
 	for(int secIndex=0;secIndex<self.sections.count;secIndex++)
     {
 		Section *sec = [self.sections objectAtIndex:secIndex];
-		if(sec.hidden){
+		if(sec.hidden)
+        {
 			continue;
 		}
 		for(int aIndex=0;aIndex<sec.yAxises.count;aIndex++)
@@ -411,13 +415,16 @@
 			CGContextMoveToPoint(context,sec.frame.origin.x+sec.paddingLeft,baseY);
 			CGContextAddLineToPoint(context,sec.frame.origin.x+sec.frame.size.width,baseY);
             
-			if (yaxis.tickInterval%2 == 1) {
+			if (yaxis.tickInterval%2 == 1)
+            {
 				yaxis.tickInterval +=1;
 			}
 			
 			float step = (float)(yaxis.max-yaxis.min)/yaxis.tickInterval;
-			for(int i=1; i<= yaxis.tickInterval+1;i++){
-				if(yaxis.baseValue + i*step <= yaxis.max){
+			for(int i=1; i<= yaxis.tickInterval+1;i++)
+            {
+				if(yaxis.baseValue + i*step <= yaxis.max)
+                {
 					float iy = [self getLocalY:(yaxis.baseValue + i*step) withSection:secIndex withAxis:aIndex];
 					
 					CGContextSetStrokeColorWithColor(context, [[UIColor alloc] initWithRed:0.2 green:0.2 blue:0.2 alpha:1.0].CGColor);
@@ -436,8 +443,10 @@
 					CGContextStrokePath(context);
 				}
 			}
-			for(int i=1; i <= yaxis.tickInterval+1;i++){
-				if(yaxis.baseValue - i*step >= yaxis.min){
+			for(int i=1; i <= yaxis.tickInterval+1;i++)
+            {
+				if(yaxis.baseValue - i*step >= yaxis.min)
+                {
 					float iy = [self getLocalY:(yaxis.baseValue - i*step) withSection:secIndex withAxis:aIndex];
 					
 					CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]autorelease].CGColor);
@@ -447,7 +456,8 @@
 					
 					[[@"" stringByAppendingFormat:format,yaxis.baseValue-i*step] drawAtPoint:CGPointMake(sec.frame.origin.x-1,iy-7) withFont:[UIFont fontWithName:self.m_pStrFontName size: self.m_nYAxisFontSize]];
 					
-					if(yaxis.baseValue - i*step > yaxis.min){
+					if(yaxis.baseValue - i*step > yaxis.min)
+                    {
 						CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:0.15 green:0.15 blue:0.15 alpha:1.0]autorelease].CGColor);
 						CGContextMoveToPoint(context,sec.frame.origin.x+sec.paddingLeft,iy);
 						CGContextAddLineToPoint(context,sec.frame.origin.x+sec.frame.size.width,iy);

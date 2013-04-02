@@ -140,6 +140,8 @@
     //2.table view
     CGRect loFrame = self.view.frame;
     loFrame.origin.y = segmentedControl.frame.size.height;
+   
+    loFrame.size.height = loFrame.size.height - loFrame.origin.y;
      self.m_oTableView = [[[UITableView alloc] initWithFrame:loFrame]autorelease];
    
     [self.m_oTableView setDataSource:self];
@@ -158,8 +160,6 @@
         [view release];
         
     }
-    
-    
     
     
     //4.navigation item

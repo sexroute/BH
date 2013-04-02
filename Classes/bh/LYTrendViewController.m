@@ -210,11 +210,13 @@
 	[serie setObject:@"candle" forKey:@"type"];
 	[serie setObject:@"0" forKey:@"yAxis"];
 	[serie setObject:@"0" forKey:@"section"];
-	[serie setObject:@"0,0,255" forKey:@"color"];
+	[serie setObject:@"52,176,52" forKey:@"color"];
 	[serie setObject:@"255,0,0" forKey:@"negativeColor"];
 	[serie setObject:@"0,255,0" forKey:@"selectedColor"];
 	[serie setObject:@"0,255,0" forKey:@"negativeSelectedColor"];
-	[serie setObject:@"255,255,0" forKey:KEY_LABEL_COLOR];
+    [serie setObject:@"255,255,0" forKey:KEY_LABEL_ALARM_COLOR];
+    [serie setObject:@"176,52,52" forKey:KEY_LABEL_DANGER_COLOR];
+	[serie setObject:@"52,176,52" forKey:KEY_LABEL_COLOR];
     [serie setObject:@"255,255,255" forKey:KEY_LABEL_DETAIL_INFO_COLOR];
 	[serie setObject:@"0,255,0" forKey:@"labelNegativeColor"];
     [serie setObject:self.m_pStrChannUnit forKey:KEY_UNIT];
@@ -364,6 +366,7 @@
         [lpDataArray addObject:[NSString  stringWithFormat:@"%f",lfval]];
         [lpDataArray addObject:[NSString  stringWithFormat:@"时间 %@",lpDateTime]];
         [lpDataArray addObject:[NSString  stringWithFormat:@"转速 %d RPM",ldRev]];
+        [lpDataArray addObject:[NSString  stringWithFormat:@"%d",ldRev]];
         
         
         

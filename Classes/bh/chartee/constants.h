@@ -37,4 +37,6 @@
 #define KEY_LABEL_TYPE_VAL 0
 #define KEY_LABEL_TYPE_UNIT 1
 #define KEY_DEFAULT_POINT_WIDTH 2
+#define KEY_LABEL_DANGER_COLOR @"LabelDangerColor"
+#define KEY_LABEL_ALARM_COLOR @"LabelAlarmColor"
 #endif
