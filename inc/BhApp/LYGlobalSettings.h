@@ -49,4 +49,5 @@
 #define SETTING_KEY_ADVICE @"advice"
 
 #define NETWORK_TIMEOUT 10
+#define DEFAULT_FONT_NAME @"Gill Sans"
 #endif

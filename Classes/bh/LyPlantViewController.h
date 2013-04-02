@@ -20,7 +20,7 @@ typedef enum
     NETOFF
 } PLANT_FILTER_STATUS;
 
-@interface LYPlantViewController : UITableViewController<EGORefreshTableHeaderDelegate,MBProgressHUDDelegate>
+@interface LYPlantViewController : UIViewController<EGORefreshTableHeaderDelegate,MBProgressHUDDelegate,UITableViewDelegate , UITableViewDataSource>
 {
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;
@@ -50,8 +50,10 @@ typedef enum
 - (IBAction)OnRefreshButtonPressed:(id)sender;
 - (IBAction)OnFilterButtonPressed:(id)sender;
 
-@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *m_oActiveIndicator;
-@property (retain, nonatomic) IBOutlet UITableView *m_oTableView;
+@property (retain, nonatomic) UIActivityIndicatorView *m_oActiveIndicator;
+@property (retain, nonatomic) UITableView *m_oTableView;
+@property (retain, nonatomic) UILabel *m_oNavigationTitleView;
+
 - (void)reloadTableViewDataSource;
 - (void)doneLoadingTableViewData;
 -(void) PreparePlantsData;

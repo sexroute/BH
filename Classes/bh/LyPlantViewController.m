@@ -42,6 +42,7 @@
 @synthesize responseData;
 @synthesize m_oPlantItems;
 @synthesize m_oNetOffPlants;
+@synthesize m_oNavigationTitleView;
 
 
 #pragma mark 初始化
@@ -50,15 +51,6 @@
 {
     self = [super init];
     self.m_pSegmentMap = nil;
-    return self;
-}
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self)
-    {
-        // Custom initialization
-    }
     return self;
 }
 
@@ -72,61 +64,7 @@
     [self.navigationController setToolbarHidden:YES animated:NO];
     
     
-//    CGRect loFrame = self.tableView.frame;
-//    loFrame.origin.y = loFrame.origin.y+20;
-//    loFrame.size.height = loFrame.size.height - 20;
-//    
-//    
-//   self.tableView = [[[UITableView alloc] initWithFrame:loFrame]autorelease];
-    
-    self.navigationController.navigationBar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
-    //1.拖拽刷新
-    if (_refreshHeaderView == nil)
-    {
-        
-        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
-        view.delegate = self;
-        [self.tableView addSubview:view];
-        _refreshHeaderView = view;
-        [view release];
-        
-    }
-    
-   
-    //2.报警、危险、停车等
-    //  update the last update date
-    [_refreshHeaderView refreshLastUpdatedDate];
-    self.navigationItem.title = @"设备列表";
-    
-    [self.navigationController setToolbarHidden:FALSE animated:FALSE];
-    
-    self.m_pButtonAll = [[ UIBarButtonItem alloc ] initWithTitle:   @"全部"
-                                                           style: UIBarButtonItemStyleDone
-                                                          target: self
-                                                          action: @selector(onButtonAllDeviceSelected:) ];
-    
-    self->m_nFilterStatus = ALL;
-    
-    self.m_pButtonAlarm  = [[ UIBarButtonItem alloc ] initWithTitle: @"报警"
-                                                              style: UIBarButtonItemStylePlain
-                                                             target: self
-                                                             action: @selector(onButtonAlarmDeviceSelected:) ];
-    self.m_pButtonDanger = [[ UIBarButtonItem alloc ] initWithTitle: @"危险"
-                                                              style: UIBarButtonItemStylePlain
-                                                             target: self
-                                                             action: @selector(onButtonDangerDeviceSelected:) ];
-    
-    self.m_pButtonStop = [[ UIBarButtonItem alloc ] initWithTitle: @"停车"
-                                                            style: UIBarButtonItemStylePlain
-                                                           target: self
-                                                           action: @selector(onButtonStopDeviceSelected:) ];
-    
-    self.m_pButtonNormal = [[ UIBarButtonItem alloc ] initWithTitle: @"正常"
-                                                              style: UIBarButtonItemStylePlain
-                                                             target: self
-                                                             action: @selector(onButtonNormalDeviceSelected:) ];
-    
-    //3.segment view
+    //1.segment view
     if (nil ==self.m_pSegmentMap)
     {
         self.m_pSegmentMap = [[[NSMutableArray alloc] init]autorelease];
@@ -188,17 +126,65 @@
     }
     
     UISegmentedControl * segmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] autorelease];
+    segmentedControl.frame = CGRectMake(0,0,self.view.frame.size.width,40);
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     segmentedControl.selectedSegmentIndex = 0;
-    [segmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
-    self.navigationItem.titleView = segmentedControl;
-    
-    
-    
-    //4.bottom button
-    self.navigationController.toolbar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
 
-     [self.navigationController setToolbarHidden:YES animated:NO];
+    [segmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
+    
+    segmentedControl.tintColor = [UIColor darkGrayColor];
+    
+    [self.view addSubview:segmentedControl];
+    
+    
+    //2.table view
+    CGRect loFrame = self.view.frame;
+    loFrame.origin.y = segmentedControl.frame.size.height;
+     self.m_oTableView = [[[UITableView alloc] initWithFrame:loFrame]autorelease];
+   
+    [self.m_oTableView setDataSource:self];
+    [self.m_oTableView setDelegate:self];
+    
+    self.navigationController.navigationBar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
+    
+    //3.拖拽刷新
+    if (_refreshHeaderView == nil)
+    {
+        
+        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.m_oTableView.bounds.size.height, self.view.frame.size.width, self.m_oTableView.bounds.size.height)];
+        view.delegate = self;
+        [self.m_oTableView addSubview:view];
+        _refreshHeaderView = view;
+        [view release];
+        
+    }
+    
+    
+    
+    
+    //4.navigation item
+    
+    [_refreshHeaderView refreshLastUpdatedDate];
+    loFrame = CGRectMake(0, 0, 400, 44);
+    
+    self.m_oNavigationTitleView = [[[UILabel alloc] initWithFrame:loFrame] autorelease];
+    self.m_oNavigationTitleView.backgroundColor = [UIColor clearColor];
+    self.m_oNavigationTitleView.font = [UIFont boldSystemFontOfSize:17.0];
+    self.m_oNavigationTitleView.textAlignment = UITextAlignmentCenter;
+    self.m_oNavigationTitleView.textColor = [UIColor whiteColor];
+    self.m_oNavigationTitleView.text = @"全部设备";
+    
+    self.navigationItem.titleView = self.m_oNavigationTitleView;
+    self.navigationItem.title = @"设备列表";
+    
+    [self.navigationController setToolbarHidden:FALSE animated:FALSE];
+    
+    [self.view addSubview:self.m_oTableView];
+    
+    //5.bottom button
+    self.navigationController.toolbar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
+    
+    [self.navigationController setToolbarHidden:YES animated:NO];
     
 }
 
@@ -244,6 +230,7 @@
     self.m_oStopPlants = nil;
     self.m_pSegmentMap = nil;
     self.m_oPlantItems = nil;
+    self.m_oNavigationTitleView = nil;
 }
 
 - (void)dealloc {
@@ -344,52 +331,62 @@
             {
                 if([currentObject isKindOfClass:[LYCellviewCell class]])
                 {
-                    NSString * lpAlarmStatus = [self GetStringFromID:loAlarmStatus];
-                    NSInteger lnAlarmStatus = [lpAlarmStatus integerValue];
-                    NSString  * lpStopStatus = [self GetStringFromID:loStopStatus];
-                    NSInteger lnStopStatus = [lpStopStatus integerValue];
+                    
+                    NSInteger lnAlarmStatus = [loAlarmStatus intValue];
+                    NSInteger lnStopStatus = [loStopStatus intValue];
                     int lnNetoffStatus = [loNetoffStatus intValue];
                     
                     cell = (LYCellviewCell *)currentObject;
-
+                    
                     cell.m_lblPlantid.text = [self GetStringFromID:loplantid];
-                    cell.m_plblOrg.text = lpResult;
-                    [cell.m_plblOrg setNumberOfLines:0];
-                    [cell.m_plblOrg sizeToFit];
+
                     NSString * lpStreRpm = [self GetStringFromID:loRpm];
                     int lnValueRpm = [lpStreRpm integerValue];
                     if (lnValueRpm<0)
                     {
                         lpStreRpm = [[[NSString alloc] initWithUTF8String:"0"]autorelease];
                         cell.m_plblRpm.text = lpStreRpm;
-                    }else {
+                    
+                    }else
+                    {
                         cell.m_plblRpm.text = [self GetStringFromID:loRpm];
                     }
                     
                     cell.m_plblRpm.textAlignment = UITextAlignmentRight;
-
+                    
 #ifdef DEBUG
                     //                    NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
 #endif
-                    if (nil != lpAlarmStatus)
+                    if (nil != loAlarmStatus)
                     {
                         if (2 == lnAlarmStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1]autorelease];
+                            cell.m_plblOrg.text = lpResult;
+                            [cell.m_plblOrg setNumberOfLines:0];
+                            [cell.m_plblOrg sizeToFit];
                         }else if (1 == lnAlarmStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:1 blue:0 alpha:1]autorelease];
                         } else if (1== lnNetoffStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1]autorelease];
-                             cell.m_plblRpm.text =[NSString stringWithFormat:@"0"];
+                            cell.m_plblRpm.text =[NSString stringWithFormat:@"0"];
                             cell.m_plblOrg.text = [NSString stringWithFormat:@"%@(断网) ",cell.m_plblOrg.text];
                             [cell.m_plblOrg setNumberOfLines:0];
                             [cell.m_plblOrg sizeToFit];
                         }if (1 == lnStopStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.4 green:0.4 blue:0.4 alpha:1]autorelease];
-
+                            cell.m_plblOrg.text = lpResult;
+                            [cell.m_plblOrg setNumberOfLines:0];
+                            [cell.m_plblOrg sizeToFit];
+                            
+                        }else
+                        {
+                            cell.m_plblOrg.text = lpResult;
+                            [cell.m_plblOrg setNumberOfLines:0];
+                            [cell.m_plblOrg sizeToFit];
                         }
                         
                     }else
@@ -397,11 +394,11 @@
                         if (1== lnNetoffStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1]autorelease];
-                        }else 
-                        if (1 == lnStopStatus  )
-                        {
-                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.4 green:0.4 blue:0.4 alpha:1]autorelease];
-                        }
+                        }else
+                            if (1 == lnStopStatus  )
+                            {
+                                cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.4 green:0.4 blue:0.4 alpha:1]autorelease];
+                            }
                     }
                     break;
                 }
@@ -424,21 +421,27 @@
     {
         case ALL:
             lpPlants = self.m_oPlantItems;
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"全部设备(%d台)",lpPlants.count];
             break;
         case ALARM:
             lpPlants = self.m_oAlarmPlants;
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"报警设备(%d台)",lpPlants.count];
             break;
         case DANGER:
             lpPlants = self.m_oDangerPlants;
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"危险设备(%d台)",lpPlants.count];
             break;
         case STOPPED:
             lpPlants = self.m_oStopPlants;
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"停车设备(%d台)",lpPlants.count];
             break;
         case NORMAL:
             lpPlants = self.m_oNormalPlants;
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"正常设备(%d台)",lpPlants.count];
             break;
         case NETOFF:
             lpPlants = self.m_oNetOffPlants;
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"断网设备(%d台)",lpPlants.count];
             break;
             
         default:
@@ -601,7 +604,7 @@
     //  model should call this when its done loading
     
     _reloading = NO;
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.m_oTableView];
     
 }
 
@@ -679,7 +682,7 @@
                 int lnStopStatus = [(NSNumber *)loStopStatus intValue];
                 int lnnNetoff_status= [(NSNumber *)lnNetOffStatus intValue];
                 //                NSLog((@"Alarmstatus:%d | %d"),lnAlarmStatus,lnStopStatus);
-                if (lnAlarmStatus>0|| (lnAlarmStatus==0 && lnStopStatus<=0))
+                if (lnAlarmStatus>0|| (lnAlarmStatus==0 && lnStopStatus<=0 && lnnNetoff_status<=0))
                 {
                     switch (lnAlarmStatus)
                     {
@@ -770,7 +773,7 @@
         [HUD hide:YES afterDelay:0];
     }
     
- 
+    
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
@@ -1001,6 +1004,6 @@
 - (void)OnHudCallBack
 {
 	// Do something usefull in here instead of sleeping ...
- sleep(NETWORK_TIMEOUT*2);
+    sleep(NETWORK_TIMEOUT*2);
 }
 @end

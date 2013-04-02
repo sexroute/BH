@@ -8,32 +8,6 @@
         <scene sceneID="r4E-2N-pna">
             <objects>
                 <tableViewController storyboardIdentifier="PlantView" title="PlantView" modalTransitionStyle="flipHorizontal" id="Jq2-v1-unc" customClass="LYPlantViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mtB-Cw-chx">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" showsReorderControl="YES" indentationWidth="10" id="kzG-cp-EP0">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="SUB-eS-fjc">
-                                            <rect key="frame" x="142" y="6" width="37" height="37"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Jq2-v1-unc" id="eH7-VO-zye"/>
-                            <outlet property="delegate" destination="Jq2-v1-unc" id="dJ9-Sc-Snz"/>
-                        </connections>
-                    </tableView>
                     <navigationItem key="navigationItem" title="设备列表" id="wc9-Bx-2kB">
                         <barButtonItem key="leftBarButtonItem" title="筛选" id="HBa-Ie-qOw">
                             <connections>
@@ -46,9 +20,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="m_oTableView" destination="mtB-Cw-chx" id="v3Y-k7-Oz7"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dBC-f5-NNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -865,9 +836,6 @@ Ew
                 <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
                 <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
             </relationships>
-        </class>
-        <class className="NSMutableArray" superclassName="NSArray">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSMutableArray.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
