@@ -949,6 +949,6 @@
 - (void)OnHudCallBack
 {
 	// Do something usefull in here instead of sleeping ...
-	sleep(NETWORK_TIMEOUT);
+ sleep(NETWORK_TIMEOUT*2);
 }
 @end

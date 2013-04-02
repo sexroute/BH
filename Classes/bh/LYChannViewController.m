@@ -599,7 +599,7 @@
 
 - (void)OnHudCallBack
 {
-    sleep(NETWORK_TIMEOUT);
+ sleep(NETWORK_TIMEOUT*2);
 }
 
 - (void)hudWasHidden:(MBProgressHUD *)aphud
