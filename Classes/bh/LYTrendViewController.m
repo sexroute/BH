@@ -14,6 +14,7 @@
 #import "JSON.h"
 #import "MBProgressHUD.h"
 #import "ASIFormDataRequest.h"
+#import "NVUIGradientButton.h"
 
 @interface LYTrendViewController ()
 
@@ -28,6 +29,9 @@
 @synthesize m_oResponseData;
 @synthesize listOfItems;
 @synthesize m_pStrChannUnit;
+@synthesize m_oPickerView;
+@synthesize m_oDataConfirmButton;
+@synthesize m_oTitleButton;
 
 #pragma mark 初始化
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -47,6 +51,7 @@
         self.m_fHL = .0;
         self.m_fLL = .0;
         self.m_fLH = .0;
+        self.m_oPickerView = nil;
         self.m_nAlarmJudgetType = E_ALARMCHECK_LOWPASS;
     }
     return self;
@@ -64,9 +69,9 @@
     self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
     
     [self.view addSubview:self.candleChart];    
-   
-    [self PopUpIndicator];
+    [self InitUI];
     [self LoadData];
+   
     
 
     
@@ -174,6 +179,28 @@
 {
 	[self.candleChart appendToCategory:category forName:@"price"];
 	[self.candleChart appendToCategory:category forName:@"line"];
+}
+
+-(void)InitUI
+{
+    self.m_nTimespanType =GE_LAST_WEEK;
+    CGRect loFrame = CGRectMake(0,0,self.view.frame.size.width,40);
+    
+    NVUIGradientButton *button=[[[NVUIGradientButton alloc]initWithFrame:loFrame ]autorelease];
+    button.frame=loFrame;
+    button.text = [NSString stringWithFormat: @"选择时间段:%@",[LYUtility GetRequestStr:self.m_nTimespanType]];
+    button.backgroundColor=[UIColor clearColor];
+    button.tag=2000;
+    button.textColor =[UIColor whiteColor];
+    button.textShadowColor = [UIColor blackColor];
+    button.tintColor = [UIColor darkGrayColor];
+    button.highlightedTintColor = [UIColor darkGrayColor];
+    
+    self.m_oTitleButton = button;
+    
+    [button addTarget:self action:@selector(onButtonDatePickUp:)
+     forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = button;
 }
 
 -(void)initChart
@@ -447,6 +474,89 @@
    
 
 }
+#pragma mark pickerview
+-(void)onButtonDatePickUp:(NVUIGradientButton *)sender
+{
+    if (nil == self.m_oPickerView) {
+        CGRect loFrame = self.view.frame;
+        
+        UIPickerView * pickerView=[[[UIPickerView alloc] initWithFrame:CGRectMake(0,0,loFrame.size.width,loFrame.size.height)]autorelease];
+        
+        pickerView.delegate = self;
+        
+        pickerView.dataSource = self;
+        
+        pickerView.showsSelectionIndicator = YES;
+        
+        pickerView.backgroundColor = [UIColor clearColor];
+        
+        [pickerView selectRow:self.m_nTimespanType inComponent:0 animated:YES];
+        
+        self.m_oPickerView = pickerView;
+        
+        [self.view addSubview: self.m_oPickerView];
+        
+        
+        loFrame = self.m_oPickerView.frame;
+        loFrame.origin.y = loFrame.origin.y + loFrame.size.height;
+        loFrame.size.height = 40;
+        NVUIGradientButton *button=[[[NVUIGradientButton alloc]initWithFrame:loFrame ]autorelease];
+        button.frame=loFrame;
+        button.text = @"确定";
+        button.backgroundColor=[UIColor darkGrayColor];
+        button.tag=2000;
+        button.textColor =[UIColor whiteColor];
+        button.textShadowColor = [UIColor blackColor];
+        button.tintColor = [UIColor blackColor];
+        button.highlightedTintColor = [UIColor darkGrayColor];
+        self.m_oDataConfirmButton = button;
+        
+        [button addTarget:self action:@selector(onDatePickerConfirm:)
+         forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview: button];
+    }else
+    {
+        [self.m_oPickerView setHidden:NO];
+        [self.m_oDataConfirmButton setHidden:NO];
+    }
+    
+}
+ -(void)onDatePickerConfirm:(NVUIGradientButton *)sender
+{
+    [self.m_oPickerView setHidden:YES];
+    [self.m_oDataConfirmButton setHidden:YES];
+    [self LoadData];
+    NSString * lpText = [NSString stringWithFormat: @"选择时间段:%@",[LYUtility GetRequestStr:self.m_nTimespanType]];
+    
+
+    [self.m_oTitleButton setText:lpText];
+}
+
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView;
+{
+    
+    return 1;
+    
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component;
+{
+    
+    return (GE_LAST_3_YEAR+1);
+}
+
+- (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    self.m_nTimespanType = row;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSLog(@"%d",row);
+    return [LYUtility GetRequestStr:row];
+    
+}
 
 #pragma mark 析构
 -(void) dealloc
@@ -458,6 +568,9 @@
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
     self.listOfItems = nil;
+    self.m_oPickerView = nil;
+    self.m_oTitleButton = nil;
+    self.m_oDataConfirmButton = nil;
     [super dealloc];
 }
 
@@ -468,11 +581,11 @@
 #pragma mark ASIHTTPRequest Methods
 - (void)LoadDataASIHTTPRequest
 {
-  //  [self PopUpIndicator];
+   [self PopUpIndicator];
     self.m_oResponseData = [[[NSMutableData alloc]initWithCapacity:0]autorelease];
     self.listOfItems = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
     NSString * lstrTimeEnd = [LYUtility GetRequestDate:nil];
-    NSString * lstrTimeStart = [LYUtility GetRequestDate:GE_LAST_WEEK apDate:nil];
+    NSString * lstrTimeStart = [LYUtility GetRequestDate:self.m_nTimespanType apDate:nil];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/trend/vib.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     
     int lnChannCat = [LYBHUtility GetChannType:self.m_nChannType];
@@ -512,15 +625,23 @@
 	
 	if (listOfItems == nil || [listOfItems count] == 0)
 	{
-        //弹出网络错误对话框
+      
+        [self.candleChart clearData];
+        [self.candleChart setNeedsDisplay];
     }
 	else
     {
         [self.candleChart removeFromSuperview];
         
         self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
-        
-        [self.view addSubview:self.candleChart];
+        if (nil != self.m_oPickerView)
+        {
+          [self.view insertSubview:self.candleChart belowSubview:self.m_oPickerView];
+        }else
+        {
+           [self.view addSubview:self.candleChart ];
+        }
+
         [self initChart];
         [self InitData];
         

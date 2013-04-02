@@ -67,6 +67,50 @@
     
     return lpDateStr;
 }
++(NSString *)GetRequestStr:(int) anType
+{
+    NSString * lpDate = nil;
+    switch (anType) {
+        case GE_LAST_FIVE_MINUTES:
+            lpDate = [NSString stringWithFormat:@"前五分钟"];
+            break;
+        case GE_LAST_HALF_HOUR:
+            lpDate = [NSString stringWithFormat:@"前半小时"];
+            break;
+        case GE_LAST_ONE_HOUR:
+            lpDate = [NSString stringWithFormat:@"前一小时"];
+            break;
+        case GE_LAST_DAY:
+            lpDate = [NSString stringWithFormat:@"前一天"];
+            break;
+        case GE_LAST_WEEK:
+            lpDate = [NSString stringWithFormat:@"前一周"];
+            break;
+        case GE_LAST_HALF_MONTH:
+            lpDate = [NSString stringWithFormat:@"前半个月"];
+            break;
+        case GE_LAST_MONTH:
+           lpDate = [NSString stringWithFormat:@"前1个月"];
+            break;
+        case GE_LAST_3_MONTH:
+            lpDate = [NSString stringWithFormat:@"前3个月"];
+            break;
+        case GE_LAST_HALF_YEAR:
+            lpDate = [NSString stringWithFormat:@"前半年"];
+            break;
+        case GE_LAST_YEAR:
+            lpDate = [NSString stringWithFormat:@"前1年"];
+            break;
+        case GE_LAST_3_YEAR:
+            lpDate = [NSString stringWithFormat:@"前3年"];
+            break;
+        default:
+            lpDate = [NSString stringWithFormat:@"前一周"];
+  
+            break;
+    }
+    return lpDate;
+}
 +(NSString *)GetRequestDate:(int) anType apDate:(NSDate *)apDate
 {
     NSDate * lpDate = apDate;
@@ -95,19 +139,19 @@
             lpDateRet = [NSDate dateWithTimeInterval:-15*24*60*60 sinceDate:lpDate];
             break;
         case GE_LAST_MONTH:
-            lpDateRet = [NSDate dateWithTimeInterval:30*24*60*60 sinceDate:lpDate];
+            lpDateRet = [NSDate dateWithTimeInterval:-30*24*60*60 sinceDate:lpDate];
             break;
         case GE_LAST_3_MONTH:
-            lpDateRet = [NSDate dateWithTimeInterval:123*24*60*60 sinceDate:lpDate];
+            lpDateRet = [NSDate dateWithTimeInterval:-123*24*60*60 sinceDate:lpDate];
             break;
         case GE_LAST_HALF_YEAR:
-            lpDateRet = [NSDate dateWithTimeInterval:183*24*60*60 sinceDate:lpDate];
+            lpDateRet = [NSDate dateWithTimeInterval:-183*24*60*60 sinceDate:lpDate];
             break;
         case GE_LAST_YEAR:
-            lpDateRet = [NSDate dateWithTimeInterval:365*24*60*60 sinceDate:lpDate];
+            lpDateRet = [NSDate dateWithTimeInterval:-365*24*60*60 sinceDate:lpDate];
             break;
         case GE_LAST_3_YEAR:
-            lpDateRet = [NSDate dateWithTimeInterval:3*365*24*60*60 sinceDate:lpDate];
+            lpDateRet = [NSDate dateWithTimeInterval:-3*365*24*60*60 sinceDate:lpDate];
             break;
         default:
             lpDateRet = lpDate;

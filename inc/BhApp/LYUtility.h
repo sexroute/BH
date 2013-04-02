@@ -31,5 +31,6 @@ enum TIME_TYPE
 +(NSString *)GetRequestDate:(NSDate *)apDate;
 +(NSString *)GetRequestDate:(int) anType apDate:(NSDate *)apDate;
 +(NSString *)GetRequestDateByString:(int) anType apDate:(NSString *)apDate;
++(NSString *)GetRequestStr:(int) anType ;
 
 @end

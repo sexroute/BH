@@ -10,8 +10,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Chart.h"
 #import "MBProgressHUD.h"
+#import "NVUIGradientButton.h"
 
-@interface LYTrendViewController : UIViewController<MBProgressHUDDelegate>
+@interface LYTrendViewController : UIViewController<MBProgressHUDDelegate,UIPickerViewDelegate ,UIPickerViewDataSource>
 {
     MBProgressHUD *HUD;
 }
@@ -31,4 +32,8 @@
 @property ( nonatomic) float m_fLL;
 @property ( nonatomic) float m_fLH;
 @property ( nonatomic) int m_nAlarmJudgetType;
+@property (nonatomic)  int m_nTimespanType;
+@property (retain, nonatomic) UIPickerView * m_oPickerView;
+@property (retain, nonatomic) NVUIGradientButton * m_oDataConfirmButton;
+@property (retain, nonatomic) NVUIGradientButton * m_oTitleButton;
 @end

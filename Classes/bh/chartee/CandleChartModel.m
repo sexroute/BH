@@ -371,10 +371,7 @@
         [tmp setObject:lpLabelFontName forKey:KEY_FONT_NAME];
         
         //color
-        clr = [[[NSMutableString alloc] init]autorelease];
-        [clr appendFormat:@"%f,",dR];
-        [clr appendFormat:@"%f,",dG];
-        [clr appendFormat:@"%f",dB];
+       
         [tmp setObject:clr forKey:KEY_COLOR];
         
         //label type
@@ -402,10 +399,7 @@
             [tmp setObject:lpLabelFontName forKey:KEY_FONT_NAME];
             
             //color
-            clr = [[[NSMutableString alloc] init]autorelease];
-            [clr appendFormat:@"%f,",dR];
-            [clr appendFormat:@"%f,",dG];
-            [clr appendFormat:@"%f",dB];
+
             [tmp setObject:clr forKey:KEY_COLOR];
             
             //label type

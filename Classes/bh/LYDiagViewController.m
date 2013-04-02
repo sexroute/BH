@@ -51,7 +51,9 @@
     self.listOfItems = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 
     [self LoadData];
+  
 }
+
 
 - (void)didReceiveMemoryWarning
 {
