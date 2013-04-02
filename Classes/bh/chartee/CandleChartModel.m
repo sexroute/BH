@@ -33,6 +33,8 @@
     }
     NSString       *color         = [serie objectForKey:@"color"];
     
+    
+    
     float R   = [[[color componentsSeparatedByString:@","] objectAtIndex:0] floatValue]/255;
     float G   = [[[color componentsSeparatedByString:@","] objectAtIndex:1] floatValue]/255;
     float B   = [[[color componentsSeparatedByString:@","] objectAtIndex:2] floatValue]/255;
@@ -85,8 +87,8 @@
             CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:R green:G blue:B alpha:1.0]autorelease].CGColor);
             float valNext  = [[[data objectAtIndex:(i+1)] objectAtIndex:0] floatValue];
             float iNy = [chart getLocalY:valNext withSection:section withAxis:yAxis];
-           
-
+            
+            
             //2.连线
             CGContextMoveToPoint(context, ix+chart.plotPadding, iyo);
             CGContextAddLineToPoint(context, iNx+chart.plotPadding,iNy);
@@ -249,24 +251,32 @@
 	}
 	
 	NSMutableArray *data          = [serie objectForKey:KEY_DATA];
-	NSString       *color         = [serie objectForKey:KEY_COLOR];
+    
 	NSString       *detailInfoColor = [serie objectForKey:KEY_LABEL_DETAIL_INFO_COLOR];
     NSString       *labelColor         = [serie objectForKey:KEY_LABEL_COLOR];
     NSString       *lpStrUnit         = [serie objectForKey:KEY_UNIT];
     NSString       *lpLabelFontName  = [serie objectForKey:KEY_LABEL_FONT_NAME];
-    if (nil == lpLabelFontName)
-    {
-        lpLabelFontName = DEFAULT_FONT_NAME;
-    }
+    
+    NSString       *Alarmcolor         = [serie objectForKey:KEY_LABEL_ALARM_COLOR];
+    NSString       *Dangercolor         = [serie objectForKey:KEY_LABEL_DANGER_COLOR];
+    
     int lnLabelFontSize = [[serie objectForKey:KEY_LABEL_DETAIL_FONT_SIZE]intValue];
     if (0 == lnLabelFontSize)
     {
         lnLabelFontSize = DEFAULT_FONT_SIZE;
     }
+    if (nil == lpLabelFontName)
+    {
+        lpLabelFontName = DEFAULT_FONT_NAME;
+    }
 	
-	float R   = [[[color componentsSeparatedByString:@","] objectAtIndex:0] floatValue]/255;
-	float G   = [[[color componentsSeparatedByString:@","] objectAtIndex:1] floatValue]/255;
-	float B   = [[[color componentsSeparatedByString:@","] objectAtIndex:2] floatValue]/255;
+	float AlarmR   = [[[Alarmcolor componentsSeparatedByString:@","] objectAtIndex:0] floatValue]/255;
+	float AlarmG   = [[[Alarmcolor componentsSeparatedByString:@","] objectAtIndex:1] floatValue]/255;
+	float AlarmB   = [[[Alarmcolor componentsSeparatedByString:@","] objectAtIndex:2] floatValue]/255;
+    
+    float DangerR   = [[[Dangercolor componentsSeparatedByString:@","] objectAtIndex:0] floatValue]/255;
+	float DangerG   = [[[Dangercolor componentsSeparatedByString:@","] objectAtIndex:1] floatValue]/255;
+	float DangerB   = [[[Dangercolor componentsSeparatedByString:@","] objectAtIndex:2] floatValue]/255;
 	
     float dR  = [[[detailInfoColor componentsSeparatedByString:@","] objectAtIndex:0] floatValue]/255;
 	float dG  = [[[detailInfoColor componentsSeparatedByString:@","] objectAtIndex:1] floatValue]/255;
@@ -280,6 +290,7 @@
     {
         NSAutoreleasePool * lpPool = [[NSAutoreleasePool alloc]init];
         float lfVal = [[[data objectAtIndex:chart.selectedIndex] objectAtIndex:0]floatValue];
+        int lnAlarmType = [[[data objectAtIndex:chart.selectedIndex] objectAtIndex:3]intValue];
         NSString * lpStrInfo   = nil ;
         if ([[data objectAtIndex:chart.selectedIndex] count]>1) {
             lpStrInfo = [[data objectAtIndex:chart.selectedIndex] objectAtIndex:1];
@@ -298,9 +309,30 @@
         
         //color
         NSMutableString *clr = [[[NSMutableString alloc] init]autorelease];
-        [clr appendFormat:@"%f,",ZR];
-        [clr appendFormat:@"%f,",ZG];
-        [clr appendFormat:@"%f",ZB];
+        
+        switch (lnAlarmType)
+        {
+            case 0:
+                [clr appendFormat:@"%f,",ZR];
+                [clr appendFormat:@"%f,",ZG];
+                [clr appendFormat:@"%f",ZB];
+                break;
+            case 1:
+                [clr appendFormat:@"%f,",AlarmR];
+                [clr appendFormat:@"%f,",AlarmG];
+                [clr appendFormat:@"%f",AlarmB];
+                break;
+            case 2:
+                [clr appendFormat:@"%f,",DangerR];
+                [clr appendFormat:@"%f,",DangerG];
+                [clr appendFormat:@"%f",DangerB];
+                break;
+            default:
+                break;
+        }
+        
+        
+        
         [tmp setObject:clr forKey:KEY_COLOR];
         
         //position
@@ -314,14 +346,10 @@
         [tmp setObject:l forKey:KEY_TEXT];
         
         //font
-        [tmp setObject:@"12" forKey:KEY_FONT_SIZE];
+        [tmp setObject:@"14" forKey:KEY_FONT_SIZE];
         [tmp setObject:lpLabelFontName forKey:KEY_FONT_NAME];
         
         //color
-        clr = [[[NSMutableString alloc] init]autorelease];
-        [clr appendFormat:@"%f,",ZR];
-        [clr appendFormat:@"%f,",ZG];
-        [clr appendFormat:@"%f",ZB];
         [tmp setObject:clr forKey:KEY_COLOR];
         
         //label type
@@ -356,12 +384,13 @@
         //width
         [tmp setObject:@"1" forKey:KEY_SKIP_WIDTH];
         [label addObject:tmp];
-  
+        
         
         
         //3.detail info2
-  
-        if ([[data objectAtIndex:chart.selectedIndex] count]>2) {
+        
+        if ([[data objectAtIndex:chart.selectedIndex] count]>2)
+        {
             lpStrInfo = [[data objectAtIndex:chart.selectedIndex] objectAtIndex:2];
             l = [[[NSMutableString alloc] init]autorelease];
             tmp = [[[NSMutableDictionary alloc] init]autorelease];
@@ -384,9 +413,9 @@
             //position
             [tmp setObject:@"3" forKey:KEY_PADDING_TOP];
             [label addObject:tmp];
-
+            
         }
-         [lpPool drain];
+        [lpPool drain];
     }
     
     //    if(chart.selectedIndex!=-1 && chart.selectedIndex < data.count && [data objectAtIndex:chart.selectedIndex]!=nil){

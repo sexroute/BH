@@ -29,6 +29,7 @@
         self.m_fHL = .0;
         self.m_fLL = .0;
         self.m_fLH = .0;
+        self.m_nAlarmJudgeType= E_ALARMCHECK_LOWPASS;
     }
     return self;
 }
@@ -54,6 +55,24 @@
         default:
             break;
     }
+    
+    id lpObj = [self.m_pData objectForKey:@"HH"];
+    self.m_fHH = [lpObj floatValue];
+    
+    lpObj = [self.m_pData objectForKey:@"HL"];
+    self.m_fHL = [lpObj floatValue];
+    
+    lpObj = [self.m_pData objectForKey:@"LL"];
+    self.m_fLL = [lpObj floatValue];
+    
+    lpObj = [self.m_pData objectForKey:@"LH"];
+    self.m_fLH = [lpObj floatValue];
+    
+    lpObj = [self.m_pData objectForKey:@"unit"];
+    self.m_pStrChannUnit = lpObj;
+    
+    lpObj = [self.m_pData objectForKey:@"chann_type"];
+    self.m_nChannType = [lpObj intValue];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -151,7 +170,9 @@
         
     }
     id lpObj = nil;
+    id loAlarmJudgeType = nil;
     NSString * lpTitle = nil;
+
     switch (indexPath.section) {
         case 0:
             switch (indexPath.row)
@@ -231,12 +252,14 @@
                 case 6:
                     lpTitle = @"单   位";
                     lpObj = [self.m_pData objectForKey:@"unit"];
-                    self.m_pStrChannUnit = lpObj;
+
                     break;
                 case 7:
                     lpTitle = @"报警状态";
                     lpObj = [self.m_pData objectForKey:@"alarm_status"];
                     int lnAlarmStatus = [(NSNumber *)lpObj intValue];
+                    loAlarmJudgeType = [self.m_pData objectForKey:@"alarmJudgeType"];
+                    self.m_nAlarmJudgeType = [loAlarmJudgeType intValue];
                     switch (lnAlarmStatus) {
                         case 0:
                             lpObj = @"正常";
@@ -262,23 +285,22 @@
             switch (indexPath.row) {
                 case 2:
                     lpTitle = @"高高报线";
-                    lpObj = [self.m_pData objectForKey:@"HH"];
-                    self.m_fHH = [lpObj floatValue];
+                    lpObj = [self.m_pData objectForKey:@"HL"];
                     break;
                 case 3:
                     lpTitle = @"高低报线";
                     lpObj = [self.m_pData objectForKey:@"HL"];
-                     self.m_fHL = [lpObj floatValue];
+ 
                     break;
                 case 4:
                     lpTitle = @"低低报线";
                     lpObj = [self.m_pData objectForKey:@"LL"];
-                     self.m_fLL = [lpObj floatValue];
+
                     break;
                 case 5:
                     lpTitle = @"低高报线";
                     lpObj = [self.m_pData objectForKey:@"LH"];
-                     self.m_fLH = [lpObj floatValue];
+
                     break;
                 case 0:
                     lpTitle = @"当 前 值";
@@ -366,51 +388,6 @@
 
 }
 
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    //    NSString *Title;
-//    NSLog(@"%@",[segue identifier]);
-//    if ([[segue identifier] isEqualToString:@"PushToWave"])
-//    {
-//        LYWaveViewController * lpChannView = nil;
-//        LYTrendViewController * lpTrendView = nil;
-//        
-//        UIStoryboard *mainStoryboard = nil;
-//        
-//        
-//
-//        NSLog(@"%@",lpChannView.m_pStrGroup);
-//        int lnChanntype  = [self GetChanntype];
-//        lnChanntype = [LYBHUtility GetChannType:lnChanntype];
-//        switch (lnChanntype)
-//        {
-//            case E_TBL_CHANNTYPE_VIB:
-//            case E_TBL_CHANNTYPE_DYN:
-//                lpChannView =[segue destinationViewController];
-//                lpChannView.m_pStrGroup = self.m_pStrGroup;
-//                lpChannView.m_pStrCompany = self.m_pStrCompany;
-//                lpChannView.m_pStrFactory = self.m_pStrFactory;
-//                lpChannView.m_pStrChann = self.m_pStrChann;
-//                lpChannView.m_pStrPlant = self.m_pStrPlant;
-//                lpChannView.m_nChannType = self.m_nChannType;
-//
-//                break;
-//            case E_TBL_CHANNTYPE_PROC:
-//                mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-//                                                           bundle: nil];
-//                
-//                lpTrendView =(LYTrendViewController *)[mainStoryboard
-//                              instantiateViewControllerWithIdentifier: @"LYTrendViewController"];
-//                [self.navigationController pushViewController:lpTrendView animated:NO];
-//               
-//                break;
-//            default:
-//                break;
-//        }
-//
-//    }
-//    
-//}
 
 - (void)dealloc {
     [_m_oNavigateButton release];
@@ -447,6 +424,7 @@
             lpChannView.m_fHL = self.m_fHL;
             lpChannView.m_fLL = self.m_fLL;
             lpChannView.m_fLH = self.m_fLH;
+            lpChannView.m_nAlarmJudgetType = self.m_nAlarmJudgeType;
             [self.navigationController pushViewController:lpChannView animated:YES];
             break;
         case E_TBL_CHANNTYPE_PROC:
@@ -465,6 +443,7 @@
             lpTrendView.m_fHL = self.m_fHL;
             lpTrendView.m_fLL = self.m_fLL;
             lpTrendView.m_fLH = self.m_fLH;
+            lpTrendView.m_nAlarmJudgetType = self.m_nAlarmJudgeType;
             [self.navigationController pushViewController:lpTrendView animated:YES];
             
             break;

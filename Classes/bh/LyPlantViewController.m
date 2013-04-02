@@ -111,10 +111,7 @@
         lpValNoval.m_pSegmentMsgIndex = [NSNumber numberWithInt:5];
         lpValNoval.m_pSegmentMsgHandle = @selector(onButtonNetOffDeviceSelected:);
         lpValNoval.m_pSegmentTitle = @"断网";
-        [self.m_pSegmentMap addObject:lpValNoval];
-        
-        
-        
+        [self.m_pSegmentMap addObject:lpValNoval];        
     }
     
     
@@ -140,8 +137,9 @@
     //2.table view
     CGRect loFrame = self.view.frame;
     loFrame.origin.y = segmentedControl.frame.size.height;
-   
-    loFrame.size.height = loFrame.size.height - loFrame.origin.y;
+    int lnNavigatorBarHeigth = self.navigationController.navigationBar.frame.size.height;
+    int lnTabBarHeight = self.tabBarController.tabBar.frame.size.height;
+    loFrame.size.height = loFrame.size.height - loFrame.origin.y - lnNavigatorBarHeigth-lnTabBarHeight;
      self.m_oTableView = [[[UITableView alloc] initWithFrame:loFrame]autorelease];
    
     [self.m_oTableView setDataSource:self];

@@ -10,6 +10,7 @@
 #import "LYGlobalSettings.h"
 #import "ChannInfo.h"
 #import "ASIFormDataRequest.h"
+#import "LYBHUtility.h"
 
 
 @interface LYWaveViewController ()
@@ -48,7 +49,7 @@
         self.m_fHL = .0;
         self.m_fLL = .0;
         self.m_fLH = .0;
-
+        self.m_nAlarmJudgetType = E_ALARMCHECK_LOWPASS;
         
     }
     return self;
@@ -233,6 +234,7 @@
     lpTrendView.m_fHL = self.m_fHL;
     lpTrendView.m_fLL = self.m_fLL;
     lpTrendView.m_fLH = self.m_fLH;
+    lpTrendView.m_nAlarmJudgetType = self.m_nAlarmJudgetType;
     self.navigationItem.title = @"返回";
     [self.navigationController pushViewController:lpTrendView animated:YES];
 }

@@ -30,4 +30,5 @@
 @property ( nonatomic) float m_fHL;
 @property ( nonatomic) float m_fLL;
 @property ( nonatomic) float m_fLH;
+@property ( nonatomic) int m_nAlarmJudgetType;
 @end

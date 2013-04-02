@@ -47,7 +47,7 @@
         self.m_fHL = .0;
         self.m_fLL = .0;
         self.m_fLH = .0;
-        
+        self.m_nAlarmJudgetType = E_ALARMCHECK_LOWPASS;
     }
     return self;
 }
@@ -344,6 +344,75 @@
     [self.candleChart addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
     
 }
+
+-(int)judgetAlarmType:(float) fValue
+{
+    int iRtn = 0;
+    switch (self.m_nAlarmJudgetType)
+    {
+        case E_ALARMCHECK_LOWPASS:
+            if (fValue>self.m_fHL)
+            {
+                if(fValue>self.m_fHH)
+                {
+                    iRtn=2;
+                }
+                else
+                    iRtn=1;
+            }
+            break;
+        case E_ALARMCHECK_HIGHPASS:
+            if (fValue<self.m_fLH)
+            {
+                if (fValue<self.m_fLL)
+                {
+                    iRtn=2;
+                }
+                else
+                {
+                    iRtn=1;
+                }
+            }
+            break;
+        case E_ALARMCHECK_BANDPASS:
+            if ((fValue>self.m_fHL)||(fValue<self.m_fLH))
+            {
+                if((fValue>self.m_fHH)||(fValue<self.m_fLL))
+                {
+                    iRtn=2;
+                }
+                else
+                {	 iRtn=1;
+                }
+            }
+            break;
+        case E_ALARMCHECK_BANDSTOP:
+            if((fValue<self.m_fHH)&&(fValue>self.m_fLL))
+            {
+                if((fValue<self.m_fHL)&&(fValue>self.m_fLH))
+                {
+                    iRtn=2;
+                }
+                else
+                {
+                    iRtn=1;
+                }
+            }
+            break;
+        default:
+            if (fValue>self.m_fHL)
+            {
+                if(fValue>self.m_fHH)
+                {
+                    iRtn=2;
+                }
+                else
+                {   iRtn=1;
+                }
+            }
+    }
+    return  iRtn;
+}
 -(void)InitData
 {
     int lnDataSize = self.listOfItems.count;
@@ -366,14 +435,10 @@
         [lpDataArray addObject:[NSString  stringWithFormat:@"%f",lfval]];
         [lpDataArray addObject:[NSString  stringWithFormat:@"时间 %@",lpDateTime]];
         [lpDataArray addObject:[NSString  stringWithFormat:@"转速 %d RPM",ldRev]];
-        [lpDataArray addObject:[NSString  stringWithFormat:@"%d",ldRev]];
+        int lnAlarmType = [self judgetAlarmType:lfval];
+        [lpDataArray addObject:[NSString  stringWithFormat:@"%d",lnAlarmType]];
         
-        
-        
-        //        [lpDataArray addObject:[NSString  stringWithFormat:@"%f",i*1.0]];
-        //        [lpDataArray addObject:[NSString  stringWithFormat:@"%f",i*1.0]];
-        //        [lpDataArray addObject:[NSString  stringWithFormat:@"%f",i*1.0]];
-        //        [lpDataArray addObject:[NSString  stringWithFormat:@"%f",i*1.0]];
+
         [lpArray addObject:lpDataArray];
     }
     

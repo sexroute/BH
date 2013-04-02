@@ -303,7 +303,7 @@
                 int lnPaddingleft =  [[lbl objectForKey:KEY_PADDING_LEFT]intValue];
                 if (0 == lnPaddingleft)
                 {
-                    lnPaddingleft = sec.paddingLeft;
+                    //lnPaddingleft = sec.paddingLeft;
                 }
                 
                 int lnPaddingtop = [[lbl objectForKey:KEY_PADDING_TOP]intValue];
