@@ -61,6 +61,7 @@ typedef enum
 @property (retain, nonatomic) NSMutableArray * m_oNormalPlants;
 @property (retain, nonatomic) NSMutableData * responseData;
 @property (retain, nonatomic) NSMutableArray  * m_pSegmentMap;
+@property (retain, nonatomic) NSMutableArray  * m_oNetOffPlants;
 
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonAll;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonDanger;

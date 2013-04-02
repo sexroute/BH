@@ -138,7 +138,7 @@ NSString * G_NO_SELECTED_VALUE_STR_DISPLAY = @"全部";
     
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
     [self toogleData];
 }

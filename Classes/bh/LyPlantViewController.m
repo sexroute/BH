@@ -41,6 +41,7 @@
 @synthesize m_pSegmentMap;
 @synthesize responseData;
 @synthesize m_oPlantItems;
+@synthesize m_oNetOffPlants;
 
 
 #pragma mark 初始化
@@ -69,6 +70,15 @@
     [super viewDidLoad];
     [self.m_oActiveIndicator stopAnimating];
     [self.navigationController setToolbarHidden:YES animated:NO];
+    
+    
+//    CGRect loFrame = self.tableView.frame;
+//    loFrame.origin.y = loFrame.origin.y+20;
+//    loFrame.size.height = loFrame.size.height - 20;
+//    
+//    
+//   self.tableView = [[[UITableView alloc] initWithFrame:loFrame]autorelease];
+    
     self.navigationController.navigationBar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
     //1.拖拽刷新
     if (_refreshHeaderView == nil)
@@ -124,6 +134,7 @@
         LYSegmentMsgMap * lpVal =[[[LYSegmentMsgMap alloc]init]autorelease];
         lpVal.m_pSegmentMsgIndex = [NSNumber numberWithInt:0];
         lpVal.m_pSegmentMsgHandle = @selector(onButtonAllDeviceSelected:);
+        
         lpVal.m_pSegmentTitle = @"全部";
         [self.m_pSegmentMap addObject:lpVal];
         
@@ -160,9 +171,11 @@
         
         LYSegmentMsgMap * lpValNoval =[[[LYSegmentMsgMap alloc]init]autorelease];
         lpValNoval.m_pSegmentMsgIndex = [NSNumber numberWithInt:5];
-        lpValNoval.m_pSegmentMsgHandle = @selector(onButtonStopDeviceSelected:);
+        lpValNoval.m_pSegmentMsgHandle = @selector(onButtonNetOffDeviceSelected:);
         lpValNoval.m_pSegmentTitle = @"断网";
         [self.m_pSegmentMap addObject:lpValNoval];
+        
+        
         
     }
     
@@ -179,6 +192,8 @@
     segmentedControl.selectedSegmentIndex = 0;
     [segmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
     self.navigationItem.titleView = segmentedControl;
+    
+    
     
     //4.bottom button
     self.navigationController.toolbar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
@@ -204,10 +219,8 @@
     }
     
 }
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-   
-    
     [self.m_oTableView reloadData];
 }
 
@@ -311,6 +324,7 @@
     id loRpm =[[lpPlants objectAtIndex:i] objectForKey:@"rev"];
     id loAlarmStatus = [[lpPlants objectAtIndex:i] objectForKey:@"alarm_status"];
     id loStopStatus = [[lpPlants objectAtIndex:i] objectForKey:@"stop_status"];
+    id loNetoffStatus = [[lpPlants objectAtIndex:i] objectForKey:@"netoff_status"];
     NSMutableString *lpStrGroupNo = [NSMutableString stringWithString:@""];
     [lpStrGroupNo appendFormat:@"%@-%@-%@-%@",logroupid,locompanyid,lofactoryid,losetid];
     NSString * lpResult = [lpStrGroupNo substringFromIndex:0];
@@ -330,7 +344,14 @@
             {
                 if([currentObject isKindOfClass:[LYCellviewCell class]])
                 {
+                    NSString * lpAlarmStatus = [self GetStringFromID:loAlarmStatus];
+                    NSInteger lnAlarmStatus = [lpAlarmStatus integerValue];
+                    NSString  * lpStopStatus = [self GetStringFromID:loStopStatus];
+                    NSInteger lnStopStatus = [lpStopStatus integerValue];
+                    int lnNetoffStatus = [loNetoffStatus intValue];
+                    
                     cell = (LYCellviewCell *)currentObject;
+
                     cell.m_lblPlantid.text = [self GetStringFromID:loplantid];
                     cell.m_plblOrg.text = lpResult;
                     [cell.m_plblOrg setNumberOfLines:0];
@@ -346,10 +367,7 @@
                     }
                     
                     cell.m_plblRpm.textAlignment = UITextAlignmentRight;
-                    NSString * lpAlarmStatus = [self GetStringFromID:loAlarmStatus];
-                    NSInteger lnAlarmStatus = [lpAlarmStatus integerValue];
-                    NSString  * lpStopStatus = [self GetStringFromID:loStopStatus];
-                    NSInteger lnStopStatus = [lpStopStatus integerValue];
+
 #ifdef DEBUG
                     //                    NSLog(@"%@:%@",lpAlarmStatus,lpStopStatus);
 #endif
@@ -361,16 +379,28 @@
                         }else if (1 == lnAlarmStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:1 green:1 blue:0 alpha:1]autorelease];
-                        } if (1 == lnStopStatus)
+                        } else if (1== lnNetoffStatus)
                         {
                             cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1]autorelease];
+                             cell.m_plblRpm.text =[NSString stringWithFormat:@"0"];
+                            cell.m_plblOrg.text = [NSString stringWithFormat:@"%@(断网) ",cell.m_plblOrg.text];
+                            [cell.m_plblOrg setNumberOfLines:0];
+                            [cell.m_plblOrg sizeToFit];
+                        }if (1 == lnStopStatus)
+                        {
+                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.4 green:0.4 blue:0.4 alpha:1]autorelease];
+
                         }
                         
                     }else
                     {
-                        if (1 == lnStopStatus )
+                        if (1== lnNetoffStatus)
                         {
-                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:200 green:200 blue:200 alpha:1]autorelease];
+                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.8 green:0.8 blue:0.8 alpha:1]autorelease];
+                        }else 
+                        if (1 == lnStopStatus  )
+                        {
+                            cell.m_pImgStatus.backgroundColor = [[[UIColor alloc] initWithRed:0.4 green:0.4 blue:0.4 alpha:1]autorelease];
                         }
                     }
                     break;
@@ -406,6 +436,9 @@
             break;
         case NORMAL:
             lpPlants = self.m_oNormalPlants;
+            break;
+        case NETOFF:
+            lpPlants = self.m_oNetOffPlants;
             break;
             
         default:
@@ -626,6 +659,7 @@
     self.m_oAlarmPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
     self.m_oStopPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
     self.m_oNormalPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
+    self.m_oNetOffPlants = [[[NSMutableArray alloc] initWithCapacity:10]autorelease];
     if (nil != self.m_oPlantItems)
     {
         int lnSize = [self.m_oPlantItems count];
@@ -637,11 +671,13 @@
             }
             id loAlarmStatus = [loObj objectForKey:@"alarm_status"];
             id loStopStatus = [loObj objectForKey:@"stop_status"];
+            id lnNetOffStatus = [loObj objectForKey:@"netoff_status"];
             if (nil!= loAlarmStatus && nil!= loStopStatus)
             {
                 NSNumber *val = loAlarmStatus;
                 int lnAlarmStatus = [val intValue];
                 int lnStopStatus = [(NSNumber *)loStopStatus intValue];
+                int lnnNetoff_status= [(NSNumber *)lnNetOffStatus intValue];
                 //                NSLog((@"Alarmstatus:%d | %d"),lnAlarmStatus,lnStopStatus);
                 if (lnAlarmStatus>0|| (lnAlarmStatus==0 && lnStopStatus<=0))
                 {
@@ -659,7 +695,12 @@
                             [self.m_oNormalPlants addObject:loObj];
                             break;
                     }
-                }else if(lnStopStatus>0)
+                }
+                if (lnnNetoff_status>0)
+                {
+                    [self.m_oNetOffPlants addObject:loObj];
+                }
+                else if(lnStopStatus>0)
                 {
                     [self.m_oStopPlants addObject:loObj];
                     
@@ -903,6 +944,17 @@
     self.m_pButtonAll.style = UIBarButtonItemStylePlain;
     self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
     self->m_nFilterStatus = STOPPED;
+    [self.m_oTableView reloadData];
+}
+
+-(void)onButtonNetOffDeviceSelected:(UIBarButtonItem *)sender
+{
+    self.m_pButtonAlarm.style = UIBarButtonItemStylePlain;
+    self.m_pButtonDanger.style = UIBarButtonItemStylePlain;
+    self.m_pButtonStop.style =UIBarButtonItemStyleDone ;
+    self.m_pButtonAll.style = UIBarButtonItemStylePlain;
+    self.m_pButtonNormal.style = UIBarButtonItemStylePlain;
+    self->m_nFilterStatus = NETOFF;
     [self.m_oTableView reloadData];
 }
 
