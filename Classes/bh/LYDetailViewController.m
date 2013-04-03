@@ -146,25 +146,46 @@
         case 1:
             switch (indexPath.row) {
                 case 0:
-                    lpText = [ self.m_pData objectForKey:@"rev1"];
+                    lpText = [ self.m_pData objectForKey:@"rev"];
+                    int lnRev = [lpText intValue];
+                    if (lnRev<0)
+                    {
+                        lpText = @"0";
+                    }
                     lpTitle =@"转速:";
                     break;
                 case 1:
                     lpText = [ self.m_pData objectForKey:@"alarm_status"];
-                    lpTitle =@"报警状态:";
-                    NSString * lpData = [lpText description];
-                    if( [lpData isEqualToString: @"2"])
+                    int lnNetOffStatus =[ [ self.m_pData objectForKey:@"netoff_status"]intValue];
+                    int lnStopStatus = [ [ self.m_pData objectForKey:@"stop_status"]intValue];
+                    
+                    lpTitle =@"设备状态:";
+                   
+                    if (lnNetOffStatus>0)
                     {
-                        lpText = @"危险";
-                        
-                    }else if([lpData isEqualToString: @"1"])
+                        lpText = @"断网";
+                    }else if(lnStopStatus>0)
                     {
-                        lpText = @"报警";
-                        
-                    }else if([lpData isEqualToString: @"0"])
+                        lpText = @"停车";
+                    }else
                     {
-                        lpText = @"正常";
-                    }
+                        NSString * lpData = [lpText description];
+                        if( [lpData isEqualToString: @"2"])
+                        {
+                            lpText = @"危险";
+                            cell.textLabel.textColor = [UIColor redColor];
+                            
+                        }else if([lpData isEqualToString: @"1"])
+                        {
+                            lpText = @"报警";
+                            cell.textLabel.textColor = [UIColor colorWithRed:0.9 green:0.6 blue:0 alpha:1];
+                            
+                        }else if([lpData isEqualToString: @"0"])
+                        {
+                            lpText = @"正常";
+                        }
+                    }                        
+ 
                     break;
                 case 2:
                     lpText = [ self.m_pData objectForKey:@"smpfreq"];

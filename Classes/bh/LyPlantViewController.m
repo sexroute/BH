@@ -419,27 +419,27 @@
     {
         case ALL:
             lpPlants = self.m_oPlantItems;
-            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"全部设备(%d台)",lpPlants.count];
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"全部设备"];
             break;
         case ALARM:
             lpPlants = self.m_oAlarmPlants;
-            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"报警设备(%d台)",lpPlants.count];
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"报警设备"];
             break;
         case DANGER:
             lpPlants = self.m_oDangerPlants;
-            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"危险设备(%d台)",lpPlants.count];
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"危险设备"];
             break;
         case STOPPED:
             lpPlants = self.m_oStopPlants;
-            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"停车设备(%d台)",lpPlants.count];
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"停车设备"];
             break;
         case NORMAL:
             lpPlants = self.m_oNormalPlants;
-            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"正常设备(%d台)",lpPlants.count];
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"正常设备"];
             break;
         case NETOFF:
             lpPlants = self.m_oNetOffPlants;
-            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"断网设备(%d台)",lpPlants.count];
+            self.m_oNavigationTitleView.text =[NSString stringWithFormat: @"断网设备"];
             break;
             
         default:
@@ -538,6 +538,8 @@
         
     }
     
+    NSString * lstrTitle =[NSString stringWithFormat:@"%@(%d台)" ,self.m_oNavigationTitleView.text,lpPlantsRet.count];
+    self.m_oNavigationTitleView.text = lstrTitle;
     return lpPlantsRet;
 }
 
