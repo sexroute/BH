@@ -734,15 +734,15 @@
 		self.range           = 120;
 		self.touchFlag       = 0;
 		self.touchFlagTwo    = 0;
-		NSMutableArray *rats = [[NSMutableArray alloc] init];
+		NSMutableArray *rats = [[[NSMutableArray alloc] init]autorelease];
 		self.ratios          = rats;
 		[rats release];
 		
-		NSMutableArray *secs = [[NSMutableArray alloc] init];
+		NSMutableArray *secs = [[[NSMutableArray alloc] init]autorelease];
 		self.sections        = secs;
 		[secs release];
         
-        NSMutableDictionary *mods = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *mods = [[[NSMutableDictionary alloc] init]autorelease];
 		self.models        = mods;
 		[mods release];
 		
@@ -761,22 +761,22 @@
 
 -(void)initModels{
     //line
-    ChartModel *model = [[LineChartModel alloc] init];
+    ChartModel *model = [[[LineChartModel alloc] init]autorelease];
     [self addModel:model withName:@"line"];
     [model release];
     
     //area
-    model = [[AreaChartModel alloc] init];
+    model = [[[AreaChartModel alloc] init]autorelease];
     [self addModel:model withName:@"area"];
     [model release];
     
     //column
-    model = [[ColumnChartModel alloc] init];
+    model = [[[ColumnChartModel alloc] init]autorelease];
     [self addModel:model withName:@"column"];
     [model release];
     
     //candle
-    model = [[CandleChartModel alloc] init];
+    model = [[[CandleChartModel alloc] init]autorelease];
     [self addModel:model withName:@"candle"];
     [model release];
     

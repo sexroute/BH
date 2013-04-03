@@ -51,6 +51,7 @@ typedef enum {
 @property (retain, nonatomic) NSString * m_pStrChannUnit;
 @property (retain,nonatomic) NSMutableData  *m_pResponseData;
 @property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
+
 -(void) initGraph;
 
 

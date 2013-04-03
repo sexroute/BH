@@ -242,14 +242,14 @@ int g_ResolutionYMax = 960;
     //dataSourceLinePlot.interpolation = CPTScatterPlotInterpolationLinear ;
     
     
-    dataForPlot1 = [[NSMutableArray alloc] init];
+    self.dataForPlot1 = [[[NSMutableArray alloc] init]autorelease];
     j = 200;
     r = 0;
     
 }
 - (void)DrawData:(id )wave_data wave_lenx:(int)wave_len maxPoint:(int)anMaxPoint axis_x_max:(double)adblAxisXMax axis_x_delta:(double)adblAxisXDelta type:(int)anType
 {
-    [dataForPlot1 removeAllObjects];
+    [self.dataForPlot1 removeAllObjects];
     if (0!= wave_len )
     {
         int lnWave_Len = wave_len;
@@ -347,28 +347,28 @@ int g_ResolutionYMax = 960;
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMax)];
                     
                     NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point1 atIndex:i*2];
+                    [self.dataForPlot1 insertObject:point1 atIndex:i*2];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(i*2+1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMin)];
                     //                    NSLog(@"%d %@ %@",i,xp,yp);
                     //                    NSLog(@"%d %@ %@",i,xp2,yp2);
                     NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point2 atIndex:i*2+1];
+                    [self.dataForPlot1 insertObject:point2 atIndex:i*2+1];
                     
                 }else
                 {
                     NSString *xp = [NSString stringWithFormat:@"%f",(i*2)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMin)];
                     NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point1 atIndex:i*2];
+                    [self.dataForPlot1 insertObject:point1 atIndex:i*2];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(i*2+1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMax)];
                     //                    NSLog(@"%d %@ %@",i,xp,yp);
                     //                    NSLog(@"%d %@ %@",i,xp2,yp2);
                     NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point2 atIndex:i*2+1];
+                    [self.dataForPlot1 insertObject:point2 atIndex:i*2+1];
                 }
                 
             }
@@ -406,28 +406,28 @@ int g_ResolutionYMax = 960;
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMax)];
                     
                     NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
+                    [self.dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMin)];
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
                     NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
+                    [self.dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
                     
                 }else
                 {
                     NSString *xp = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp = [NSString stringWithFormat:@"%f",(ldblMin)];
                     NSMutableDictionary *point1 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp, @"x", yp, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
+                    [self.dataForPlot1 insertObject:point1 atIndex:lnMaxPoint-1];
                     
                     NSString *xp2 = [NSString stringWithFormat:@"%f",(lnMaxPoint-1)*ldblAxisXDelta];
                     NSString *yp2 = [NSString stringWithFormat:@"%f",(ldblMax)];
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp,yp);
                     //                    NSLog(@"%d %@ %@",lnMaxPoint-1,xp2,yp2);
                     NSMutableDictionary *point2 = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:xp2, @"x", yp2, @"y", nil]autorelease];
-                    [dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
+                    [self.dataForPlot1 insertObject:point2 atIndex:lnMaxPoint-1];
                 }
             }
             
@@ -629,7 +629,7 @@ int g_ResolutionYMax = 960;
     NSNumber *num =0;
     //让视图偏移
 	if ( [(NSString *)plot.identifier isEqualToString:@"Green Plot"] ) {
-        num = [[dataForPlot1 objectAtIndex:index] valueForKey:key];
+        num = [[self.dataForPlot1 objectAtIndex:index] valueForKey:key];
         if ( fieldEnum == CPTScatterPlotFieldX ) {
 			num = [NSNumber numberWithDouble:[num doubleValue] - r];
 		}
@@ -657,7 +657,7 @@ int g_ResolutionYMax = 960;
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    return [dataForPlot1 count];
+    return [self.dataForPlot1 count];
 }
 
 #pragma 传感器事件
@@ -712,6 +712,7 @@ int gCount = 0;
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
     self.m_pResponseData = nil;
+    self.dataForPlot1 = nil;
     //[self->graph dealloc];
     // NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
     [super dealloc]; // 不要忘记调用父类代码
