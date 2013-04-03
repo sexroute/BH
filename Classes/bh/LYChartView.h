@@ -30,7 +30,7 @@ typedef enum {
     int                         j;
     int                         r;
     UIView                      * m_pParent;
-    NSMutableData               *responseData;
+    NSMutableData               *m_pResponseData;
     NSString * m_pStrGroup;
     NSString * m_pStrCompany;
     NSString * m_pStrFactory;
@@ -49,6 +49,7 @@ typedef enum {
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) NSString * m_pStrPlant;
 @property (retain, nonatomic) NSString * m_pStrChannUnit;
+@property (retain,nonatomic) NSMutableData  *m_pResponseData;
 -(void) initGraph;
 
 

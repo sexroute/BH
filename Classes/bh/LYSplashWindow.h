@@ -15,7 +15,7 @@
 #define IS_RETINA       ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&([UIScreen mainScreen].scale == 2.0))
 @interface LYSplashWindow : UIViewController<UIAlertViewDelegate,UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate> {
 	IBOutlet UILabel *label;
-	NSMutableData *responseData;
+	NSMutableData * m_pResponseData;
     NSMutableArray *m_oListAllPlantsItem;
     UIViewController * m_pPlantViewController;
     
@@ -34,6 +34,7 @@
 
 @property (retain, nonatomic) IBOutlet UIView *m_oLogginButton;
 @property (retain, nonatomic) IBOutlet LYNVController *m_pNavViewController;
+@property (retain,nonatomic) NSMutableData * m_pResponseData;
 
 @property (retain, nonatomic) IBOutlet NSMutableArray *m_oListAllPlantsItem;
 @end

@@ -34,6 +34,7 @@
 @synthesize ProcChanns;
 @synthesize m_pStrTimeStart;
 @synthesize m_strChannDiaged;
+@synthesize m_pResponseData;
 
 #pragma mark init
 
@@ -92,7 +93,7 @@
     self.VibChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     self.DynChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     
-    self->responseData = [[NSMutableData data] retain];
+    self.m_pResponseData = [NSMutableData data];
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/pointalarm/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     NSString * lpPostData = [NSString stringWithFormat:@"%@&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
 #ifdef DEBUG
@@ -117,10 +118,10 @@
     
     [self HiddeIndicator];
     
-    self->responseData =[NSMutableData dataWithData:[request responseData]] ;
+    self.m_pResponseData =[NSMutableData dataWithData:[request responseData]] ;
     //	[self.m_pProgressBar stopAnimating];
 	[self HiddeIndicator];
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
     if (nil!= self->listOfItems)
@@ -134,7 +135,7 @@
 	{
         [responseString release];
 
-        self->responseData = nil;
+        self.m_pResponseData = nil;
   
         [self alertLoadFailed:nil];
     }
@@ -181,7 +182,7 @@
         
         [responseString release];
 
-         self->responseData = nil;
+         self.m_pResponseData = nil;
 
         [self.tableView reloadData];
 	}
@@ -207,7 +208,7 @@
     self.VibChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     self.DynChanns = [[[NSMutableArray alloc]initWithCapacity:10]autorelease];
     
-    self->responseData = nil;
+    self.m_pResponseData = nil;
     NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/pointalarm/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
     NSString * lpPostData = [NSString stringWithFormat:@"%@&groupid=%@&companyid=%@&factoryid=%@&setid=%@&plantid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrGroup,self.m_pStrCompany,self.m_pStrFactory,self.m_pStrSet,self.m_pStrPlant];
 #ifdef DEBUG
@@ -225,11 +226,11 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	[responseData setLength:0];
+	[self.m_pResponseData setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[responseData appendData:data];
+	[self.m_pResponseData appendData:data];
 }
 
 - (void) alertLoadFailed:(NSString * )apstrError
@@ -268,7 +269,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	
 	[self HiddeIndicator];
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
     if (nil!= self->listOfItems)
@@ -281,8 +282,8 @@
 	if (listOfItems == nil  || [listOfItems count] == 0)
 	{
         [responseString release];
-        [self->responseData release];
-        self->responseData = nil;
+        
+        self.m_pResponseData = nil;
         [connection release];
         [self alertLoadFailed:nil];
     }
@@ -328,8 +329,8 @@
         }
         
         [responseString release];
-        [self->responseData release];
-        self->responseData = nil;
+        
+        self.m_pResponseData = nil;
         [connection release];
         [self.tableView reloadData];
 	}
@@ -716,12 +717,9 @@
 
 - (void)dealloc
 {
-    if (nil!=self->responseData)
-    {
-        [self->responseData release];
-        self->responseData = nil;
-    }
 
+
+    self.m_pResponseData = nil;
     self.m_pStrCompany = nil;
     self.m_pStrFactory = nil;
     self.m_pStrGroup = nil;

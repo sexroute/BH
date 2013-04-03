@@ -20,6 +20,7 @@
 @synthesize m_pNavViewController;
 @synthesize m_oImageView;
 @synthesize m_oListAllPlantsItem;
+@synthesize m_pResponseData;
 
 UITextField * g_pTextUserName = nil;
 UITextField * g_pTextPassword = nil;
@@ -304,11 +305,8 @@ UITextField * g_pTextPassword = nil;
 #pragma mark ASIHTTPRequest Methods 
 - (void)LoadDataASIHTTPRequest
 {
-    if(nil !=  responseData)
-    {
-        [self->responseData release];
-    }
-    responseData = [[NSMutableData data] retain];
+
+    self.m_pResponseData = [NSMutableData data];
     
     NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
     NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
@@ -327,9 +325,9 @@ UITextField * g_pTextPassword = nil;
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    self->responseData =[NSMutableData dataWithData:[request responseData]] ;
+    self.m_pResponseData  =[NSMutableData dataWithData:[request responseData]] ;
     
-    NSString *responseString = [[NSString alloc] initWithData:self->responseData encoding:NSUTF8StringEncoding];
+    NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData  encoding:NSUTF8StringEncoding];
 
 
 	
@@ -366,7 +364,7 @@ UITextField * g_pTextPassword = nil;
         [self navigateToPlantView];
 	}
     [responseString release];
-    self->responseData = nil;
+    self.m_pResponseData  = nil;
 
 }
 
@@ -378,11 +376,8 @@ UITextField * g_pTextPassword = nil;
 
 - (void)LoadDataNSURLRequest
 {
-    if(nil !=  responseData)
-    {
-        [self->responseData release];
-    }
-    responseData = [[NSMutableData data] retain];
+    self.m_pResponseData  = nil;
+    self.m_pResponseData  = [NSMutableData data];
     
     NSString * lpPostData = [LYGlobalSettings GetPostDataPrefix];
     NSString * lpServerAddress = [NSString stringWithFormat:@"%@/alarm/gethierarchy/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
@@ -397,11 +392,11 @@ UITextField * g_pTextPassword = nil;
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	[responseData setLength:0];
+	[self.m_pResponseData setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[responseData appendData:data];
+	[self.m_pResponseData appendData:data];
 }
 
 -(BOOL)IsReturnDataValid:(NSMutableArray *) apData
@@ -431,7 +426,7 @@ UITextField * g_pTextPassword = nil;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	
 	
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
 	
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
@@ -466,8 +461,8 @@ UITextField * g_pTextPassword = nil;
         [self navigateToPlantView];
 	}
     [responseString release];
-    [responseData release];
-    self->responseData = nil;
+
+    self.m_pResponseData = nil;
     [connection release];
 }
 
@@ -586,7 +581,7 @@ UITextField * g_pTextPassword = nil;
     [m_oActivityProgressbar release];
     self.m_oImageView = nil;
     
-    
+    self.m_pResponseData = nil;
     
     [_m_oLoginTableView release];
     [_m_oLogginButton release];
@@ -602,7 +597,7 @@ UITextField * g_pTextPassword = nil;
     self.m_oImageView = nil;
     [self setM_oImageView:nil];
     [self setM_oImageView:nil];
-    
+    self.m_pResponseData = nil;
     
     [self setM_oLoginTableView:nil];
     [self setM_oLogginButton:nil];

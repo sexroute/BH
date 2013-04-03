@@ -18,7 +18,7 @@
     NSString * m_pStrFactory;
     NSString * m_pStrSet;
     NSString * m_pStrPlant;
-    NSMutableData *responseData;
+    NSMutableData * m_pResponseData;
     NSMutableArray *listOfItems;
     NSMutableArray *VibChanns;
     NSMutableArray *DynChanns;
@@ -35,6 +35,7 @@
 @property (retain, nonatomic) NSMutableArray * VibChanns;
 @property (retain, nonatomic) NSMutableArray * DynChanns;
 @property (retain, nonatomic) NSMutableArray * ProcChanns;
+@property (retain,nonatomic)  NSMutableData * m_pResponseData;
 @property (nonatomic) int m_nPlantType;
 @property (retain, nonatomic) NSString * m_pStrTimeStart;
 @property (retain, nonatomic) NSString * m_strChannDiaged;

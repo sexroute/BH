@@ -481,19 +481,12 @@
         CGRect loFrame = self.view.frame;
         
         UIPickerView * pickerView=[[[UIPickerView alloc] initWithFrame:CGRectMake(0,0,loFrame.size.width,loFrame.size.height)]autorelease];
-        
         pickerView.delegate = self;
-        
         pickerView.dataSource = self;
-        
         pickerView.showsSelectionIndicator = YES;
-        
         pickerView.backgroundColor = [UIColor clearColor];
-        
         [pickerView selectRow:self.m_nTimespanType inComponent:0 animated:YES];
-        
         self.m_oPickerView = pickerView;
-        
         [self.view addSubview: self.m_oPickerView];
         
         

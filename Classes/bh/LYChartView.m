@@ -19,6 +19,7 @@
 @synthesize m_pStrChann;
 @synthesize m_pStrPlant;
 @synthesize m_pStrChannUnit;
+@synthesize m_pResponseData;
 
 @synthesize dataForPlot1;
 int g_ResolutionXMax = 210;
@@ -31,11 +32,11 @@ int g_ResolutionYMax = 960;
 
 #pragma mark - NSURLConnection 数据获取事件
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	[responseData setLength:0];
+	[self.m_pResponseData  setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[responseData appendData:data];
+	[self.m_pResponseData appendData:data];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -53,13 +54,10 @@ int g_ResolutionYMax = 960;
     NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
 #endif
 	//[self.m_pProgressBar stopAnimating];
-    self->responseData =[NSMutableData dataWithData:[request responseData]] ;
-	NSString *responseString = [[NSString alloc] initWithData:self->responseData encoding:NSUTF8StringEncoding];
+    self.m_pResponseData =[NSMutableData dataWithData:[request responseData]] ;
+	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
     
-    if (self->responseData!=nil)
-    {
-        self->responseData = nil;
-    }
+    self.m_pResponseData = nil;
 	NSError *error;
 	SBJSON *json = [[SBJSON new] autorelease];
 	self->listOfItems = [json objectWithString:responseString error:&error];
@@ -87,7 +85,7 @@ int g_ResolutionYMax = 960;
         default:
             break;
     }
-    self->responseData = nil;
+    
     [responseString release];
   
     if (lnDrawResult)
@@ -103,12 +101,9 @@ int g_ResolutionYMax = 960;
     NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
 #endif
 	//[self.m_pProgressBar stopAnimating];
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
     
-    if (self->responseData!=nil) {
-        [ self->responseData release];
-        self->responseData = nil;
-    }
+    self.m_pResponseData = nil;
 	NSError *error;
 	SBJSON *json = [[SBJSON new] autorelease];
 	self->listOfItems = [json objectWithString:responseString error:&error];
@@ -136,8 +131,7 @@ int g_ResolutionYMax = 960;
         default:
             break;
     }
-    [self->responseData release];
-    self->responseData = nil;
+    self.m_pResponseData = nil;
     [responseString release];
     [connection release];
     if (lnDrawResult)
@@ -699,17 +693,13 @@ int gCount = 0;
     self.m_pStrFactory = nil;
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
+    self.m_pResponseData = nil;
     return  self;
     
 }
 - (void) initData
 {
-    if(nil != responseData)
-    {
-        [responseData release];
-        responseData = nil;
-    }
-    responseData = [[NSMutableData data] retain];
+    self.m_pResponseData = [NSMutableData data];
     return;
     
 }
@@ -728,6 +718,7 @@ int gCount = 0;
     self.m_pStrFactory = nil;
     self.m_pStrGroup = nil;
     self.m_pStrPlant = nil;
+    self.m_pResponseData = nil;
     //[self->graph dealloc];
     // NSLog(@"dealloc graph.retainCount %d",self->graph.retainCount);
     [super dealloc]; // 不要忘记调用父类代码
