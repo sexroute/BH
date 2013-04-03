@@ -13,7 +13,7 @@
 
 
 @implementation LYChannInfoViewController
-@synthesize m_pData;
+@synthesize m_pChannInfo;
 @synthesize m_pStrGroup;
 @synthesize m_pStrCompany;
 @synthesize m_pStrFactory;
@@ -37,9 +37,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (nil != self.m_pData)
+    if (nil != self.m_pChannInfo)
     {
-         self.navigationItem.title = [self.m_pData objectForKey:@"name"];
+         self.navigationItem.title = [self.m_pChannInfo objectForKey:@"name"];
     }
     int lnChanntype  = [self GetChanntype];
     lnChanntype = [LYBHUtility GetChannType:lnChanntype];
@@ -56,22 +56,22 @@
             break;
     }
     
-    id lpObj = [self.m_pData objectForKey:@"HH"];
+    id lpObj = [self.m_pChannInfo objectForKey:@"HH"];
     self.m_fHH = [lpObj floatValue];
     
-    lpObj = [self.m_pData objectForKey:@"HL"];
+    lpObj = [self.m_pChannInfo objectForKey:@"HL"];
     self.m_fHL = [lpObj floatValue];
     
-    lpObj = [self.m_pData objectForKey:@"LL"];
+    lpObj = [self.m_pChannInfo objectForKey:@"LL"];
     self.m_fLL = [lpObj floatValue];
     
-    lpObj = [self.m_pData objectForKey:@"LH"];
+    lpObj = [self.m_pChannInfo objectForKey:@"LH"];
     self.m_fLH = [lpObj floatValue];
     
-    lpObj = [self.m_pData objectForKey:@"unit"];
+    lpObj = [self.m_pChannInfo objectForKey:@"unit"];
     self.m_pStrChannUnit = lpObj;
     
-    lpObj = [self.m_pData objectForKey:@"chann_type"];
+    lpObj = [self.m_pChannInfo objectForKey:@"chann_type"];
     self.m_nChannType = [lpObj intValue];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -83,7 +83,7 @@
 
 -(int)GetChanntype
 {
-    id lpObj = [self.m_pData objectForKey:@"chann_type"];
+    id lpObj = [self.m_pChannInfo objectForKey:@"chann_type"];
     NSNumber * lpVal = lpObj;
     int lnChanType = [lpVal intValue];
     return  lnChanType;
@@ -178,17 +178,17 @@
             switch (indexPath.row)
             {
                 case 0:
-                    lpObj = [self.m_pData objectForKey:@"name"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"name"];
                     lpTitle = @"测 点 名";
                     self.m_pStrChann = lpObj;
                     break;
                 case 1:
-                    lpObj = [self.m_pData objectForKey:@"alias_name"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"alias_name"];
                     lpTitle = @"测点别名";
                     break;
                 case 2:
                     
-                    lpObj = [self.m_pData objectForKey:@"chann_type"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"chann_type"];
                     NSNumber * lpVal = lpObj;
                     int lnChanType = [lpVal intValue];
                     self.m_nChannType = lnChanType;
@@ -239,26 +239,26 @@
                     break;
                 case 3:
                     lpTitle = @"更新时间";
-                    lpObj = [self.m_pData objectForKey:@"datetime"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"datetime"];
                     break;
                 case 4:
                     lpTitle = @"转   速";
-                    lpObj = [self.m_pData objectForKey:@"rev"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"rev"];
                     break;
                 case 5:
                     lpTitle = @"当前值 ";
-                    lpObj = [self.m_pData objectForKey:@"val"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"val"];
                     break;
                 case 6:
                     lpTitle = @"单   位";
-                    lpObj = [self.m_pData objectForKey:@"unit"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"unit"];
 
                     break;
                 case 7:
                     lpTitle = @"报警状态";
-                    lpObj = [self.m_pData objectForKey:@"alarm_status"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"alarm_status"];
                     int lnAlarmStatus = [(NSNumber *)lpObj intValue];
-                    loAlarmJudgeType = [self.m_pData objectForKey:@"alarmJudgeType"];
+                    loAlarmJudgeType = [self.m_pChannInfo objectForKey:@"alarmJudgeType"];
                     self.m_nAlarmJudgeType = [loAlarmJudgeType intValue];
                     switch (lnAlarmStatus) {
                         case 0:
@@ -285,30 +285,30 @@
             switch (indexPath.row) {
                 case 2:
                     lpTitle = @"高高报线";
-                    lpObj = [self.m_pData objectForKey:@"HL"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"HL"];
                     break;
                 case 3:
                     lpTitle = @"高低报线";
-                    lpObj = [self.m_pData objectForKey:@"HL"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"HL"];
  
                     break;
                 case 4:
                     lpTitle = @"低低报线";
-                    lpObj = [self.m_pData objectForKey:@"LL"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"LL"];
 
                     break;
                 case 5:
                     lpTitle = @"低高报线";
-                    lpObj = [self.m_pData objectForKey:@"LH"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"LH"];
 
                     break;
                 case 0:
                     lpTitle = @"当 前 值";
-                    lpObj = [self.m_pData objectForKey:@"val"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"val"];
                     break;
                 case 1:
                     lpTitle = @"报警状态";
-                    lpObj = [self.m_pData objectForKey:@"alarm_status"];
+                    lpObj = [self.m_pChannInfo objectForKey:@"alarm_status"];
                     int lnAlarmStatus = [(NSNumber *)lpObj intValue];
                     switch (lnAlarmStatus) {
                         case 0:
@@ -425,6 +425,7 @@
             lpChannView.m_fLL = self.m_fLL;
             lpChannView.m_fLH = self.m_fLH;
             lpChannView.m_nAlarmJudgetType = self.m_nAlarmJudgeType;
+            lpChannView.m_pChannInfo = self.m_pChannInfo;
             [self.navigationController pushViewController:lpChannView animated:YES];
             break;
         case E_TBL_CHANNTYPE_PROC:
@@ -443,6 +444,7 @@
             lpTrendView.m_fHL = self.m_fHL;
             lpTrendView.m_fLL = self.m_fLL;
             lpTrendView.m_fLH = self.m_fLH;
+            lpTrendView.m_pChannInfo = self.m_pChannInfo;
             lpTrendView.m_nAlarmJudgetType = self.m_nAlarmJudgeType;
             [self.navigationController pushViewController:lpTrendView animated:YES];
             

@@ -27,6 +27,7 @@
 @property (retain, nonatomic) NSString * m_pStrTimeStart;
 @property  (retain, nonatomic) NSMutableData      *m_oResponseData;
 @property  (retain, nonatomic) NSMutableDictionary *listOfItems;
+@property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
 
 
 @end

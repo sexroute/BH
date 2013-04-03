@@ -38,6 +38,7 @@
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oButtonWave;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oButtonFresh;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oButtonTrend;
+@property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
 @property ( nonatomic) int m_nChannType;
 @property ( nonatomic) float m_fHH;
 @property ( nonatomic) float m_fHL;

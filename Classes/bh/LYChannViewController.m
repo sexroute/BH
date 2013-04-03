@@ -35,6 +35,7 @@
 @synthesize m_pStrTimeStart;
 @synthesize m_strChannDiaged;
 @synthesize m_pResponseData;
+@synthesize m_pAllChannInfos;
 
 #pragma mark init
 
@@ -124,14 +125,10 @@
 	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
-    if (nil!= self->listOfItems)
-    {
-        [self->listOfItems release];
-        self->listOfItems = nil;
-    }
-	self->listOfItems = [json objectWithString:responseString error:&error];
+
+	self.m_pAllChannInfos = [json objectWithString:responseString error:&error];
 	
-	if (listOfItems == nil  || [listOfItems count] == 0)
+	if (self.m_pAllChannInfos == nil  || [self.m_pAllChannInfos count] == 0)
 	{
         [responseString release];
 
@@ -141,7 +138,7 @@
     }
 	else
     {
-        NSMutableArray * loDatas = [[listOfItems objectAtIndex:0] objectForKey:@"data"];
+        NSMutableArray * loDatas = [[self.m_pAllChannInfos objectAtIndex:0] objectForKey:@"data"];
         for (int i=0;i<[loDatas count];i++)
         {
             
@@ -272,14 +269,10 @@
 	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
 	NSError *error = nil;
 	SBJSON *json = [[SBJSON new] autorelease];
-    if (nil!= self->listOfItems)
-    {
-        [self->listOfItems release];
-        self->listOfItems = nil;
-    }
-	self->listOfItems = [json objectWithString:responseString error:&error];
+
+	self.m_pAllChannInfos = [json objectWithString:responseString error:&error];
 	
-	if (listOfItems == nil  || [listOfItems count] == 0)
+	if (self.m_pAllChannInfos == nil  || [self.m_pAllChannInfos count] == 0)
 	{
         [responseString release];
         
@@ -289,7 +282,7 @@
     }
 	else
     {
-        NSMutableArray * loDatas = [[listOfItems objectAtIndex:0] objectForKey:@"data"];
+        NSMutableArray * loDatas = [[self.m_pAllChannInfos objectAtIndex:0] objectForKey:@"data"];
         for (int i=0;i<[loDatas count];i++)
         {
 
@@ -517,8 +510,7 @@
                  buttonColor = [[[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0]autorelease];
                 lpTitle = [NSString stringWithFormat:@"自动诊断%@测点",@"报警"];
                 [self addDiagButtonToCell:(LYAlarmedChannCell *)cell  buttonColor:buttonColor textcolor:[UIColor blackColor] buttonTitle:lpTitle];
-//                ((LYAlarmedChannCell *)cell).m_oStatus.textColor = buttonColor;
-//                ((LYAlarmedChannCell *)cell).m_oStatus.text = [NSString stringWithFormat:@"状态: 报警"];
+
               break;
             case 2:
                
@@ -529,8 +521,7 @@
                  buttonColor =[ [[UIColor alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]autorelease];
                 lpTitle = [NSString stringWithFormat:@"自动诊断%@测点",@"危险"];
                 [self addDiagButtonToCell:(LYAlarmedChannCell *)cell  buttonColor:buttonColor textcolor:[UIColor whiteColor] buttonTitle:lpTitle];
-//                ((LYAlarmedChannCell *)cell).m_oStatus.textColor = buttonColor;
-//                ((LYAlarmedChannCell *)cell).m_oStatus.text = [NSString stringWithFormat:@"状态: 危险"];
+
                 
                 break;
             default:
@@ -676,7 +667,7 @@
     ChanninfoDetailViewController.m_pStrCompany = self.m_pStrCompany;
     ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
     ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
-    ChanninfoDetailViewController.m_pData = loObj;
+    ChanninfoDetailViewController.m_pChannInfo = loObj;
     
     [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
 }
@@ -710,7 +701,7 @@
     ChanninfoDetailViewController.m_pStrCompany = self.m_pStrCompany;
     ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
     ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
-    ChanninfoDetailViewController.m_pData = loObj;
+    ChanninfoDetailViewController.m_pChannInfo = loObj;
     self.navigationItem.title = @"返回";
     [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
 }

@@ -32,6 +32,7 @@
 @synthesize m_oPickerView;
 @synthesize m_oDataConfirmButton;
 @synthesize m_oTitleButton;
+@synthesize m_pChannInfo;
 
 #pragma mark 初始化
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -231,6 +232,8 @@
 	//向1分区中增加序列属性，序列数据根据[self.candleChart appendToData:lpArray forName:@"price"]可以随时修改
 	NSMutableDictionary *serie = [[NSMutableDictionary alloc] init];
 	NSMutableArray *data = [[NSMutableArray alloc] init];
+    int lnAlarm_enabled = [[self.m_pChannInfo objectForKey:@"alarm_enabled"]intValue];
+    [serie setObject:[NSString stringWithFormat:@"%d",lnAlarm_enabled] forKey:@"alarm_enabled"];
 	[serie setObject:@"price" forKey:@"name"];
 	[serie setObject:@"Price" forKey:@"label"];
 	[serie setObject:data forKey:@"data"];

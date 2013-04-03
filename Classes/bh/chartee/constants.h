@@ -39,4 +39,5 @@
 #define KEY_DEFAULT_POINT_WIDTH 2
 #define KEY_LABEL_DANGER_COLOR @"LabelDangerColor"
 #define KEY_LABEL_ALARM_COLOR @"LabelAlarmColor"
+#define KEY_ALARM_ENBABLED @"alarm_enabled"
 #endif

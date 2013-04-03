@@ -10,14 +10,14 @@
 #import "ChannInfo.h"
 @interface LYChannInfoViewController : UITableViewController
 {
-    NSMutableDictionary * m_pData;
+    NSMutableDictionary * m_pChannInfo;
     NSString * m_pStrGroup;
     NSString * m_pStrCompany;
     NSString * m_pStrFactory;
     NSString * m_pStrChann;
     NSString * m_pStrPlant;
 }
-@property (retain, nonatomic) NSMutableDictionary * m_pData;
+@property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
 @property (retain, nonatomic) NSString * m_pStrGroup;
 @property (retain, nonatomic) NSString * m_pStrCompany;
 @property (retain, nonatomic) NSString * m_pStrFactory;
@@ -25,6 +25,7 @@
 @property (retain, nonatomic) NSString * m_pStrPlant;
 @property (retain, nonatomic) NSString * m_pStrChannUnit;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oNavigateButton;
+
 
 @property ( nonatomic) float m_fHH;
 @property ( nonatomic) float m_fHL;

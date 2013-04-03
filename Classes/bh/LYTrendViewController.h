@@ -36,4 +36,5 @@
 @property (retain, nonatomic) UIPickerView * m_oPickerView;
 @property (retain, nonatomic) NVUIGradientButton * m_oDataConfirmButton;
 @property (retain, nonatomic) NVUIGradientButton * m_oTitleButton;
+@property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
 @end

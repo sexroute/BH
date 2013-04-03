@@ -260,6 +260,8 @@
     NSString       *Alarmcolor         = [serie objectForKey:KEY_LABEL_ALARM_COLOR];
     NSString       *Dangercolor         = [serie objectForKey:KEY_LABEL_DANGER_COLOR];
     
+    NSString       *lpAlarmEnabled = [serie objectForKey:KEY_ALARM_ENBABLED];
+    
     int lnLabelFontSize = [[serie objectForKey:KEY_LABEL_DETAIL_FONT_SIZE]intValue];
     if (0 == lnLabelFontSize)
     {
@@ -310,26 +312,40 @@
         //color
         NSMutableString *clr = [[[NSMutableString alloc] init]autorelease];
         
-        switch (lnAlarmType)
-        {
-            case 0:
-                [clr appendFormat:@"%f,",ZR];
-                [clr appendFormat:@"%f,",ZG];
-                [clr appendFormat:@"%f",ZB];
-                break;
-            case 1:
-                [clr appendFormat:@"%f,",AlarmR];
-                [clr appendFormat:@"%f,",AlarmG];
-                [clr appendFormat:@"%f",AlarmB];
-                break;
-            case 2:
-                [clr appendFormat:@"%f,",DangerR];
-                [clr appendFormat:@"%f,",DangerG];
-                [clr appendFormat:@"%f",DangerB];
-                break;
-            default:
-                break;
+        int lnAlarmEnabled = 0;
+        
+        if (lpAlarmEnabled!= nil) {
+            lnAlarmEnabled = [lpAlarmEnabled intValue];
         }
+        
+        if (lnAlarmEnabled>0) {
+            switch (lnAlarmType)
+            {
+                case 0:
+                    [clr appendFormat:@"%f,",ZR];
+                    [clr appendFormat:@"%f,",ZG];
+                    [clr appendFormat:@"%f",ZB];
+                    break;
+                case 1:
+                    [clr appendFormat:@"%f,",AlarmR];
+                    [clr appendFormat:@"%f,",AlarmG];
+                    [clr appendFormat:@"%f",AlarmB];
+                    break;
+                case 2:
+                    [clr appendFormat:@"%f,",DangerR];
+                    [clr appendFormat:@"%f,",DangerG];
+                    [clr appendFormat:@"%f",DangerB];
+                    break;
+                default:
+                    break;
+            }
+        }else
+        {
+            [clr appendFormat:@"%f,",ZR];
+            [clr appendFormat:@"%f,",ZG];
+            [clr appendFormat:@"%f",ZB];
+        }
+
         
         
         

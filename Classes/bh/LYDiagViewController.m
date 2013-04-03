@@ -28,6 +28,7 @@
 
 @synthesize m_oResponseData;
 @synthesize listOfItems;
+@synthesize m_pChannInfo;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {

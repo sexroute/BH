@@ -20,6 +20,7 @@
 @synthesize m_pStrPlant;
 @synthesize m_pStrChannUnit;
 @synthesize m_pResponseData;
+@synthesize m_pChannInfo;
 
 @synthesize dataForPlot1;
 int g_ResolutionXMax = 210;

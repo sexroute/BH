@@ -28,6 +28,7 @@
 @synthesize m_pStrChann;
 @synthesize m_pStrPlant;
 @synthesize m_pStrChannUnit;
+@synthesize m_pChannInfo;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -235,6 +236,7 @@
     lpTrendView.m_fLL = self.m_fLL;
     lpTrendView.m_fLH = self.m_fLH;
     lpTrendView.m_nAlarmJudgetType = self.m_nAlarmJudgetType;
+    lpTrendView.m_pChannInfo = self.m_pChannInfo;
     self.navigationItem.title = @"返回";
     [self.navigationController pushViewController:lpTrendView animated:YES];
 }
