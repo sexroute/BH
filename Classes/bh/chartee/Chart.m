@@ -427,7 +427,7 @@
                 {
 					float iy = [self getLocalY:(yaxis.baseValue + i*step) withSection:secIndex withAxis:aIndex];
 					
-					CGContextSetStrokeColorWithColor(context, [[UIColor alloc] initWithRed:0.2 green:0.2 blue:0.2 alpha:1.0].CGColor);
+					CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]autorelease].CGColor);
 					CGContextMoveToPoint(context,sec.frame.origin.x+sec.paddingLeft,iy);
 					CGContextAddLineToPoint(context,sec.frame.origin.x+sec.paddingLeft-2,iy);
 					CGContextStrokePath(context);
@@ -435,7 +435,7 @@
 					[[@"" stringByAppendingFormat:format,yaxis.baseValue+i*step] drawAtPoint:CGPointMake(sec.frame.origin.x-1,iy-7) withFont:[UIFont fontWithName:self.m_pStrFontName size: self.m_nYAxisFontSize]];
 					
 					if(yaxis.baseValue + i*step < yaxis.max){
-						CGContextSetStrokeColorWithColor(context, [[UIColor alloc] initWithRed:0.15 green:0.15 blue:0.15 alpha:1.0].CGColor);
+						CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:0.15 green:0.15 blue:0.15 alpha:1.0]autorelease].CGColor);
 						CGContextMoveToPoint(context,sec.frame.origin.x+sec.paddingLeft,iy);
 						CGContextAddLineToPoint(context,sec.frame.origin.x+sec.frame.size.width,iy);
 					}

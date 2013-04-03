@@ -63,7 +63,7 @@
     {
         self.hostView = [[[LYChartView alloc] init]autorelease];
     #ifdef DEBUG
-        NSLog(@"%d",hostView.retainCount);
+       
 #endif
         
         //self.hostView.bounds = self.m_pChartViewParent.bounds;
@@ -85,7 +85,7 @@
         
     }
    #ifdef DEBUG   
-    NSLog(@"%d",hostView.retainCount);
+   
     #endif
 }
 
@@ -137,8 +137,6 @@
 - (void)dealloc
 {
     #ifdef DEBUG
-    NSLog(@"dealloc self :%d",self.retainCount);
-    NSLog(@"dealloc hostview :%d",self.hostView.retainCount);
      #endif
     self.m_pStrChann = nil;
     self.m_pStrCompany =  nil;

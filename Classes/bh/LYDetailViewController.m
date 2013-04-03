@@ -160,7 +160,7 @@
                     int lnStopStatus = [ [ self.m_pData objectForKey:@"stop_status"]intValue];
                     
                     lpTitle =@"设备状态:";
-                   
+                    
                     if (lnNetOffStatus>0)
                     {
                         lpText = @"断网";
@@ -184,8 +184,8 @@
                         {
                             lpText = @"正常";
                         }
-                    }                        
- 
+                    }
+                    
                     break;
                 case 2:
                     lpText = [ self.m_pData objectForKey:@"smpfreq"];
@@ -204,10 +204,13 @@
         case 2:
             switch (indexPath.row) {
                 case 0:
+                {
                     lpText = [ self.m_pData objectForKey:@"manufacturer"];
                     lpTitle =@"制造商:";
+                }
                     break;
                 case 1:
+                {
                     lpText = [ self.m_pData objectForKey:@"machine_type"];
                     NSString * lpData = [lpText description];
                     if (nil!= lpData)
@@ -219,16 +222,21 @@
                         lpText = [NSString stringWithFormat:@"%@设备",lpPlantType];
                     }
                     
-                    lpTitle =@"设备类型:";
+                    lpTitle =@"设备类型:"; }
                     break;
                 case 2:
+                {
+                    
                     lpText = [ self.m_pData objectForKey:@"smpfreq"];
                     lpTitle =@"采样点:";
+                }
                     break;
                     
                 case 3:
+                {
                     lpText = [ self.m_pData objectForKey:@"smpnum"];
                     lpTitle =@"采样点:";
+                }
                     
                     break;
                     

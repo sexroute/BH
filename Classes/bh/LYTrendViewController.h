@@ -11,8 +11,9 @@
 #import "Chart.h"
 #import "MBProgressHUD.h"
 #import "NVUIGradientButton.h"
+#import "MGTileMenuController.h"
 
-@interface LYTrendViewController : UIViewController<MBProgressHUDDelegate,UIPickerViewDelegate ,UIPickerViewDataSource>
+@interface LYTrendViewController : UIViewController<MBProgressHUDDelegate,UIPickerViewDelegate ,UIPickerViewDataSource,MGTileMenuDelegate, UIGestureRecognizerDelegate>
 {
     MBProgressHUD *HUD;
 }
@@ -37,4 +38,5 @@
 @property (retain, nonatomic) NVUIGradientButton * m_oDataConfirmButton;
 @property (retain, nonatomic) NVUIGradientButton * m_oTitleButton;
 @property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
+@property (retain, nonatomic) MGTileMenuController *tileController;
 @end

@@ -52,7 +52,7 @@ int g_ResolutionYMax = 960;
 - (void)connectionDidFinishLoadingASIHTTPRequest:(ASIHTTPRequest *)request
 {
 #ifdef DEBUG
-    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
+   
 #endif
 	//[self.m_pProgressBar stopAnimating];
     self.m_pResponseData =[NSMutableData dataWithData:[request responseData]] ;
@@ -99,8 +99,7 @@ int g_ResolutionYMax = 960;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 #ifdef DEBUG
-    NSLog(@"connectionDidFinishLoading graph :%d",self->graph.retainCount);
-#endif
+  #endif
 	//[self.m_pProgressBar stopAnimating];
 	NSString *responseString = [[NSString alloc] initWithData:self.m_pResponseData encoding:NSUTF8StringEncoding];
     
@@ -150,8 +149,7 @@ int g_ResolutionYMax = 960;
 {
     
 #ifdef DEBUG
-    NSLog(@"graph :%d",self->graph.retainCount);
-#endif
+ #endif
     if(nil!=self->graph)
     {
         [self->graph release];
@@ -159,29 +157,24 @@ int g_ResolutionYMax = 960;
     }
     self->graph = [[CPTXYGraph alloc] initWithFrame:self.m_pParent.bounds];
 #ifdef DEBUG
-    NSLog(@"graph :%d",self->graph.retainCount);
 #endif
     //给画板添加一个主题
     CPTTheme *theme = [CPTTheme themeNamed:kCPTDarkGradientTheme];
     
     [graph applyTheme:theme];
 #ifdef DEBUG
-    NSLog(@"graph :%d",self->graph.retainCount);
-#endif
+  #endif
     //创建主画板视图添加画板
     CPTGraphHostingView *hostingView = [[CPTGraphHostingView alloc] initWithFrame:self.m_pParent.bounds];
     hostingView.hostedGraph = graph;
 #ifdef DEBUG
-    NSLog(@"graph :%d",self->graph.retainCount);
-#endif
+ #endif
 	[self.m_pParent addSubview:hostingView];
 #ifdef DEBUG
-    NSLog(@"hostingView :%d",hostingView.retainCount);
 #endif
     //    [hostingView.hostedGraph release];
     [hostingView release];
 #ifdef DEBUG
-    NSLog(@"graph :%d",self->graph.retainCount);
 #endif
     //设置留白
     graph.paddingLeft = 0;
@@ -711,7 +704,6 @@ int gCount = 0;
 #ifdef DEBUG
     NSLog(@"LYChartView  dealloc Count:%d",--gCount);
     
-    NSLog(@"LYChartView dealloc graph.retainCount %d",self->graph.retainCount);
 #endif
     self.m_pParent = nil;
     self.m_pStrChann = nil;

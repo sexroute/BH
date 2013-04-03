@@ -7,13 +7,13 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Classes/bh/chartee/LineChartModel.m"
-         timestampString = "386567014.3027"
+         filePath = "Classes/Thirdparty/MGTileMenuView/MGTileMenuController.m"
+         timestampString = "386656372.827471"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "65"
-         endingLineNumber = "65"
-         landmarkName = "-drawSerie:serie:"
+         startingLineNumber = "667"
+         endingLineNumber = "667"
+         landmarkName = "-displayMenuPage:centeredOnPoint:inView:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
