@@ -763,22 +763,21 @@
     //line
     ChartModel *model = [[[LineChartModel alloc] init]autorelease];
     [self addModel:model withName:@"line"];
-    [model release];
+   
     
     //area
     model = [[[AreaChartModel alloc] init]autorelease];
     [self addModel:model withName:@"area"];
-    [model release];
+    
     
     //column
     model = [[[ColumnChartModel alloc] init]autorelease];
     [self addModel:model withName:@"column"];
-    [model release];
-    
+       
     //candle
     model = [[[CandleChartModel alloc] init]autorelease];
     [self addModel:model withName:@"candle"];
-    [model release];
+  
     
 }
 
