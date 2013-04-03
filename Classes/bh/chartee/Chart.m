@@ -736,15 +736,15 @@
 		self.touchFlagTwo    = 0;
 		NSMutableArray *rats = [[[NSMutableArray alloc] init]autorelease];
 		self.ratios          = rats;
-		[rats release];
+		
 		
 		NSMutableArray *secs = [[[NSMutableArray alloc] init]autorelease];
 		self.sections        = secs;
-		[secs release];
+		
         
         NSMutableDictionary *mods = [[[NSMutableDictionary alloc] init]autorelease];
 		self.models        = mods;
-		[mods release];
+		;
 		
 		[self setMultipleTouchEnabled:YES];
         
