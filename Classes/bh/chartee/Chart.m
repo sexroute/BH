@@ -812,7 +812,7 @@
     [super dealloc];
 }
 
-#pragma mark -
+#pragma mark - touch
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	NSArray *ts = [touches allObjects];
 	self.touchFlag = 0;

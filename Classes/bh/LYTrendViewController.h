@@ -23,11 +23,12 @@
 @property (retain, nonatomic) NSString * m_pStrChann;
 @property (retain, nonatomic) NSString * m_pStrPlant;
 @property ( nonatomic) int m_nChannType;
-@property (strong,nonatomic) Chart * candleChart;
+@property (strong,nonatomic) Chart * m_oChart;
 @property (nonatomic) int chartMode;
 @property  (retain, nonatomic) NSMutableData      *m_oResponseData;
 @property  (retain, nonatomic) NSMutableArray *listOfItems;
 @property (retain, nonatomic) NSString * m_pStrChannUnit;
+
 @property ( nonatomic) float m_fHH;
 @property ( nonatomic) float m_fHL;
 @property ( nonatomic) float m_fLL;

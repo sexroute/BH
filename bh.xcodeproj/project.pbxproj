@@ -33,6 +33,11 @@
 		4C01786C170BDC60005238FB /* yellow_gradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C017859170BDC60005238FB /* yellow_gradient@2x.png */; };
 		4C17527C15D91C4F004D0A35 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */; };
 		4C17527D15D91C4F004D0A35 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */; };
+		4C2441D8170C714100C4E4BF /* wave.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2441D7170C714000C4E4BF /* wave.png */; };
+		4C2441E0170C76D200C4E4BF /* freq.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2441DF170C76D200C4E4BF /* freq.png */; };
+		4C2441E4170C77BB00C4E4BF /* black_gradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2441E3170C77BA00C4E4BF /* black_gradient@2x.png */; };
+		4C2441E6170C79AE00C4E4BF /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C2441E5170C79AD00C4E4BF /* save.png */; };
+		4C2441E9170D64B700C4E4BF /* LYHistoryWaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C2441E8170D64B700C4E4BF /* LYHistoryWaveViewController.m */; };
 		4C29BAB216E0423C006B2E41 /* cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB016E0423C006B2E41 /* cell.xib */; };
 		4C29BAB316E0423C006B2E41 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB116E0423C006B2E41 /* DetailView.xib */; };
 		4C29BAB616E04246006B2E41 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C29BAB416E04246006B2E41 /* MainStoryboard.storyboard */; };
@@ -183,6 +188,12 @@
 		4C017859170BDC60005238FB /* yellow_gradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_gradient@2x.png"; sourceTree = "<group>"; };
 		4C17527615D91C4F004D0A35 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		4C17527715D91C4F004D0A35 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
+		4C2441D7170C714000C4E4BF /* wave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wave.png; sourceTree = "<group>"; };
+		4C2441DF170C76D200C4E4BF /* freq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = freq.png; sourceTree = "<group>"; };
+		4C2441E3170C77BA00C4E4BF /* black_gradient@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "black_gradient@2x.png"; sourceTree = "<group>"; };
+		4C2441E5170C79AD00C4E4BF /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
+		4C2441E7170D64B700C4E4BF /* LYHistoryWaveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYHistoryWaveViewController.h; sourceTree = "<group>"; };
+		4C2441E8170D64B700C4E4BF /* LYHistoryWaveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYHistoryWaveViewController.m; sourceTree = "<group>"; };
 		4C29BAB016E0423C006B2E41 /* cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cell.xib; sourceTree = "<group>"; };
 		4C29BAB116E0423C006B2E41 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		4C29BAB516E04246006B2E41 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
@@ -491,6 +502,10 @@
 		4C01783E170BD88C005238FB /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				4C2441E3170C77BA00C4E4BF /* black_gradient@2x.png */,
+				4C2441E5170C79AD00C4E4BF /* save.png */,
+				4C2441DF170C76D200C4E4BF /* freq.png */,
+				4C2441D7170C714000C4E4BF /* wave.png */,
 				4C017847170BDC60005238FB /* actions@2x.png */,
 				4C017848170BDC60005238FB /* blue_gradient@2x.png */,
 				4C017849170BDC60005238FB /* ellipsis@2x.png */,
@@ -691,6 +706,8 @@
 				4C61893E16E040C0004FEE93 /* LYWaveViewController.m */,
 				4C61892F16E040C0004FEE93 /* LYChartView.h */,
 				4C61893016E040C0004FEE93 /* LYChartView.m */,
+				4C2441E7170D64B700C4E4BF /* LYHistoryWaveViewController.h */,
+				4C2441E8170D64B700C4E4BF /* LYHistoryWaveViewController.m */,
 			);
 			name = wave;
 			sourceTree = "<group>";
@@ -1178,6 +1195,10 @@
 				4C01786A170BDC60005238FB /* Text@2x.png in Resources */,
 				4C01786B170BDC60005238FB /* twitter@2x.png in Resources */,
 				4C01786C170BDC60005238FB /* yellow_gradient@2x.png in Resources */,
+				4C2441D8170C714100C4E4BF /* wave.png in Resources */,
+				4C2441E0170C76D200C4E4BF /* freq.png in Resources */,
+				4C2441E4170C77BB00C4E4BF /* black_gradient@2x.png in Resources */,
+				4C2441E6170C79AE00C4E4BF /* save.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,6 +1299,7 @@
 				4C86E5EF1709917C00F5810D /* Reachability.m in Sources */,
 				4C017842170BD88C005238FB /* MGTileMenuController.m in Sources */,
 				4C017843170BD88C005238FB /* MGTileMenuView.m in Sources */,
+				4C2441E9170D64B700C4E4BF /* LYHistoryWaveViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

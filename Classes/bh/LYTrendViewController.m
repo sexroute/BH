@@ -47,9 +47,9 @@
 - (UIImage *)imageForTile:(NSInteger)tileNumber inMenu:(MGTileMenuController *)tileMenu
 {
 	NSArray *images = [NSArray arrayWithObjects:
-					   @"twitter",
-					   @"key",
-					   @"speech",
+					   @"wave",
+					   @"freq",
+					   @"save",
 					   @"magnifier",
 					   @"scissors",
 					   @"actions",
@@ -68,9 +68,9 @@
 - (NSString *)labelForTile:(NSInteger)tileNumber inMenu:(MGTileMenuController *)tileMenu
 {
 	NSArray *labels = [NSArray arrayWithObjects:
-					   @"Twitter",
-					   @"Key",
-					   @"Speech balloon",
+					   @"wave",
+					   @"freq",
+					   @"save",
 					   @"Magnifying glass",
 					   @"Scissors",
 					   @"Actions",
@@ -89,9 +89,9 @@
 - (NSString *)descriptionForTile:(NSInteger)tileNumber inMenu:(MGTileMenuController *)tileMenu
 {
 	NSArray *hints = [NSArray arrayWithObjects:
-                      @"Sends a tweet",
-                      @"Unlock something",
-                      @"Sends a message",
+                      @"Wave",
+                      @"Frequence",
+                      @"Save to picture",
                       @"Zooms in",
                       @"Cuts something",
                       @"Shows export options",
@@ -109,12 +109,12 @@
 
 - (UIImage *)backgroundImageForTile:(NSInteger)tileNumber inMenu:(MGTileMenuController *)tileMenu
 {
-	if (tileNumber == 1) {
-		return [UIImage imageNamed:@"purple_gradient"];
-	} else if (tileNumber == 4) {
-		return [UIImage imageNamed:@"orange_gradient"];
-	} else if (tileNumber == 7) {
-		return [UIImage imageNamed:@"red_gradient"];
+	if (tileNumber == 0) {
+		return [UIImage imageNamed:@"blue_gradient"];
+	} else if (tileNumber == 1) {
+		return [UIImage imageNamed:@"blue_gradient"];
+	} else if (tileNumber == 2) {
+		return [UIImage imageNamed:@"green_gradient"];
 	} else if (tileNumber == 5) {
 		return [UIImage imageNamed:@"yellow_gradient"];
 	} else if (tileNumber == 8) {
@@ -129,17 +129,27 @@
 
 - (BOOL)isTileEnabled:(NSInteger)tileNumber inMenu:(MGTileMenuController *)tileMenu
 {
-	if (tileNumber == 2 || tileNumber == 6) {
-		return NO;
-	}
+    //过程量没有波形和频谱
+    if ([LYBHUtility GetChannType:self.m_nChannType ] == E_TBL_CHANNTYPE_PROC)
+    {
+        return NO;
+    }
 	
 	return YES;
 }
 
+-(void) NavigateToHisWaveView
+{
+    
+}
 
 - (void)tileMenu:(MGTileMenuController *)tileMenu didActivateTile:(NSInteger)tileNumber
 {
-	NSLog(@"Tile %d activated (%@)", tileNumber, [self labelForTile:tileNumber inMenu:tileController]);
+	//NSLog(@"Tile %d activated (%@)", tileNumber, [self labelForTile:tileNumber inMenu:tileController]);
+    int lnSelectedIndex = self.m_oChart.selectedIndex;
+    
+    
+    
 }
 
 
@@ -154,7 +164,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
 	// Ensure that only touches on our own view are sent to the gesture recognisers.
-	if (touch.view == self.candleChart && ([gestureRecognizer isMemberOfClass:[UILongPressGestureRecognizer class]]))
+	if (touch.view == self.m_oChart && ([gestureRecognizer isMemberOfClass:[UILongPressGestureRecognizer class]]))
     {
 		return YES;
 	}
@@ -237,9 +247,9 @@
     
     [self.navigationController.toolbar setHidden:TRUE];
     
-    self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
+    self.m_oChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
     
-    [self.view addSubview:self.candleChart];    
+    [self.view addSubview:self.m_oChart];    
     [self InitUI];
     [self LoadData];
    
@@ -316,7 +326,7 @@
 
 -(void)setData:(NSDictionary *)dic
 {
-	[self.candleChart appendToData:[dic objectForKey:@"price"] forName:@"price"];
+	[self.m_oChart appendToData:[dic objectForKey:@"price"] forName:@"price"];
     //	[self.candleChart appendToData:[dic objectForKey:@"vol"] forName:@"vol"];
     //
     //	[self.candleChart appendToData:[dic objectForKey:@"ma10"] forName:@"ma10"];
@@ -333,7 +343,7 @@
     //	[self.candleChart appendToData:[dic objectForKey:@"kdj_d"] forName:@"kdj_d"];
     //	[self.candleChart appendToData:[dic objectForKey:@"kdj_j"] forName:@"kdj_j"];
 	
-	NSMutableDictionary *serie = [self.candleChart getSerie:@"price"];
+	NSMutableDictionary *serie = [self.m_oChart getSerie:@"price"];
 	if(serie == nil)
 	{
         return;
@@ -348,8 +358,8 @@
 
 -(void)setCategory:(NSArray *)category
 {
-	[self.candleChart appendToCategory:category forName:@"price"];
-	[self.candleChart appendToCategory:category forName:@"line"];
+	[self.m_oChart appendToCategory:category forName:@"price"];
+	[self.m_oChart appendToCategory:category forName:@"line"];
 }
 
 -(void)InitUI
@@ -392,22 +402,22 @@
 -(void)initChart
 {
 	NSMutableArray *padding = [NSMutableArray arrayWithObjects:@"20",@"20",@"20",@"20",nil];
-	[self.candleChart setPadding:padding];
+	[self.m_oChart setPadding:padding];
 	NSMutableArray *secs = [[[NSMutableArray alloc] init]autorelease];
     //分区，数值大小代表分区的高低
 	[secs addObject:@"4"]; //占位4/7
 	[secs addObject:@"2"]; //占位2/7
 	[secs addObject:@"1"]; //占位1/7
-	[self.candleChart addSections:3 withRatios:secs]; //初始化分区，按照给定的比例关系
-    [self.candleChart getSection:1].hidden = YES;
-	[self.candleChart getSection:2].hidden = YES; //隐藏第3个分区
-	[[[self.candleChart sections] objectAtIndex:0] addYAxis:0]; //从分区的Y方向0点开始绘制Y轴
-	[[[self.candleChart sections] objectAtIndex:1] addYAxis:0];
-	[[[self.candleChart sections] objectAtIndex:2] addYAxis:0];
+	[self.m_oChart addSections:3 withRatios:secs]; //初始化分区，按照给定的比例关系
+    [self.m_oChart getSection:1].hidden = YES;
+	[self.m_oChart getSection:2].hidden = YES; //隐藏第3个分区
+	[[[self.m_oChart sections] objectAtIndex:0] addYAxis:0]; //从分区的Y方向0点开始绘制Y轴
+	[[[self.m_oChart sections] objectAtIndex:1] addYAxis:0];
+	[[[self.m_oChart sections] objectAtIndex:2] addYAxis:0];
 	
-	[self.candleChart getYAxis:2 withIndex:0].baseValueSticky = NO; //第3个分区的属性设置，每个分区可以有多个Y轴
-	[self.candleChart getYAxis:2 withIndex:0].symmetrical = NO;
-	[self.candleChart getYAxis:0 withIndex:0].ext = 0.05;
+	[self.m_oChart getYAxis:2 withIndex:0].baseValueSticky = NO; //第3个分区的属性设置，每个分区可以有多个Y轴
+	[self.m_oChart getYAxis:2 withIndex:0].symmetrical = NO;
+	[self.m_oChart getYAxis:0 withIndex:0].ext = 0.05;
 	
     NSMutableArray *series = [[NSMutableArray alloc] init];
 	NSMutableArray *secOne = [[NSMutableArray alloc] init];
@@ -515,15 +525,15 @@
     //	[serie release];
 	
 	//candleChart init
-    [self.candleChart setSeries:series];
+    [self.m_oChart setSeries:series];
 	[series release];
 	
-	[[[self.candleChart sections] objectAtIndex:0] setSeries:secOne];
+	[[[self.m_oChart sections] objectAtIndex:0] setSeries:secOne];
 	[secOne release];
-	[[[self.candleChart sections] objectAtIndex:1] setSeries:secTwo];
+	[[[self.m_oChart sections] objectAtIndex:1] setSeries:secTwo];
 	[secTwo release];
-	[[[self.candleChart sections] objectAtIndex:2] setSeries:secThree];
-	[[[self.candleChart sections] objectAtIndex:2] setPaging:YES];
+	[[[self.m_oChart sections] objectAtIndex:2] setSeries:secThree];
+	[[[self.m_oChart sections] objectAtIndex:2] setPaging:YES];
 	[secThree release];
 	
 	
@@ -540,13 +550,13 @@
 					[arr addObject:serie];
 					[serie release];
 				}
-			    [self.candleChart addSerie:arr];
+			    [self.m_oChart addSerie:arr];
 				[arr release];
 			}else{
 				NSDictionary *indic = (NSDictionary *)indicator;
 				NSMutableDictionary *serie = [[NSMutableDictionary alloc] init];
 				[self setOptions:indic ForSerie:serie];
-				[self.candleChart addSerie:serie];
+				[self.m_oChart addSerie:serie];
 				[serie release];
 			}
 		}
@@ -556,7 +566,7 @@
     pathAnimation.duration = 10.0;
     pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
     pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
-    [self.candleChart addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+    [self.m_oChart addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
     
 }
 
@@ -657,8 +667,8 @@
         [lpArray addObject:lpDataArray];
     }
     
-    [self.candleChart appendToData:lpArray forName:@"price"];
-    [self.candleChart setRange:lnDataSize];
+    [self.m_oChart appendToData:lpArray forName:@"price"];
+    [self.m_oChart setRange:lnDataSize];
    
 
 }
@@ -808,26 +818,26 @@
 	if (listOfItems == nil || [listOfItems count] == 0)
 	{
       
-        [self.candleChart clearData];
-        [self.candleChart setNeedsDisplay];
+        [self.m_oChart clearData];
+        [self.m_oChart setNeedsDisplay];
     }
 	else
     {
-        [self.candleChart removeFromSuperview];
+        [self.m_oChart removeFromSuperview];
         
-        self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
+        self.m_oChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
         if (nil != self.m_oPickerView)
         {
-          [self.view insertSubview:self.candleChart belowSubview:self.m_oPickerView];
+          [self.view insertSubview:self.m_oChart belowSubview:self.m_oPickerView];
         }else
         {
-           [self.view addSubview:self.candleChart ];
+           [self.view addSubview:self.m_oChart ];
         }
 
         [self initChart];
         [self InitData];
         
-        [self.candleChart setNeedsDisplay];
+        [self.m_oChart setNeedsDisplay];
         
         [self.view setNeedsDisplay];
         
@@ -936,15 +946,15 @@
     }
 	else
     {
-        [self.candleChart removeFromSuperview];
+        [self.m_oChart removeFromSuperview];
 
-        self.candleChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
+        self.m_oChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
         
-        [self.view addSubview:self.candleChart];
+        [self.view addSubview:self.m_oChart];
         [self initChart];
         [self InitData];
        
-        [self.candleChart setNeedsDisplay];
+        [self.m_oChart setNeedsDisplay];
         
         [self.view setNeedsDisplay];
     
