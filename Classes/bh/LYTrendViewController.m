@@ -164,6 +164,7 @@
     
     NSString * lpDateTime = [(NSDictionary *)[self.listOfItems objectAtIndex:anDataSelectedIndex] objectForKey:@"datetime"];
     lpChannView.m_strHistoryDateTime = lpDateTime;
+    self.title  =@"返回";
     [self.navigationController pushViewController:lpChannView animated:YES];
 }
 
@@ -191,9 +192,21 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
 	// Ensure that only touches on our own view are sent to the gesture recognisers.
-	if (touch.view == self.m_oChart && ([gestureRecognizer isMemberOfClass:[UILongPressGestureRecognizer class]]))
+	if (touch.view == self.m_oChart)
     {
-		return YES;
+        if (([gestureRecognizer isMemberOfClass:[UILongPressGestureRecognizer class]]))
+        {
+            return YES;
+            
+        }else if([gestureRecognizer isMemberOfClass:[UISwipeGestureRecognizer class]])
+        {
+            if(((UISwipeGestureRecognizer *)gestureRecognizer).direction == UISwipeGestureRecognizerDirectionRight)
+            {
+              return  YES;  
+            }
+
+        }
+		
 	}
 	
 	return NO;
@@ -228,8 +241,11 @@
 			// Display the TileMenu.
 			[tileController displayMenuCenteredOnPoint:loc inView:self.view];
 		}
-	}else
-		
+	}else if([gestureRecognizer isMemberOfClass:[UISwipeGestureRecognizer class]])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
 	{
 		// This wasn't a double-tap, so we should hide the TileMenu if it exists and is visible.
 		if (tileController && tileController.isVisible == YES) {
@@ -411,19 +427,27 @@
      forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = button;
     
-    //2.init pup emnu
+    //2.init pup emnu guesture
+    
+    //2.1 双击
     UITapGestureRecognizer *doubleTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)]autorelease];
 	doubleTapRecognizer.numberOfTapsRequired = 2;
 	doubleTapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:doubleTapRecognizer];
 	
+    //2.2 单击
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)]autorelease];
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:tapRecognizer];
     
+    //2.3 长摁
     UILongPressGestureRecognizer * longRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)]autorelease];
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:longRecognizer];
+    
+    //2.4 右滑动
+    UISwipeGestureRecognizer * _swipeGestureRecognizer=[[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)]autorelease];
+    [_swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
 }
 
 -(void)initChart
