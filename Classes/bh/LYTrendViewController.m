@@ -15,6 +15,7 @@
 #import "MBProgressHUD.h"
 #import "ASIFormDataRequest.h"
 #import "NVUIGradientButton.h"
+#import "LYWaveViewController.h"
 
 @interface LYTrendViewController ()
 
@@ -40,7 +41,7 @@
 
 - (NSInteger)numberOfTilesInMenu:(MGTileMenuController *)tileMenu
 {
-	return 3;
+	return 2;
 }
 
 
@@ -138,9 +139,32 @@
 	return YES;
 }
 
--(void) NavigateToHisWaveView
+-(void) NavigateToHisWaveView:(int) anDataSelectedIndex anDataMode:(int)anDataMode
 {
+    LYWaveViewController * lpChannView = nil;
+    UIStoryboard *mainStoryboard = nil;    
+    mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                               bundle: nil];
+    lpChannView =(LYWaveViewController *)[mainStoryboard
+                                          instantiateViewControllerWithIdentifier: @"LYWaveViewController"];;
+    lpChannView.m_pStrGroup = self.m_pStrGroup;
+    lpChannView.m_pStrCompany = self.m_pStrCompany;
+    lpChannView.m_pStrFactory = self.m_pStrFactory;
+    lpChannView.m_pStrChann = self.m_pStrChann;
+    lpChannView.m_pStrPlant = self.m_pStrPlant;
+    lpChannView.m_nChannType = self.m_nChannType;
+    lpChannView.m_pStrChannUnit = self.m_pStrChannUnit;
+    lpChannView.m_fHH = self.m_fHH;
+    lpChannView.m_fHL = self.m_fHL;
+    lpChannView.m_fLL = self.m_fLL;
+    lpChannView.m_fLH = self.m_fLH;
+    lpChannView.m_pChannInfo = self.m_pChannInfo;
+    lpChannView.m_nRequestType = 1;
+    lpChannView.m_nDrawMode = anDataMode;
     
+    NSString * lpDateTime = [(NSDictionary *)[self.listOfItems objectAtIndex:anDataSelectedIndex] objectForKey:@"datetime"];
+    lpChannView.m_strHistoryDateTime = lpDateTime;
+    [self.navigationController pushViewController:lpChannView animated:YES];
 }
 
 - (void)tileMenu:(MGTileMenuController *)tileMenu didActivateTile:(NSInteger)tileNumber
@@ -148,7 +172,10 @@
 	//NSLog(@"Tile %d activated (%@)", tileNumber, [self labelForTile:tileNumber inMenu:tileController]);
     int lnSelectedIndex = self.m_oChart.selectedIndex;
     
-    
+    if (tileNumber<=1&& tileNumber>=0) {
+        [self NavigateToHisWaveView:lnSelectedIndex anDataMode:tileNumber];
+    }
+
     
 }
 

@@ -20,6 +20,8 @@
     MBProgressHUD *HUD;
     
 }
+
+
 @property (retain, nonatomic) IBOutlet UIView *m_plotView;
 
 
@@ -45,4 +47,7 @@
 @property ( nonatomic) float m_fLL;
 @property ( nonatomic) float m_fLH;
 @property ( nonatomic) int m_nAlarmJudgetType;
+@property (nonatomic) int m_nRequestType;
+@property (nonatomic) DrawMode m_nDrawMode;
+@property (nonatomic,retain) NSString * m_strHistoryDateTime;
 @end

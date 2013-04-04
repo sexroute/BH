@@ -29,6 +29,7 @@
 @synthesize m_pStrPlant;
 @synthesize m_pStrChannUnit;
 @synthesize m_pChannInfo;
+@synthesize m_strHistoryDateTime;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -51,6 +52,9 @@
         self.m_fLL = .0;
         self.m_fLH = .0;
         self.m_nAlarmJudgetType = E_ALARMCHECK_LOWPASS;
+        self.m_nRequestType = 0;
+        self.m_strHistoryDateTime = nil;
+        self.m_nDrawMode = WAVE;
         
     }
     return self;
@@ -97,6 +101,22 @@
 -(void)viewWillAppear:(BOOL)animated
 {
      self.navigationItem.title = self.m_pStrChann;
+    if (self.m_nDrawMode == WAVE) {
+        self.m_oButtonWave.style = UIBarButtonItemStyleBordered;
+        self.m_oButtonFreq.style = UIBarButtonItemStylePlain;
+    }else
+    {
+        self.m_oButtonWave.style = UIBarButtonItemStylePlain ;
+        self.m_oButtonFreq.style = UIBarButtonItemStyleBordered;
+    }
+
+    if (self.m_nRequestType>0) {
+        [self.m_oButtonTrend setWidth:0];
+        [self.m_oButtonTrend setEnabled:NO];
+    }else
+    {
+        self.m_oButtonTrend.title = @"历史趋势";
+    }
 }
 
 - (void)viewDidLoad
@@ -104,11 +124,14 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.m_oToolbar.barStyle = [LYGlobalSettings GetSettingInt:SETTING_KEY_STYLE];
-    [self initPlot:WAVE];
+
+    [self initPlot:self.m_nDrawMode];
+    
     self.m_oButtonWave.style = UIBarButtonItemStyleBordered;
     self.m_oButtonFreq.style = UIBarButtonItemStylePlain;
     self.m_oButtonFresh.style = UIBarButtonItemStylePlain;
-    self.m_oButtonTrend.title = @"历史趋势";
+       
+
     
 }
 
@@ -145,6 +168,7 @@
     self.m_pStrPlant = nil;
     self.hostView = nil;
     self.m_pStrChannUnit = nil;
+    self.m_strHistoryDateTime = nil;
     [m_pChartViewParent release];
     [m_plotView release];
     
@@ -247,12 +271,27 @@
 - (void)LoadDataASIHTTPRequest
 {
     [self.hostView initData];
-    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
-    if (self.m_nChannType == GE_RODSINKCHANN)
-    {
-        lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/rodsink.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+    NSString * lpUrl = nil;
+    NSString * lpPostData = nil;
+    
+    
+    if (0 == self.m_nRequestType) {
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+        if (self.m_nChannType == GE_RODSINKCHANN)
+        {
+            lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/rodsink.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+        }
+
+    }else{
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/vibhiswave.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+        if (self.m_nChannType == GE_RODSINKCHANN)
+        {
+            lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/rodsinkhiswave.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+        }
     }
-    NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
+    
+    lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@&datetime=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann,self.m_strHistoryDateTime];
+
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     
     ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:aUrl];
@@ -319,11 +358,21 @@
 - (void) LoadDataFromMiddleWareNSURLConnection
 {
     [self.hostView initData];
-    NSString * lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
-    if (self.m_nChannType == GE_RODSINKCHANN)
+    
+    NSString * lpUrl = nil;
+    
+    if (self.m_nRequestType == 0)
     {
-        lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/rodsink.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+        lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+        if (self.m_nChannType == GE_RODSINKCHANN)
+        {
+            lpUrl = [NSString stringWithFormat:@"%@/alarm/wave/rodsink.php",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS]];
+        }
+    }else
+    {
+        
     }
+
     NSString * lpPostData = [NSString stringWithFormat:@"%@&companyid=%@&factoryid=%@&plantid=%@&channid=%@",[LYGlobalSettings GetPostDataPrefix],self.m_pStrCompany,self.m_pStrFactory,self.m_pStrPlant,self.m_pStrChann];
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:aUrl

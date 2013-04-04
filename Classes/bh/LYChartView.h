@@ -9,12 +9,12 @@
 #import "CPTGraphHostingView.h"
 #import "MBProgressHUD.h"
 #import "ASIFormDataRequest.h"
+
 typedef enum {
     WAVE,
     FREQUENCE,
     TREND
 } DrawMode;
-
 @interface LYChartView : UIView<CPTPlotDataSource>
 {
     CPTXYGraph                  *graph;             //画板
