@@ -49,5 +49,6 @@
 @property ( nonatomic) int m_nAlarmJudgetType;
 @property (nonatomic) int m_nRequestType;
 @property (nonatomic) DrawMode m_nDrawMode;
+@property (nonatomic) int m_nPlantType;
 @property (nonatomic,retain) NSString * m_strHistoryDateTime;
 @end

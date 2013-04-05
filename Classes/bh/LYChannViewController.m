@@ -644,40 +644,11 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    UIStoryboard *mainStoryboard = self.storyboard;
-    
-    LYChannInfoViewController *ChanninfoDetailViewController = (LYChannInfoViewController*)[mainStoryboard
-                                                                                            instantiateViewControllerWithIdentifier: @"ChannInfo"];
-    int i= indexPath.row;
-    int lnSection = indexPath.section;
-    id loObj = nil;
-    switch (lnSection) {
-        case 0:
-            loObj = [self.VibChanns objectAtIndex:i];
-            break;
-        case 1:
-            loObj = [self.DynChanns objectAtIndex:i];
-            break;
-        case 2:
-            loObj = [self.ProcChanns objectAtIndex:i];
-            break;
-        default:
-            break;
-    }
-    ChanninfoDetailViewController.m_pStrCompany = self.m_pStrCompany;
-    ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
-    ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
-    ChanninfoDetailViewController.m_pChannInfo = loObj;
-    
-    [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
+    [self tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-//                                                             bundle: nil];
-    
     UIStoryboard *mainStoryboard = self.storyboard;
 
     LYChannInfoViewController *ChanninfoDetailViewController = (LYChannInfoViewController*)[mainStoryboard
@@ -702,6 +673,7 @@
     ChanninfoDetailViewController.m_pStrFactory = self.m_pStrFactory;
     ChanninfoDetailViewController.m_pStrPlant = self.m_pStrPlant;
     ChanninfoDetailViewController.m_pChannInfo = loObj;
+    ChanninfoDetailViewController.m_nPlantType = self.m_nPlantType;
     self.navigationItem.title = @"返回";
     [self.navigationController pushViewController:ChanninfoDetailViewController animated:YES];
 }

@@ -28,6 +28,7 @@
 @property  (retain, nonatomic) NSMutableData      *m_oResponseData;
 @property  (retain, nonatomic) NSMutableArray *listOfItems;
 @property (retain, nonatomic) NSString * m_pStrChannUnit;
+@property (nonatomic) int m_nPlantType;
 
 @property ( nonatomic) float m_fHH;
 @property ( nonatomic) float m_fHL;

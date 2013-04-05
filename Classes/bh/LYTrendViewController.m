@@ -16,6 +16,7 @@
 #import "ASIFormDataRequest.h"
 #import "NVUIGradientButton.h"
 #import "LYWaveViewController.h"
+#import "LYDiagViewController.h"
 
 @interface LYTrendViewController ()
 
@@ -41,7 +42,7 @@
 
 - (NSInteger)numberOfTilesInMenu:(MGTileMenuController *)tileMenu
 {
-	return 2;
+	return 3;
 }
 
 
@@ -50,7 +51,7 @@
 	NSArray *images = [NSArray arrayWithObjects:
 					   @"wave",
 					   @"freq",
-					   @"save",
+					   @"diag",
 					   @"magnifier",
 					   @"scissors",
 					   @"actions",
@@ -71,7 +72,7 @@
 	NSArray *labels = [NSArray arrayWithObjects:
 					   @"wave",
 					   @"freq",
-					   @"save",
+					   @"diag",
 					   @"Magnifying glass",
 					   @"Scissors",
 					   @"Actions",
@@ -92,7 +93,7 @@
 	NSArray *hints = [NSArray arrayWithObjects:
                       @"Wave",
                       @"Frequence",
-                      @"Save to picture",
+                      @"Diag",
                       @"Zooms in",
                       @"Cuts something",
                       @"Shows export options",
@@ -168,13 +169,45 @@
     [self.navigationController pushViewController:lpChannView animated:YES];
 }
 
+-(void) NavigateToDiagView:(int) anDataSelectedIndex anDataMode:(int)anDataMode
+{
+    LYDiagViewController * lpChannView = nil;
+    
+    
+    UIStoryboard *mainStoryboard = nil;
+    
+    mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                               bundle: nil];
+    lpChannView =(LYDiagViewController *)[mainStoryboard
+                                          instantiateViewControllerWithIdentifier: @"LYDiagViewController"];
+    lpChannView.m_pStrChann = self.m_pStrChann;
+    lpChannView.m_pStrCompany = self.m_pStrCompany;
+    lpChannView.m_pStrFactory = self.m_pStrFactory;
+    lpChannView.m_pStrGroup = self.m_pStrGroup;
+    lpChannView.m_pStrPlant = self.m_pStrPlant;
+    lpChannView.m_nPlantType = self.m_nPlantType;
+
+
+
+     NSString * lpDateTime = [(NSDictionary *)[self.listOfItems objectAtIndex:anDataSelectedIndex] objectForKey:@"datetime"];
+    lpChannView.m_pStrTimeStart = lpDateTime;
+
+    self.title  =@"返回";
+        
+    [self.navigationController pushViewController:lpChannView animated:YES];
+}
+
 - (void)tileMenu:(MGTileMenuController *)tileMenu didActivateTile:(NSInteger)tileNumber
 {
 	//NSLog(@"Tile %d activated (%@)", tileNumber, [self labelForTile:tileNumber inMenu:tileController]);
     int lnSelectedIndex = self.m_oChart.selectedIndex;
     
-    if (tileNumber<=1&& tileNumber>=0) {
+    if (tileNumber<=1&& tileNumber>=0)
+    {
         [self NavigateToHisWaveView:lnSelectedIndex anDataMode:tileNumber];
+    }else if(tileNumber == 2)
+    {
+        [self NavigateToDiagView:lnSelectedIndex anDataMode:tileNumber];
     }
 
     

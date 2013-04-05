@@ -439,6 +439,7 @@
             lpChannView.m_fLH = self.m_fLH;
             lpChannView.m_nAlarmJudgetType = self.m_nAlarmJudgeType;
             lpChannView.m_pChannInfo = self.m_pChannInfo;
+            lpChannView.m_nPlantType = self.m_nPlantType;
             [self.navigationController pushViewController:lpChannView animated:YES];
             break;
         case E_TBL_CHANNTYPE_PROC:
@@ -457,6 +458,7 @@
             lpTrendView.m_fHL = self.m_fHL;
             lpTrendView.m_fLL = self.m_fLL;
             lpTrendView.m_fLH = self.m_fLH;
+            lpChannView.m_nPlantType = self.m_nPlantType;
             lpTrendView.m_pChannInfo = self.m_pChannInfo;
             lpTrendView.m_nAlarmJudgetType = self.m_nAlarmJudgeType;
             [self.navigationController pushViewController:lpTrendView animated:YES];
