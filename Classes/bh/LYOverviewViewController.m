@@ -25,6 +25,21 @@
     }
     return self;
 }
+-(void)OnRotatePressed:(UIBarButtonItem  *)apButton
+{
+    self.m_oImageView.image = rotateUIImage(self.m_oImageView.image, 90.0);
+}
+- (void) InitUI
+{
+    UIBarButtonItem *flipButton = [[[UIBarButtonItem alloc]
+                                    initWithTitle:@"旋转"
+                                    style:UIBarButtonItemStyleBordered
+                                    target:self
+                                    action:@selector(OnRotatePressed:)]autorelease];
+
+    self.navigationItem.rightBarButtonItem = flipButton;
+   
+}
 
 - (void)viewDidLoad
 {
@@ -40,6 +55,7 @@
     self.m_oImageView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.m_oImageView];
     [self doLoadDataUseASIHTTP];
+    [self InitUI];
 	// Do any additional setup after loading the view.
 }
 
@@ -64,7 +80,7 @@
     self->HUD.mode = MBProgressHUDModeIndeterminate;
 	[self.navigationController.view addSubview:self->HUD];
     self->HUD.dimBackground = YES;
-    self->HUD.labelText = @"读取中";
+    self->HUD.labelText = @"加载中";
 	// Regiser for HUD callbacks so we can remove it from the window at the right time
 	self->HUD.delegate = self;
 	// Show the HUD while the provided method executes in a new thread
@@ -120,6 +136,28 @@
     return newImage;
 }
 
+UIImage* rotateUIImage(const UIImage* src, float angleDegrees)  {
+    UIView* rotatedViewBox = [[UIView alloc] initWithFrame: CGRectMake(0, 0, src.size.width, src.size.height)];
+    float angleRadians = angleDegrees * ((float)M_PI / 180.0f);
+    CGAffineTransform t = CGAffineTransformMakeRotation(angleRadians);
+    rotatedViewBox.transform = t;
+    CGSize rotatedSize = rotatedViewBox.frame.size;
+    [rotatedViewBox release];
+    
+    UIGraphicsBeginImageContext(rotatedSize);
+    CGContextRef bitmap = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(bitmap, rotatedSize.width/2, rotatedSize.height/2);
+    CGContextRotateCTM(bitmap, angleRadians);
+    
+    CGContextScaleCTM(bitmap, 1.0, -1.0);
+    CGContextDrawImage(bitmap, CGRectMake(-src.size.width / 2, -src.size.height / 2, src.size.width, src.size.height), [src CGImage]);
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     // Use when fetching binary data
@@ -127,8 +165,10 @@
     UIImage * image = [UIImage imageWithData:self.m_pResponseData];
     [self imageWithImage:image scaledToWidth:self.m_oImageView.frame.size.width] ;
     
-    self.m_oImageView.image = image;
-	
+    self.m_oImageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.m_oImageView.image = image ;
+    
+
     self.m_pResponseData = nil;
     
     [self HiddeIndicator];

@@ -765,6 +765,111 @@ Ew
             <point key="canvasLocation" x="-858" y="103"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="LYChannInfoViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChannInfoViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="onButtonPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oNavigateButton" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="LYChannViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChannViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="m_pProgressBar" candidateClass="UIActivityIndicatorView"/>
+            </relationships>
+        </class>
+        <class className="LYChartView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYChartView.h"/>
+        </class>
+        <class className="LYDetailViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYDetailViewController.h"/>
+        </class>
+        <class className="LYDiagViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYDiagViewController.h"/>
+        </class>
+        <class className="LYFilterViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYFilterViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="m_oCellCompany" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oCellFactory" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oCellGroup" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oCellSet" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oCellType" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_olblCompany" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_olblFactory" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_olblGroup" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_olblSet" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_olblType" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="LYHistoryWaveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYHistoryWaveViewController.h"/>
+        </class>
+        <class className="LYNVController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYNVController.h"/>
+        </class>
+        <class className="LYOverviewViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYOverviewViewController.h"/>
+        </class>
+        <class className="LYPlantViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYPlantViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="OnFilterButtonPressed:"/>
+                <relationship kind="action" name="OnRefreshButtonPressed:"/>
+                <relationship kind="outlet" name="m_pButtonAlarm" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonAll" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonDanger" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonNormal" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_pButtonStop" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="LYSelectItemViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYSelectItemViewController.h"/>
+        </class>
+        <class className="LYSettingViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYSettingViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="m_oAutoRefreshCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oCelllogout" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="m_oSwitch" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="m_olabelUserName" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_olblLogout" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="LYSplashWindow" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYSplashWindow.h"/>
+            <relationships>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_oActivityProgressbar" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="m_oImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="m_oLabelLogin" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="m_oListAllPlantsItem" candidateClass="NSMutableArray"/>
+                <relationship kind="outlet" name="m_oLogginButton" candidateClass="UIView"/>
+                <relationship kind="outlet" name="m_oLoginTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="m_pNavViewController" candidateClass="LYNVController"/>
+            </relationships>
+        </class>
+        <class className="LYTabBarViewController" superclassName="UITabBarController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYTabBarViewController.h"/>
+        </class>
+        <class className="LYTrendViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYTrendViewController.h"/>
+        </class>
+        <class className="LYWaveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LYWaveViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="onTrendButtonPressed:" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oButtonFreq" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oButtonFresh" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oButtonTrend" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oButtonWave" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="m_oToolbar" candidateClass="UIToolbar"/>
+                <relationship kind="outlet" name="m_pChartViewParent" candidateClass="UIView"/>
+                <relationship kind="outlet" name="m_plotView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

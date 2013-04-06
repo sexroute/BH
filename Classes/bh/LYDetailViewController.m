@@ -118,7 +118,7 @@
 
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section!=0 && indexPath.row!=1)
+    if (indexPath.section!=0 || indexPath.row!=1)
     {
         return;
     }
