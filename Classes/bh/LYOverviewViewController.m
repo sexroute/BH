@@ -38,7 +38,21 @@
                                     action:@selector(OnRotatePressed:)]autorelease];
 
     self.navigationItem.rightBarButtonItem = flipButton;
+
+    UIPinchGestureRecognizer *pinchGesture =
+    [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+    [self.m_oImageView addGestureRecognizer:pinchGesture];
+    [pinchGesture release];
    
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    if (![gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] && ![otherGestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)viewDidLoad
@@ -158,6 +172,25 @@ UIImage* rotateUIImage(const UIImage* src, float angleDegrees)  {
     return newImage;
 }
 
+
+//---handle pinch gesture---
+-(IBAction) handlePinchGesture:(UIGestureRecognizer *) sender {
+    static CGRect initialBounds;
+    
+    UIView * lpview = sender.view;
+    
+    if (sender.state == UIGestureRecognizerStateBegan)
+    {
+        initialBounds = lpview.bounds;
+    }
+    CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];
+    
+    CGAffineTransform zt = CGAffineTransformScale(CGAffineTransformIdentity, factor, factor);
+    lpview.bounds = CGRectApplyAffineTransform(initialBounds, zt);
+    return;
+}
+
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     // Use when fetching binary data
@@ -168,7 +201,8 @@ UIImage* rotateUIImage(const UIImage* src, float angleDegrees)  {
     self.m_oImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.m_oImageView.image = image ;
     
-
+    self.m_oImageView.userInteractionEnabled = YES;
+     self.m_oImageView.multipleTouchEnabled  = YES;
     self.m_pResponseData = nil;
     
     [self HiddeIndicator];
