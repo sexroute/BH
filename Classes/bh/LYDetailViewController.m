@@ -9,6 +9,8 @@
 #import "LYDetailViewController.h"
 #import "LYChannViewController.h"
 #import "LYBHUtility.h"
+#import "LYOverviewViewController.h"
+#import "LYGlobalSettings.h"
 
 @interface LYDetailViewController ()
 
@@ -19,7 +21,7 @@
 @implementation LYDetailViewController
 
 
-@synthesize m_pData;
+@synthesize m_pPlantInfoData;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -68,7 +70,7 @@
     // Return the number of rows in the section.
     switch (section) {
         case 0:
-            return 5;
+            return 6;
             break;
         case 1:
             return 4;
@@ -101,15 +103,49 @@
     return title;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    //1.load from storyboard
+    [self tableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
+    return;
+    
+    
+}
+
+
+
+
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section!=0 && indexPath.row!=1)
+    {
+        return;
+    }
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                                             bundle: nil];
+    
+    LYOverviewViewController *detailViewController = (LYOverviewViewController *)[mainStoryboard
+                                                                             instantiateViewControllerWithIdentifier: @"LYOverviewViewController"];
+
+    int lnGraptype = [[self.m_pPlantInfoData objectForKey:@"graph_type"]intValue ];
+    NSString * lpServerAddress = [NSString stringWithFormat:@"%@/pic/%d.png",[LYGlobalSettings GetSettingString:SETTING_KEY_SERVER_ADDRESS],lnGraptype];
+
+    detailViewController.m_strRemoteUrl = lpServerAddress;
+    [self.navigationController setToolbarHidden:YES animated:TRUE] ;
+   
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    return;
+    
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"DetailViewControllerCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-        
-        
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];        
     }
     
     id lpText = nil;
@@ -119,23 +155,28 @@
         case 0:
             switch (indexPath.row) {
                 case 0:
-                    lpText = [ self.m_pData objectForKey:@"plantid"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"plantid"];
                     lpTitle =@"设备:";
                     break;
                 case 1:
-                    lpText = [ self.m_pData objectForKey:@"setid"];
-                    lpTitle =@"装置:";
+                    lpText = @"";
+                    lpTitle =@"概貌图";
+                    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
                     break;
                 case 2:
-                    lpText = [ self.m_pData objectForKey:@"factoryid"];
-                    lpTitle =@"分厂:";
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"setid"];
+                    lpTitle =@"装置:";
                     break;
                 case 3:
-                    lpText = [ self.m_pData objectForKey:@"companyid"];
-                    lpTitle =@"公司:";
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"factoryid"];
+                    lpTitle =@"分厂:";
                     break;
                 case 4:
-                    lpText = [ self.m_pData objectForKey:@"groupid"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"companyid"];
+                    lpTitle =@"公司:";
+                    break;
+                case 5:
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"groupid"];
                     lpTitle =@"集团:";
                     break;
                 default:
@@ -146,7 +187,7 @@
         case 1:
             switch (indexPath.row) {
                 case 0:
-                    lpText = [ self.m_pData objectForKey:@"rev"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"rev"];
                     int lnRev = [lpText intValue];
                     if (lnRev<0)
                     {
@@ -155,9 +196,9 @@
                     lpTitle =@"转速:";
                     break;
                 case 1:
-                    lpText = [ self.m_pData objectForKey:@"alarm_status"];
-                    int lnNetOffStatus =[ [ self.m_pData objectForKey:@"netoff_status"]intValue];
-                    int lnStopStatus = [ [ self.m_pData objectForKey:@"stop_status"]intValue];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"alarm_status"];
+                    int lnNetOffStatus =[ [ self.m_pPlantInfoData objectForKey:@"netoff_status"]intValue];
+                    int lnStopStatus = [ [ self.m_pPlantInfoData objectForKey:@"stop_status"]intValue];
                     
                     lpTitle =@"设备状态:";
                     
@@ -188,11 +229,11 @@
                     
                     break;
                 case 2:
-                    lpText = [ self.m_pData objectForKey:@"smpfreq"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"smpfreq"];
                     lpTitle =@"采样频率:";
                     break;
                 case 3:
-                    lpText = [ self.m_pData objectForKey:@"smpnum"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"smpnum"];
                     lpTitle =@"采样点:";
                     break;
                     
@@ -205,13 +246,13 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    lpText = [ self.m_pData objectForKey:@"manufacturer"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"manufacturer"];
                     lpTitle =@"制造商:";
                 }
                     break;
                 case 1:
                 {
-                    lpText = [ self.m_pData objectForKey:@"machine_type"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"machine_type"];
                     NSString * lpData = [lpText description];
                     if (nil!= lpData)
                     {
@@ -227,14 +268,14 @@
                 case 2:
                 {
                     
-                    lpText = [ self.m_pData objectForKey:@"smpfreq"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"smpfreq"];
                     lpTitle =@"采样点:";
                 }
                     break;
                     
                 case 3:
                 {
-                    lpText = [ self.m_pData objectForKey:@"smpnum"];
+                    lpText = [ self.m_pPlantInfoData objectForKey:@"smpnum"];
                     lpTitle =@"采样点:";
                 }
                     
@@ -303,17 +344,6 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     DetailViewController *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
-}
 
 - (void)dealloc {
     
@@ -330,14 +360,14 @@
     {
         
         LYChannViewController * lpChannView = [segue destinationViewController];
-        lpChannView.m_pStrGroup = [NSString stringWithString: [ self.m_pData objectForKey:@"groupid"]];
-        lpChannView.m_pStrCompany = [NSString stringWithString: [ self.m_pData objectForKey:@"companyid"]];
-        lpChannView.m_pStrFactory = [NSString stringWithString: [ self.m_pData objectForKey:@"factoryid"]];
-        lpChannView.m_pStrSet = [NSString stringWithString: [ self.m_pData objectForKey:@"setid"]];
-        lpChannView.m_pStrPlant = [NSString stringWithString: [ self.m_pData objectForKey:@"plantid"]];
-        NSString * lpMachinetype =[ self.m_pData objectForKey:@"machine_type"];
+        lpChannView.m_pStrGroup = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"groupid"]];
+        lpChannView.m_pStrCompany = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"companyid"]];
+        lpChannView.m_pStrFactory = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"factoryid"]];
+        lpChannView.m_pStrSet = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"setid"]];
+        lpChannView.m_pStrPlant = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"plantid"]];
+        NSString * lpMachinetype =[ self.m_pPlantInfoData objectForKey:@"machine_type"];
         
-        lpChannView.m_nPlantType = [[ self.m_pData objectForKey:@"machine_type"]intValue];
+        lpChannView.m_nPlantType = [[ self.m_pPlantInfoData objectForKey:@"machine_type"]intValue];
         
         
     }

@@ -25,6 +25,7 @@
 @property (retain, nonatomic) NSString * m_pStrPlant;
 @property (retain, nonatomic) NSString * m_pStrChannUnit;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_oNavigateButton;
+
 @property (nonatomic) int m_nPlantType;
 
 @property ( nonatomic) float m_fHH;

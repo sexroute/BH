@@ -547,16 +547,7 @@
 {
     
     //1.load from storyboard
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-                                                             bundle: nil];
-    
-    LYDetailViewController *detailViewController = (LYDetailViewController*)[mainStoryboard
-                                                                             instantiateViewControllerWithIdentifier: @"DetailView"];
-    int i= indexPath.row;
-    
-    detailViewController.m_pData = [[self GetCurrentDataSource] objectAtIndex:i];
-    [self.navigationController setToolbarHidden:YES animated:FALSE] ;
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    [self tableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
     return;
     
     
@@ -573,7 +564,7 @@
     int i= indexPath.row;
     
     [self.navigationController setToolbarHidden:YES animated:TRUE] ;
-    detailViewController.m_pData = [[self GetCurrentDataSource] objectAtIndex:i];
+    detailViewController.m_pPlantInfoData = [[self GetCurrentDataSource] objectAtIndex:i];
     [self.navigationController pushViewController:detailViewController animated:YES];
     return;
     

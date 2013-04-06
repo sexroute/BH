@@ -10,8 +10,8 @@
 
 @interface LYDetailViewController : UITableViewController
 {
-    NSMutableDictionary * m_pData;
+    NSMutableDictionary * m_pPlantInfoData;
 }
 
-@property (retain, nonatomic) NSMutableDictionary * m_pData;
+@property (retain, nonatomic) NSMutableDictionary * m_pPlantInfoData;
 @end
