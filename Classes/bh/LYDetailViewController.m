@@ -151,8 +151,10 @@
     id lpText = nil;
     
     NSString * lpTitle = nil;
+    cell.accessoryType = UITableViewCellAccessoryNone;
     switch (indexPath.section) {
         case 0:
+           
             switch (indexPath.row) {
                 case 0:
                     lpText = [ self.m_pPlantInfoData objectForKey:@"plantid"];
