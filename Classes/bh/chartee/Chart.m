@@ -1004,9 +1004,9 @@
         if (currFlag > currFlagTwo)
         {
             
-//            float lfSwap = currFlag;
-//            currFlag = currFlagTwo;
-//            currFlagTwo = lfSwap;
+            float lfSwap = currFlag;
+            currFlag = currFlagTwo;
+            currFlagTwo = lfSwap;
         }
 		if(self.touchFlag == 0)
         {
