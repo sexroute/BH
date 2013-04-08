@@ -50,30 +50,13 @@
         }
         
         float val  = [[[data objectAtIndex:i] objectAtIndex:0] floatValue];
-        float ix  = sec.frame.origin.x+sec.paddingLeft+(i-chart.rangeFrom)*chart.plotWidth;
+        float  ix  = sec.frame.origin.x+sec.paddingLeft+(i-chart.rangeFrom)*chart.plotWidth;
         float iNx = 0;
         float iyo = [chart getLocalY:val withSection:section withAxis:yAxis];
         
-        if(i == chart.selectedIndex && chart.selectedIndex < data.count && [data objectAtIndex:chart.selectedIndex]!=nil)
-        {
-            //线粗细
-            CGContextSetLineWidth(context, 0.1f);
-            CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1.0]autorelease].CGColor);
-            
-            //纵向游标
-            CGContextMoveToPoint(context, ix, sec.frame.origin.y+sec.paddingTop);
-            CGContextAddLineToPoint(context,ix,sec.frame.size.height+sec.frame.origin.y);
-            CGContextStrokePath(context);
-            
-            //横向游标
-            ix  = sec.frame.origin.x+sec.paddingLeft+(chart.rangeFrom)*chart.plotWidth;
-            iNx = sec.frame.origin.x+sec.paddingLeft+(chart.rangeTo)*chart.plotWidth;
-            CGContextMoveToPoint(context, ix+chart.plotPadding, iyo);
-            CGContextAddLineToPoint(context, iNx-chart.plotPadding,iyo);
-            CGContextStrokePath(context);
-        }
+
         
-        ix  = sec.frame.origin.x+sec.paddingLeft+(i-chart.rangeFrom)*chart.plotWidth;
+       
         iNx = sec.frame.origin.x+sec.paddingLeft+(i+1-chart.rangeFrom)*chart.plotWidth;
         
         //1.描点
@@ -94,6 +77,28 @@
             CGContextAddLineToPoint(context, iNx+chart.plotPadding,iNy);
             CGContextStrokePath(context);
             
+        }
+        
+        //2.绘制游标
+        if(i == chart.selectedIndex && chart.selectedIndex < data.count && [data objectAtIndex:chart.selectedIndex]!=nil)
+        {
+            ix  = sec.frame.origin.x+sec.paddingLeft+(i-chart.rangeFrom)*chart.plotWidth;
+            //线粗细
+            CGContextSetLineWidth(context, 0.1f);
+            CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1.0]autorelease].CGColor);
+            
+            //纵向游标
+            CGContextMoveToPoint(context, ix, sec.frame.origin.y+sec.paddingTop);
+            CGContextAddLineToPoint(context,ix,sec.frame.size.height+sec.frame.origin.y);
+            CGContextStrokePath(context);
+            
+            float lfleftStartPoint = sec.frame.origin.x+sec.paddingLeft+chart.plotPadding;
+            float lfrightEndPoint = lfleftStartPoint+ (chart.rangeTo - chart.rangeFrom)*chart.plotWidth ;
+            //横向游标
+            
+            CGContextMoveToPoint(context, lfleftStartPoint, iyo);
+            CGContextAddLineToPoint(context, lfrightEndPoint,iyo);
+            CGContextStrokePath(context);
         }
         
         

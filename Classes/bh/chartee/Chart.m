@@ -37,6 +37,7 @@
 @synthesize models;
 @synthesize title;
 @synthesize m_pStrFontName;
+@synthesize m_bInMove;
 
 -(float)getLocalY:(float)val withSection:(int)sectionIndex withAxis:(int)yAxisIndex
 {
@@ -46,6 +47,15 @@
 	float  max = yaxis.max;
 	float  min = yaxis.min;
     return fra.size.height - (fra.size.height-sec.paddingTop)* (val-min)/(max-min)+fra.origin.y;
+}
+
+-(float)GetDistance:(CGPoint )apPoint Section:(Section *)apSection anXIndex:(int)anIndex afYvalue:(float)afval withSection:(int)sectionIndex withAxis:(int)yAxisIndex
+{
+     float ix  = apSection.frame.origin.x+apSection.paddingLeft+(anIndex-self.rangeFrom)*self.plotWidth;
+     float iy  = [self getLocalY:afval withSection:sectionIndex withAxis:yAxisIndex];
+    NSLog(@"Point tested:Pressed(%f,%f) test(%f,%f) ",apPoint.x,apPoint.y,ix,iy);
+    float lfDistance =  pow((ix-apPoint.x),2)+pow((iy-apPoint.y),2);
+    return lfDistance;
 }
 
 - (void)initChart
@@ -490,15 +500,19 @@
 	CGContextStrokePath(context);
 }
 
--(void) setSelectedIndexByPoint:(CGPoint) point{
+-(void) setSelectedIndexByPoint:(CGPoint) point
+{
+   // return [self setSelectedIndexByPointNotMove:point];
 	
 	if([self getIndexOfSection:point] == -1){
 		return;
 	}
 	Section *sec = [self.sections objectAtIndex:[self getIndexOfSection:point]];
 	
-	for(int i=self.rangeFrom;i<self.rangeTo;i++){
-		if((plotWidth*(i-self.rangeFrom))<=(point.x-sec.paddingLeft-self.paddingLeft) && (point.x-sec.paddingLeft-self.paddingLeft)<plotWidth*((i-self.rangeFrom)+1)){
+	for(int i=self.rangeFrom;i<self.rangeTo;i++)
+    {
+		if((plotWidth*(i-self.rangeFrom))<=(point.x-sec.paddingLeft-self.paddingLeft) && (point.x-sec.paddingLeft-self.paddingLeft)<plotWidth*((i-self.rangeFrom)+1))
+        {
 			if (self.selectedIndex != i) {
 				self.selectedIndex=i;
 				[self setNeedsDisplay];
@@ -507,6 +521,73 @@
 			return;
 		}
 	}
+}
+
+
+-(void) setSelectedIndexByPointNotMove:(CGPoint) point
+{
+	
+	if([self getIndexOfSection:point] == -1)
+    {
+		return;
+	}
+    int lnSecIndex = [self getIndexOfSection:point];
+	Section *sec = [self.sections objectAtIndex:lnSecIndex];
+	
+    int lnSearchPixl = 10;
+    int lnStartStep = 0;
+
+    int lnNextStep = ceil(lnSearchPixl*1.0/plotWidth);
+    if (lnNextStep >= self.rangeTo)
+    {
+        lnNextStep = self.rangeTo;
+    }
+    //1 get min index
+
+	for(int i=self.rangeFrom;i<self.rangeTo;i++)
+    {
+		if((plotWidth*(i-self.rangeFrom))<=(point.x-sec.paddingLeft-self.paddingLeft) && (point.x-sec.paddingLeft-self.paddingLeft)<=(plotWidth*((i-self.rangeFrom)+1)+lnSearchPixl))
+        {
+            lnStartStep = i;
+			break;
+		}
+	}
+    float lfDistanceMin = -1;
+    
+    int lnMinDistanceIndex =0;
+#ifdef DEBUG
+    NSLog(@"Point pressed:(%f,%f)",point.x,point.y);
+#endif
+    for (int i = lnStartStep; i<lnStartStep+lnNextStep;i++)
+    {
+        for (int j=0; j<sec.series.count; j++)
+        {
+            NSMutableDictionary * serie = [sec.series objectAtIndex:j];
+            NSMutableArray *data          = [serie objectForKey:@"data"];
+            float valNext  = [[[data objectAtIndex:(i)] objectAtIndex:0] floatValue];
+            float lfDistance = [self GetDistance:point Section:sec anXIndex:i afYvalue:valNext withSection:lnSecIndex withAxis:0];
+            
+            if (lfDistance<= lfDistanceMin || (0> lfDistanceMin))
+            {
+                lfDistanceMin = lfDistance;
+                lnMinDistanceIndex = i;
+            }
+            
+        }
+
+    }
+    
+    self.selectedIndex = lnMinDistanceIndex;
+    [self setNeedsDisplay];
+    
+//    for(int i=(self.rangeTo-1);i>=lnMinIndex;i--)
+//    {
+//		if((plotWidth*(i-self.rangeFrom))<=(point.x-sec.paddingLeft-self.paddingLeft) && (point.x-sec.paddingLeft-self.paddingLeft)<=(plotWidth*((i-self.rangeFrom)+1)+lnSearchPixl))
+//        {
+//            lnMinIndex = i;
+//			break;
+//		}
+//	}
 }
 
 -(void)appendToData:(NSArray *)data forName:(NSString *)name{
@@ -736,6 +817,7 @@
 		self.touchFlagTwo    = 0;
 		NSMutableArray *rats = [[[NSMutableArray alloc] init]autorelease];
 		self.ratios          = rats;
+        self.m_bInMove       = NO;
 		
 		
 		NSMutableArray *secs = [[[NSMutableArray alloc] init]autorelease];
@@ -817,18 +899,25 @@
 	NSArray *ts = [touches allObjects];
 	self.touchFlag = 0;
 	self.touchFlagTwo = 0;
-	if([ts count]==1){
+	if([ts count]==1)
+    {
 		UITouch* touch = [ts objectAtIndex:0];
-		if([touch locationInView:self].x < 40){
+		if([touch locationInView:self].x < 40)
+        {
 		    self.touchFlag = [touch locationInView:self].y;
 		}
-	}else if ([ts count]==2) {
+        
+	}else if ([ts count]==2)
+    {
 		self.touchFlag = [[ts objectAtIndex:0] locationInView:self].x ;
 		self.touchFlagTwo = [[ts objectAtIndex:1] locationInView:self].x;
 	}
+    self.m_bInMove = NO;
+    [super touchesBegan:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    self.m_bInMove = YES;
 	NSArray *ts = [touches allObjects];
 	if([ts count]==1){
 		UITouch* touch = [ts objectAtIndex:0];
@@ -888,8 +977,10 @@
 		    self.touchFlag = currFlag;
 			self.touchFlagTwo = currFlagTwo;
 		}else{
-			int interval = 5;
-			
+            float changed = abs(currFlag - self.touchFlag) +  abs(currFlagTwo - self.touchFlagTwo);
+            float totalPiexl = abs(self.rangeTo-self.rangeFrom)*self.plotWidth;
+			int interval = (changed)/self.plotWidth;
+			//zoom out
 			if((currFlag - self.touchFlag) > 0 && (currFlagTwo - self.touchFlagTwo) > 0){
 				if(self.plotCount > (self.rangeTo-self.rangeFrom)){
 					if(self.rangeFrom - interval >= 0){
@@ -907,6 +998,7 @@
 					}
 					[self setNeedsDisplay];
 				}
+            //zoom in
 			}else if((currFlag - self.touchFlag) < 0 && (currFlagTwo - self.touchFlagTwo) < 0){
 				if(self.plotCount > (self.rangeTo-self.rangeFrom)){
 					if(self.rangeTo + interval <= self.plotCount){
@@ -926,6 +1018,7 @@
 					[self setNeedsDisplay];
 				}
 			}else {
+                //move pan to 
 				if(abs(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag)) >= MIN_INTERVAL){
 					if(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag) > 0){
 						if(self.plotCount>self.rangeTo-self.rangeFrom){
@@ -958,26 +1051,40 @@
 		self.touchFlag = currFlag;
 		self.touchFlagTwo = currFlagTwo;
 	}
+    [super touchesBegan:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
 	NSArray *ts = [touches allObjects];
 	UITouch* touch = [[event allTouches] anyObject];
-	if([ts count]==1){
+	if([ts count]==1)
+    {
 		int i = [self getIndexOfSection:[touch locationInView:self]];
-		if(i!=-1){
+		if(i!=-1)
+        {
 			Section *sec = [self.sections objectAtIndex:i];
-			if([touch locationInView:self].x > sec.paddingLeft){
-				if(sec.paging){
+			if([touch locationInView:self].x > sec.paddingLeft)
+            {
+				if(sec.paging)
+                {
 					[sec nextPage];
 					[self setNeedsDisplay];
-				}else{
-					[self setSelectedIndexByPoint:[touch locationInView:self]];
+				}else
+                {
+                    if (self.m_bInMove)
+                    {
+                        self.m_bInMove = YES;
+                    }else
+                    {
+                     [self setSelectedIndexByPointNotMove:[touch locationInView:self]];    
+                    }
+
 				}
 			}
 		}
 	}
 	self.touchFlag = 0;
+    [super touchesBegan:touches withEvent:event];
 }
 
 @end

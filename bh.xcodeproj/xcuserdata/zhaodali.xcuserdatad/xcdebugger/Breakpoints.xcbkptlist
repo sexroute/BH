@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/bh/chartee/Chart.m"
-         timestampString = "386750953.230659"
+         timestampString = "387100421.121557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "503"
-         endingLineNumber = "503"
+         startingLineNumber = "517"
+         endingLineNumber = "517"
          landmarkName = "-setSelectedIndexByPoint:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,12 +34,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/bh/chartee/Chart.m"
-         timestampString = "386777315.530933"
+         timestampString = "387100421.121557"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "495"
-         endingLineNumber = "495"
+         startingLineNumber = "507"
+         endingLineNumber = "507"
          landmarkName = "-setSelectedIndexByPoint:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Classes/bh/chartee/Chart.m"
+         timestampString = "387100421.121557"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "530"
+         endingLineNumber = "530"
+         landmarkName = "-setSelectedIndexByPointNotMove:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

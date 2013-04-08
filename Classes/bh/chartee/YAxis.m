@@ -23,9 +23,11 @@
 @synthesize pos;
 @synthesize decimal;
 
-- (id)init{
+- (id)init
+{
 	self = [super init];
-    if (self) {
+    if (self)
+    {
 		[self reset];
     }
 	return self;

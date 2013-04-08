@@ -75,6 +75,7 @@
 @property (nonatomic,retain) NSString       *m_pStrFontName;
 @property (nonatomic)int            m_nYAxisFontSize;
 @property (nonatomic)int            m_nLabelFontSize;
+@property (nonatomic)BOOL           m_bInMove;
 
 -(float)getLocalY:(float)val withSection:(int)sectionIndex withAxis:(int)yAxisIndex;
 -(void)setSelectedIndexByPoint:(CGPoint) point;
