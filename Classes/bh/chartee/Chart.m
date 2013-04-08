@@ -39,6 +39,9 @@
 @synthesize m_pStrFontName;
 @synthesize m_bInMove;
 
+@synthesize rangeFrom_original;
+@synthesize rangeTo_original;
+
 -(float)getLocalY:(float)val withSection:(int)sectionIndex withAxis:(int)yAxisIndex
 {
 	Section *sec = [[self sections] objectAtIndex:sectionIndex];
@@ -89,6 +92,9 @@
 		}
 		self.selectedIndex = self.rangeTo-1;
 		self.isInitialized = YES;
+        
+        self.rangeTo_original = self.rangeTo;
+        self.rangeFrom_original = self.rangeFrom;
 	}
     
 	if(self.series!=nil)
@@ -537,7 +543,7 @@
     int lnSearchPixl = 10;
     int lnStartStep = 0;
 
-    int lnNextStep = ceil(lnSearchPixl*1.0/plotWidth);
+    int lnNextStep = ceil(lnSearchPixl*1.0/plotWidth)+1;
     if (lnNextStep >= self.rangeTo)
     {
         lnNextStep = self.rangeTo;
@@ -923,47 +929,63 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     self.m_bInMove = YES;
 	NSArray *ts = [touches allObjects];
-	if([ts count]==1){
+	if([ts count]==1)
+    {
 		UITouch* touch = [ts objectAtIndex:0];
         
 		int i = [self getIndexOfSection:[touch locationInView:self]];
-		if(i!=-1){
+		if(i!=-1)
+        {
 			Section *sec = [self.sections objectAtIndex:i];
 			if([touch locationInView:self].x > sec.paddingLeft)
-				[self setSelectedIndexByPoint:[touch locationInView:self]];
+			{
+                [self setSelectedIndexByPoint:[touch locationInView:self]];
+            }
 			int interval = 5;
 			if([touch locationInView:self].x < sec.paddingLeft){
 				if(abs([touch locationInView:self].y - self.touchFlag) >= MIN_INTERVAL){
-					if([touch locationInView:self].y - self.touchFlag > 0){
-						if(self.plotCount > (self.rangeTo-self.rangeFrom)){
-							if(self.rangeFrom - interval >= 0){
+					if([touch locationInView:self].y - self.touchFlag > 0)
+                    {
+						if(self.plotCount > (self.rangeTo-self.rangeFrom))
+                        {
+							if(self.rangeFrom - interval >= 0)
+                            {
 								self.rangeFrom -= interval;
 								self.rangeTo   -= interval;
-								if(self.selectedIndex >= self.rangeTo){
+								if(self.selectedIndex >= self.rangeTo)
+                                {
 									self.selectedIndex = self.rangeTo-1;
 								}
-							}else {
+							}else
+                            {
 								self.rangeFrom = 0;
 								self.rangeTo  -= self.rangeFrom;
-								if(self.selectedIndex >= self.rangeTo){
+								if(self.selectedIndex >= self.rangeTo)
+                                {
 									self.selectedIndex = self.rangeTo-1;
 								}
 							}
 							[self setNeedsDisplay];
 						}
-					}else{
-						if(self.plotCount > (self.rangeTo-self.rangeFrom)){
-							if(self.rangeTo + interval <= self.plotCount){
+					}else
+                    {
+						if(self.plotCount > (self.rangeTo-self.rangeFrom))
+                        {
+							if(self.rangeTo + interval <= self.plotCount)
+                            {
 								self.rangeFrom += interval;
 								self.rangeTo += interval;
-								if(self.selectedIndex < self.rangeFrom){
+								if(self.selectedIndex < self.rangeFrom)
+                                {
 									self.selectedIndex = self.rangeFrom;
 								}
-							}else {
+							}else
+                            {
 								self.rangeFrom  += self.plotCount-self.rangeTo;
 								self.rangeTo     = self.plotCount;
 								
-								if(self.selectedIndex < self.rangeFrom){
+								if(self.selectedIndex < self.rangeFrom)
+                                {
 									self.selectedIndex = self.rangeFrom;
 								}
 							}
@@ -975,90 +997,167 @@
 			}
 		}
 		
-	}else if ([ts count]==2) {
+	}else if ([ts count]==2)
+    {
 		float currFlag = [[ts objectAtIndex:0] locationInView:self].x;
 		float currFlagTwo = [[ts objectAtIndex:1] locationInView:self].x;
-        if (currFlag > currFlagTwo) {
+        if (currFlag > currFlagTwo)
+        {
             
-            float lfSwap = currFlag;
-            currFlag = currFlagTwo;
-            currFlagTwo = lfSwap;
+//            float lfSwap = currFlag;
+//            currFlag = currFlagTwo;
+//            currFlagTwo = lfSwap;
         }
-		if(self.touchFlag == 0){
+		if(self.touchFlag == 0)
+        {
 		    self.touchFlag = currFlag;
 			self.touchFlagTwo = currFlagTwo;
-		}else{
+		}else
+        {
             float changedOne = abs(currFlag - self.touchFlag) ;
             float changedTow = abs(currFlagTwo - self.touchFlagTwo);
             
 			float intervalOne = (changedOne)/self.plotWidth;
             float intervalTow = (changedTow)/self.plotWidth;
 #ifdef DEBUG
-            NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f",changedOne,changedTow,intervalOne,intervalTow);
+            NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%f to:%f",changedOne,changedTow,intervalOne,intervalTow,(self.rangeFrom - intervalOne),(self.rangeTo - intervalTow));
 #endif
-            float intervalTotal = intervalOne + intervalTow;
-			//zoom out
-			if((currFlag - self.touchFlag) > 0 && (currFlagTwo - self.touchFlagTwo) > 0){
-				if(self.plotCount > (self.rangeTo-self.rangeFrom)){
-					if(self.rangeFrom - changedOne >= 0){
+           
+			//pan to right
+			if((currFlag - self.touchFlag) > 0 && (currFlagTwo - self.touchFlagTwo) > 0)
+            {
+				if(self.plotCount > (self.rangeTo-self.rangeFrom))
+                {
+					if(self.rangeFrom - changedOne >= 0)
+                    {
 						self.rangeFrom -= changedOne;
 						self.rangeTo   -= changedTow;
-						if(self.selectedIndex >= self.rangeTo){
+						if(self.selectedIndex >= self.rangeTo)
+                        {
 							self.selectedIndex = self.rangeTo-1;
 						}
-					}else {
+                        #ifdef DEBUG
+                        NSLog(@"pan to right 1");
+                        #endif
+					}else
+                    {
 						self.rangeFrom = 0;
 						self.rangeTo  -= self.rangeFrom;
-						if(self.selectedIndex >= self.rangeTo){
+						if(self.selectedIndex >= self.rangeTo)
+                        {
 							self.selectedIndex = self.rangeTo-1;
 						}
+                        #ifdef DEBUG
+                        NSLog(@"pan to right 2");
+                        #endif
 					}
 					[self setNeedsDisplay];
 				}
-            //zoom in
-			}else if((currFlag - self.touchFlag) < 0 && (currFlagTwo - self.touchFlagTwo) < 0){
-				if(self.plotCount > (self.rangeTo-self.rangeFrom)){
-					if(self.rangeTo + intervalTow <= self.plotCount){
+            //pan to left
+			}else if((currFlag - self.touchFlag) < 0 && (currFlagTwo - self.touchFlagTwo) < 0)
+            {
+				if(self.plotCount > (self.rangeTo-self.rangeFrom))
+                {
+					if(self.rangeTo + intervalTow <= self.plotCount)
+                    {
 						self.rangeFrom += changedOne;
 						self.rangeTo += intervalTow;
-						if(self.selectedIndex < self.rangeFrom){
+						if(self.selectedIndex < self.rangeFrom)
+                        {
 							self.selectedIndex = self.rangeFrom;
 						}
-					}else {
+                        #ifdef DEBUG
+                        NSLog(@"pan to left 1");
+                        #endif
+					}else
+                    {
 						self.rangeFrom  += self.plotCount-self.rangeTo;
 						self.rangeTo     = self.plotCount;
 						
-						if(self.selectedIndex < self.rangeFrom){
+						if(self.selectedIndex < self.rangeFrom)
+                        {
 							self.selectedIndex = self.rangeFrom;
 						}
+                        #ifdef DEBUG
+                        NSLog(@"pan to left 2");
+                        #endif
 					}
 					[self setNeedsDisplay];
 				}
 			}else {
-                //move pan to 
-				if(abs(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag)) >= MIN_INTERVAL){
-					if(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag) > 0){
-						if(self.plotCount>self.rangeTo-self.rangeFrom){
-							if(self.rangeFrom + intervalOne < self.rangeTo){
-								self.rangeFrom += intervalOne;
-							}
-							if(self.rangeTo - intervalTow > self.rangeFrom){
+                //zoom in
+				if(abs(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag)) >= MIN_INTERVAL)
+                {
+					if(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag) > 0)
+                    {
+						if(self.plotCount>self.rangeTo-self.rangeFrom)
+                        {
+                            float lnNextFrom = self.rangeFrom + intervalOne;
+                            float lnNextTo = self.rangeTo -intervalTow;
+                            if (abs((int)(lnNextFrom-lnNextTo))<=10)
+                            {
+#ifdef DEBUG
+                                NSLog(@"zoom in reach min points limitation:%d:",10);
+#endif
+                                
+                            }else
+                            {
+                                if(self.rangeFrom + intervalOne < self.rangeTo)
+                                {
+                                    self.rangeFrom += intervalOne;
+                                }
+                                if(self.rangeTo - intervalTow > self.rangeFrom)
+                                {
+                                    self.rangeTo -= intervalTow;
+                                }
+#ifdef DEBUG
+                                NSLog(@"zoom in 1");
+#endif
+                            }
+
+						}else
+                        {
+							if(self.rangeTo - intervalTow > self.rangeFrom)
+                            {
 								self.rangeTo -= intervalTow;
 							}
-						}else{
-							if(self.rangeTo - intervalTow > self.rangeFrom){
-								self.rangeTo -= intervalTow;
-							}
+                            #ifdef DEBUG
+                            NSLog(@"zoom in  2");
+                            #endif
 						}
 						[self setNeedsDisplay];
-					}else{
-						
-						if(self.rangeFrom - intervalOne >= 0){
-							self.rangeFrom -= intervalOne;
-						}else{
-							self.rangeFrom = 0;
-						}
-						self.rangeTo += intervalTow;
+                        
+                    //zoom out
+					}else
+                    {
+                        float lnNextFrom = self.rangeFrom - intervalOne;
+                        float lnNextTo = self.rangeTo +intervalTow;
+                        
+
+                        {
+                            if(self.rangeFrom - intervalOne >= self.rangeFrom_original)
+                            {
+                                self.rangeFrom -= intervalOne;
+#ifdef DEBUG
+                                NSLog(@"zoom out 1");
+#endif
+                            }else
+                            {
+                                self.rangeFrom = self.rangeFrom_original;
+#ifdef DEBUG
+                                NSLog(@"zoom out 2");
+#endif
+                            }
+                            if (lnNextTo <= self.rangeTo_original)
+                            {
+                                self.rangeTo += intervalTow;
+                            }else
+                            {
+                                self.rangeTo = self.rangeTo_original;
+                            }
+                        
+                        }
+
 						[self setNeedsDisplay];
 					}
 				}
