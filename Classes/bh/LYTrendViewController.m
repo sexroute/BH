@@ -798,9 +798,11 @@
 }
  -(void)onDatePickerConfirm:(NVUIGradientButton *)sender
 {
+     self.m_nTimespanType = [self.m_oPickerView selectedRowInComponent:0];
     [self.m_oPickerView setHidden:YES];
     [self.m_oDataConfirmButton setHidden:YES];
     [self LoadData];
+   
     NSString * lpText = [NSString stringWithFormat: @"选择时间段:%@",[LYUtility GetRequestStr:self.m_nTimespanType]];
     
 
@@ -1007,7 +1009,7 @@
     }
     else
     {
-
+        [self LoadDataASIHTTPRequest];
     }
 }
 

@@ -564,6 +564,10 @@
         {
             NSMutableDictionary * serie = [sec.series objectAtIndex:j];
             NSMutableArray *data          = [serie objectForKey:@"data"];
+            if (nil == data)
+            {
+                continue;
+            }
             float valNext  = [[[data objectAtIndex:(i)] objectAtIndex:0] floatValue];
             float lfDistance = [self GetDistance:point Section:sec anXIndex:i afYvalue:valNext withSection:lnSecIndex withAxis:0];
             
@@ -921,6 +925,7 @@
 	NSArray *ts = [touches allObjects];
 	if([ts count]==1){
 		UITouch* touch = [ts objectAtIndex:0];
+        
 		int i = [self getIndexOfSection:[touch locationInView:self]];
 		if(i!=-1){
 			Section *sec = [self.sections objectAtIndex:i];
@@ -973,19 +978,31 @@
 	}else if ([ts count]==2) {
 		float currFlag = [[ts objectAtIndex:0] locationInView:self].x;
 		float currFlagTwo = [[ts objectAtIndex:1] locationInView:self].x;
+        if (currFlag > currFlagTwo) {
+            
+            float lfSwap = currFlag;
+            currFlag = currFlagTwo;
+            currFlagTwo = lfSwap;
+        }
 		if(self.touchFlag == 0){
 		    self.touchFlag = currFlag;
 			self.touchFlagTwo = currFlagTwo;
 		}else{
-            float changed = abs(currFlag - self.touchFlag) +  abs(currFlagTwo - self.touchFlagTwo);
-            float totalPiexl = abs(self.rangeTo-self.rangeFrom)*self.plotWidth;
-			int interval = (changed)/self.plotWidth;
+            float changedOne = abs(currFlag - self.touchFlag) ;
+            float changedTow = abs(currFlagTwo - self.touchFlagTwo);
+            
+			float intervalOne = (changedOne)/self.plotWidth;
+            float intervalTow = (changedTow)/self.plotWidth;
+#ifdef DEBUG
+            NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f",changedOne,changedTow,intervalOne,intervalTow);
+#endif
+            float intervalTotal = intervalOne + intervalTow;
 			//zoom out
 			if((currFlag - self.touchFlag) > 0 && (currFlagTwo - self.touchFlagTwo) > 0){
 				if(self.plotCount > (self.rangeTo-self.rangeFrom)){
-					if(self.rangeFrom - interval >= 0){
-						self.rangeFrom -= interval;
-						self.rangeTo   -= interval;
+					if(self.rangeFrom - changedOne >= 0){
+						self.rangeFrom -= changedOne;
+						self.rangeTo   -= changedTow;
 						if(self.selectedIndex >= self.rangeTo){
 							self.selectedIndex = self.rangeTo-1;
 						}
@@ -1001,9 +1018,9 @@
             //zoom in
 			}else if((currFlag - self.touchFlag) < 0 && (currFlagTwo - self.touchFlagTwo) < 0){
 				if(self.plotCount > (self.rangeTo-self.rangeFrom)){
-					if(self.rangeTo + interval <= self.plotCount){
-						self.rangeFrom += interval;
-						self.rangeTo += interval;
+					if(self.rangeTo + intervalTow <= self.plotCount){
+						self.rangeFrom += changedOne;
+						self.rangeTo += intervalTow;
 						if(self.selectedIndex < self.rangeFrom){
 							self.selectedIndex = self.rangeFrom;
 						}
@@ -1022,26 +1039,26 @@
 				if(abs(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag)) >= MIN_INTERVAL){
 					if(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag) > 0){
 						if(self.plotCount>self.rangeTo-self.rangeFrom){
-							if(self.rangeFrom + interval < self.rangeTo){
-								self.rangeFrom += interval;
+							if(self.rangeFrom + intervalOne < self.rangeTo){
+								self.rangeFrom += intervalOne;
 							}
-							if(self.rangeTo - interval > self.rangeFrom){
-								self.rangeTo -= interval;
+							if(self.rangeTo - intervalTow > self.rangeFrom){
+								self.rangeTo -= intervalTow;
 							}
 						}else{
-							if(self.rangeTo - interval > self.rangeFrom){
-								self.rangeTo -= interval;
+							if(self.rangeTo - intervalTow > self.rangeFrom){
+								self.rangeTo -= intervalTow;
 							}
 						}
 						[self setNeedsDisplay];
 					}else{
 						
-						if(self.rangeFrom - interval >= 0){
-							self.rangeFrom -= interval;
+						if(self.rangeFrom - intervalOne >= 0){
+							self.rangeFrom -= intervalOne;
 						}else{
 							self.rangeFrom = 0;
 						}
-						self.rangeTo += interval;
+						self.rangeTo += intervalTow;
 						[self setNeedsDisplay];
 					}
 				}
@@ -1051,7 +1068,7 @@
 		self.touchFlag = currFlag;
 		self.touchFlagTwo = currFlagTwo;
 	}
-    [super touchesBegan:touches withEvent:event];
+   // [super touchesBegan:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
