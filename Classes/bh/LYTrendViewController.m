@@ -42,24 +42,29 @@
 
 - (NSInteger)numberOfTilesInMenu:(MGTileMenuController *)tileMenu
 {
-	return 3;
+	return 5;
 }
 
 
 - (UIImage *)imageForTile:(NSInteger)tileNumber inMenu:(MGTileMenuController *)tileMenu
 {
-	NSArray *images = [NSArray arrayWithObjects:
-					   @"wave",
-					   @"freq",
-					   @"diag",
-					   @"magnifier",
-					   @"scissors",
-					   @"actions",
-					   @"Text",
-					   @"heart",
-					   @"gear",
-					   nil];
-	if (tileNumber >= 0 && tileNumber < images.count) {
+    NSArray *images = nil;
+
+    images = [NSArray arrayWithObjects:
+                  @"wave",
+                  @"freq",
+                  @"diag",
+                  @"drawDot",
+                  @"reset",
+                  @"actions",
+                  @"Text",
+                  @"heart",
+                  @"gear",
+                  nil];
+
+
+	if (tileNumber >= 0 && tileNumber < images.count)
+    {
 		return [UIImage imageNamed:[images objectAtIndex:tileNumber]];
 	}
 	
@@ -73,8 +78,8 @@
 					   @"wave",
 					   @"freq",
 					   @"diag",
-					   @"Magnifying glass",
-					   @"Scissors",
+					   @"Dot",
+					   @"reset",
 					   @"Actions",
 					   @"Text",
 					   @"Heart",
@@ -94,8 +99,8 @@
                       @"Wave",
                       @"Frequence",
                       @"Diag",
-                      @"Zooms in",
-                      @"Cuts something",
+                      @"Dot",
+                      @"reset",
                       @"Shows export options",
                       @"Adds some text",
                       @"Marks something as a favourite",
@@ -114,13 +119,13 @@
 	if (tileNumber == 0) {
 		return [UIImage imageNamed:@"blue_gradient"];
 	} else if (tileNumber == 1) {
-		return [UIImage imageNamed:@"blue_gradient"];
+		return [UIImage imageNamed:@"purple_gradient"];
 	} else if (tileNumber == 2) {
 		return [UIImage imageNamed:@"green_gradient"];
-	} else if (tileNumber == 5) {
+	} else if (tileNumber == 3) {
 		return [UIImage imageNamed:@"yellow_gradient"];
-	} else if (tileNumber == 8) {
-		return [UIImage imageNamed:@"green_gradient"];
+	} else if (tileNumber == 4) {
+		return [UIImage imageNamed:@"orange_gradient"];
 	} else if (tileNumber == -1) {
 		return [UIImage imageNamed:@"grey_gradient"];
 	}
@@ -131,10 +136,14 @@
 
 - (BOOL)isTileEnabled:(NSInteger)tileNumber inMenu:(MGTileMenuController *)tileMenu
 {
-    //过程量没有波形和频谱
+
     if ([LYBHUtility GetChannType:self.m_nChannType ] == E_TBL_CHANNTYPE_PROC)
     {
-        return NO;
+        if (tileNumber <=1)
+        {
+            return NO;
+        }
+        
     }
 	
 	return YES;
@@ -208,6 +217,14 @@
     }else if(tileNumber == 2)
     {
         [self NavigateToDiagView:lnSelectedIndex anDataMode:tileNumber];
+    }else if(tileNumber == 3)
+    {
+        [self.m_oChart enableDrawDot:!self.m_oChart.m_bDrawDot];
+        
+        
+    }else if(tileNumber == 4)
+    {
+        [self.m_oChart resetZoom];
     }
 
     
@@ -487,6 +504,7 @@
 {
 	NSMutableArray *padding = [NSMutableArray arrayWithObjects:@"20",@"20",@"20",@"20",nil];
 	[self.m_oChart setPadding:padding];
+    self.m_oChart.m_bDrawDot = YES;
 	NSMutableArray *secs = [[[NSMutableArray alloc] init]autorelease];
     //分区，数值大小代表分区的高低
 	[secs addObject:@"4"]; //占位4/7

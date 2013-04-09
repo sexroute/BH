@@ -78,6 +78,7 @@
 @property (nonatomic)int            m_nYAxisFontSize;
 @property (nonatomic)int            m_nLabelFontSize;
 @property (nonatomic)BOOL           m_bInMove;
+@property (nonatomic)BOOL m_bDrawDot; 
 
 -(float)getLocalY:(float)val withSection:(int)sectionIndex withAxis:(int)yAxisIndex;
 -(void)setSelectedIndexByPoint:(CGPoint) point;
@@ -127,5 +128,10 @@
 /* YAxis */
 -(YAxis *)getYAxis:(int) section withIndex:(int) index;
 -(void)setValuesForYAxis:(NSDictionary *)serie;
+
+/* chart operation */
+-(void)enableDrawDot:(BOOL) abDrawDot;
+-(void)resetZoom;
+
 
 @end

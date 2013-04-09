@@ -8,6 +8,7 @@
 
 #import "Chart.h"
 
+
 #define MIN_INTERVAL  3
 
 @implementation Chart
@@ -38,6 +39,7 @@
 @synthesize title;
 @synthesize m_pStrFontName;
 @synthesize m_bInMove;
+@synthesize m_bDrawDot;
 
 @synthesize rangeFrom_original;
 @synthesize rangeTo_original;
@@ -107,7 +109,8 @@
     CGContextFillRect (context, CGRectMake (0, 0, self.bounds.size.width,self.bounds.size.height));
 }
 
--(void)reset{
+-(void)reset
+{
 	self.isInitialized = NO;
 }
 
@@ -240,23 +243,31 @@
 				continue;
 			}
 			
-			if(sec.paging){
+			if(sec.paging)
+            {
 				if (sec.selectedIndex == sIndex) {
-					if([serie isKindOfClass:[NSArray class]]){
-						for(int i=0;i<[serie count];i++){
+					if([serie isKindOfClass:[NSArray class]])
+                    {
+						for(int i=0;i<[serie count];i++)
+                        {
 							[self drawSerie:[serie objectAtIndex:i]];
 						}
-					}else{
+					}else
+                    {
 						[self drawSerie:serie];
 					}
 					break;
 				}
-			}else{
-				if([serie isKindOfClass:[NSArray class]]){
-					for(int i=0;i<[serie count];i++){
+			}else
+            {
+				if([serie isKindOfClass:[NSArray class]])
+                {
+					for(int i=0;i<[serie count];i++)
+                    {
 						[self drawSerie:[serie objectAtIndex:i]];
 					}
-				}else{
+				}else
+                {
 					[self drawSerie:serie];
 				}
 			}
@@ -385,7 +396,8 @@
     }
 }
 
--(void)drawYAxis{
+-(void)drawYAxis
+{
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetShouldAntialias(context, NO );
 	CGContextSetLineWidth(context, 1.0f);
@@ -450,7 +462,8 @@
 					
 					[[@"" stringByAppendingFormat:format,yaxis.baseValue+i*step] drawAtPoint:CGPointMake(sec.frame.origin.x-1,iy-7) withFont:[UIFont fontWithName:self.m_pStrFontName size: self.m_nYAxisFontSize]];
 					
-					if(yaxis.baseValue + i*step < yaxis.max){
+					if(yaxis.baseValue + i*step < yaxis.max)
+                    {
 						CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:0.15 green:0.15 blue:0.15 alpha:1.0]autorelease].CGColor);
 						CGContextMoveToPoint(context,sec.frame.origin.x+sec.paddingLeft,iy);
 						CGContextAddLineToPoint(context,sec.frame.origin.x+sec.frame.size.width,iy);
@@ -487,14 +500,17 @@
 	CGContextSetLineDash (context,0,NULL,0);
 }
 
--(void)drawXAxis{
+-(void)drawXAxis
+{
     CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetShouldAntialias(context, NO);
 	CGContextSetLineWidth(context, 1.f);
 	CGContextSetStrokeColorWithColor(context, [[[UIColor alloc] initWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]autorelease].CGColor);
-	for(int secIndex=0;secIndex<self.sections.count;secIndex++){
+	for(int secIndex=0;secIndex<self.sections.count;secIndex++)
+    {
 		Section *sec = [self.sections objectAtIndex:secIndex];
-		if(sec.hidden){
+		if(sec.hidden)
+        {
 			continue;
 		}
 		CGContextMoveToPoint(context,sec.frame.origin.x+sec.paddingLeft,sec.frame.size.height+sec.frame.origin.y);
@@ -540,14 +556,11 @@
     int lnSecIndex = [self getIndexOfSection:point];
 	Section *sec = [self.sections objectAtIndex:lnSecIndex];
 	
-    int lnSearchPixl = 10;
+    int lnSearchPixl = 20;
     int lnStartStep = 0;
 
     int lnNextStep = ceil(lnSearchPixl*1.0/plotWidth)+1;
-    if (lnNextStep >= self.rangeTo)
-    {
-        lnNextStep = self.rangeTo;
-    }
+
     //1 get min index
 
 	for(int i=self.rangeFrom;i<self.rangeTo;i++)
@@ -558,6 +571,14 @@
 			break;
 		}
 	}
+    
+    lnNextStep = lnNextStep*2;
+    
+    if (lnNextStep >= self.rangeTo - lnStartStep)
+    {
+        lnNextStep = self.rangeTo - lnStartStep;
+    }
+    
     float lfDistanceMin = -1;
     
     int lnMinDistanceIndex =0;
@@ -589,15 +610,7 @@
     
     self.selectedIndex = lnMinDistanceIndex;
     [self setNeedsDisplay];
-    
-//    for(int i=(self.rangeTo-1);i>=lnMinIndex;i--)
-//    {
-//		if((plotWidth*(i-self.rangeFrom))<=(point.x-sec.paddingLeft-self.paddingLeft) && (point.x-sec.paddingLeft-self.paddingLeft)<=(plotWidth*((i-self.rangeFrom)+1)+lnSearchPixl))
-//        {
-//            lnMinIndex = i;
-//			break;
-//		}
-//	}
+
 }
 
 -(void)appendToData:(NSArray *)data forName:(NSString *)name{
@@ -807,7 +820,8 @@
 /*
  * UIView Methods
  */
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
 	if (self)
     {
@@ -828,7 +842,7 @@
 		NSMutableArray *rats = [[[NSMutableArray alloc] init]autorelease];
 		self.ratios          = rats;
         self.m_bInMove       = NO;
-		
+		self.m_bDrawDot      = NO;
 		
 		NSMutableArray *secs = [[[NSMutableArray alloc] init]autorelease];
 		self.sections        = secs;
@@ -836,12 +850,12 @@
         
         NSMutableDictionary *mods = [[[NSMutableDictionary alloc] init]autorelease];
 		self.models        = mods;
-		;
+		
 		
 		[self setMultipleTouchEnabled:YES];
         
         //字体
-        self.m_pStrFontName = @"Gill Sans";
+        self.m_pStrFontName = DEFAULT_FONT_NAME;
         self.m_nLabelFontSize = DEFAULT_LABEL_FONT_SIZE;
         self.m_nYAxisFontSize = DEFAULT_FONT_SIZE;
         
@@ -1201,6 +1215,21 @@
 	}
 	self.touchFlag = 0;
     [super touchesBegan:touches withEvent:event];
+}
+
+#pragma mark chart operation
+-(void)enableDrawDot:(BOOL) abDrawDot
+{
+    self.m_bDrawDot = abDrawDot;
+    UIGraphicsGetCurrentContext();
+  //  [self drawChart];
+    [self setNeedsDisplay];
+}
+-(void)resetZoom
+{
+    self.rangeFrom =self.rangeFrom_original;
+    self.rangeTo = self.rangeTo_original;
+    [self setNeedsDisplay];
 }
 
 @end

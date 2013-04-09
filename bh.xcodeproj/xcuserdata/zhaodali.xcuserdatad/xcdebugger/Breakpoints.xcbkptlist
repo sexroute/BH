@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/bh/chartee/Chart.m"
-         timestampString = "387127478.986549"
+         timestampString = "387168132.624679"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "523"
-         endingLineNumber = "523"
+         startingLineNumber = "539"
+         endingLineNumber = "539"
          landmarkName = "-setSelectedIndexByPoint:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/bh/chartee/Chart.m"
-         timestampString = "387127478.986549"
+         timestampString = "387168132.624679"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "513"
-         endingLineNumber = "513"
+         startingLineNumber = "529"
+         endingLineNumber = "529"
          landmarkName = "-setSelectedIndexByPoint:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/bh/chartee/Chart.m"
-         timestampString = "387127478.986549"
+         timestampString = "387168132.624679"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "536"
-         endingLineNumber = "536"
+         startingLineNumber = "552"
+         endingLineNumber = "552"
          landmarkName = "-setSelectedIndexByPointNotMove:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,25 +60,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/bh/LYTrendViewController.m"
-         timestampString = "387104655.97216"
+         timestampString = "387169278.122997"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1006"
-         endingLineNumber = "1006"
+         startingLineNumber = "1024"
+         endingLineNumber = "1024"
          landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/bh/chartee/Chart.m"
-         timestampString = "387127478.986549"
+         timestampString = "387168132.624679"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "563"
-         endingLineNumber = "563"
-         landmarkName = "-setSelectedIndexByPointNotMove:"
+         startingLineNumber = "144"
+         endingLineNumber = "144"
+         landmarkName = "-initYAxis"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

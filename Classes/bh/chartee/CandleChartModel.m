@@ -60,9 +60,13 @@
         iNx = sec.frame.origin.x+sec.paddingLeft+(i+1-chart.rangeFrom)*chart.plotWidth;
         
         //1.描点
-        CGFloat components[] = { R, G, B, 1.0f};
-        CGContextSetFillColor(context, components);
-        CGContextFillEllipseInRect(context, CGRectMake(ix-ldbPointWidth, iyo-ldbPointWidth, 2*ldbPointWidth, 2*ldbPointWidth));
+        if (chart.m_bDrawDot)
+        {
+            CGFloat components[] = { R, G, B, 1.0f};
+            CGContextSetFillColor(context, components);
+            CGContextFillEllipseInRect(context, CGRectMake(ix-ldbPointWidth, iyo-ldbPointWidth, 2*ldbPointWidth, 2*ldbPointWidth));
+        }
+
         
         if (i<data.count-1)
         {
@@ -80,7 +84,7 @@
         }
         
         //2.绘制游标
-        if(i == chart.selectedIndex && chart.selectedIndex < data.count && [data objectAtIndex:chart.selectedIndex]!=nil)
+        if(i == chart.selectedIndex && (chart.selectedIndex < data.count) && [data objectAtIndex:chart.selectedIndex]!=nil)
         {
             ix  = sec.frame.origin.x+sec.paddingLeft+(i-chart.rangeFrom)*chart.plotWidth;
             //线粗细
@@ -94,8 +98,8 @@
             
             float lfleftStartPoint = sec.frame.origin.x+sec.paddingLeft+chart.plotPadding;
             float lfrightEndPoint = lfleftStartPoint+ (chart.rangeTo - chart.rangeFrom)*chart.plotWidth ;
-            //横向游标
             
+            //横向游标            
             CGContextMoveToPoint(context, lfleftStartPoint, iyo);
             CGContextAddLineToPoint(context, lfrightEndPoint,iyo);
             CGContextStrokePath(context);
@@ -213,18 +217,28 @@
 }
 
 -(void)setValuesForYAxis:(Chart *)chart serie:(NSDictionary *)serie{
-    if([[serie objectForKey:@"data"] count] == 0){
+    if([[serie objectForKey:@"data"] count] == 0)
+    {
 		return;
 	}
 	
+    
+    
 	NSMutableArray *data    = [serie objectForKey:@"data"];
 	NSString       *yAxis   = [serie objectForKey:@"yAxis"];
 	NSString       *section = [serie objectForKey:@"section"];
+    
+    NSMutableArray * lpData = [data objectAtIndex:chart.rangeFrom];
+    
+    if (nil == lpData || lpData.count == 0)
+    {
+        return;
+    }
 	
 	YAxis *yaxis = [[[chart.sections objectAtIndex:[section intValue]] yAxises] objectAtIndex:[yAxis intValue]];
 	
-    float high = [[[data objectAtIndex:chart.rangeFrom] objectAtIndex:0] floatValue];
-    float low = [[[data objectAtIndex:chart.rangeFrom] objectAtIndex:0] floatValue];
+    float high = [[lpData objectAtIndex:0] floatValue];
+    float low = [[lpData objectAtIndex:0] floatValue];
     
     if(!yaxis.isUsed)
     {
