@@ -228,6 +228,8 @@
 	NSString       *yAxis   = [serie objectForKey:@"yAxis"];
 	NSString       *section = [serie objectForKey:@"section"];
     
+    
+    
     NSMutableArray * lpData = [data objectAtIndex:chart.rangeFrom];
     
     if (nil == lpData || lpData.count == 0)

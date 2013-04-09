@@ -235,7 +235,7 @@
 		if(sec.hidden){
 		    continue;
 		}
-		plotWidth = (sec.frame.size.width-sec.paddingLeft)/(self.rangeTo-self.rangeFrom);
+		self.plotWidth = (sec.frame.size.width-sec.paddingLeft)/(self.rangeTo-self.rangeFrom);
 		for(int sIndex=0;sIndex<sec.series.count;sIndex++){
 			NSObject *serie = [sec.series objectAtIndex:sIndex];
 			
@@ -1033,10 +1033,8 @@
             
 			float intervalOne = (changedOne)/self.plotWidth;
             float intervalTow = (changedTow)/self.plotWidth;
-#ifdef DEBUG
-            NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%f to:%f",changedOne,changedTow,intervalOne,intervalTow,(self.rangeFrom - intervalOne),(self.rangeTo - intervalTow));
-#endif
-           
+            
+    
 			//pan to right
 			if((currFlag - self.touchFlag) > 0 && (currFlagTwo - self.touchFlagTwo) > 0)
             {
@@ -1044,15 +1042,20 @@
                 {
 					if(self.rangeFrom - changedOne >= 0)
                     {
+
 						self.rangeFrom -= changedOne;
-						self.rangeTo   -= changedTow;
+						self.rangeTo   -= changedOne;
 						if(self.selectedIndex >= self.rangeTo)
                         {
 							self.selectedIndex = self.rangeTo-1;
 						}
                         #ifdef DEBUG
                         NSLog(@"pan to right 1");
+                        
+                        NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%d to:%d plotWidth:%f",changedOne,changedTow,intervalOne,intervalTow,self.rangeFrom,self.rangeTo,self.plotWidth);
+
                         #endif
+
 					}else
                     {
 						self.rangeFrom = 0;
@@ -1063,6 +1066,8 @@
 						}
                         #ifdef DEBUG
                         NSLog(@"pan to right 2");
+                        NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%d to:%d plotWidth:%f",changedOne,changedTow,intervalOne,intervalTow,self.rangeFrom,self.rangeTo,self.plotWidth);
+
                         #endif
 					}
 					[self setNeedsDisplay];
@@ -1074,14 +1079,25 @@
                 {
 					if(self.rangeTo + intervalTow <= self.plotCount)
                     {
-						self.rangeFrom += changedOne;
-						self.rangeTo += intervalTow;
+                        if ((self.rangeTo + changedTow) >= self.plotCount)
+                        {
+                            int lnInterval = self.rangeTo_original - self.rangeTo;
+                            self.rangeTo = self.rangeTo_original;
+                            self.rangeFrom += lnInterval;
+                        }else
+                        {
+                            self.rangeFrom += changedTow;
+                            self.rangeTo += changedTow;
+                        }
+
 						if(self.selectedIndex < self.rangeFrom)
                         {
 							self.selectedIndex = self.rangeFrom;
 						}
                         #ifdef DEBUG
                         NSLog(@"pan to left 1");
+                        NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%d to:%d plotWidth:%f",changedOne,changedTow,intervalOne,intervalTow,self.rangeFrom,self.rangeTo,self.plotWidth);
+
                         #endif
 					}else
                     {
@@ -1094,6 +1110,8 @@
 						}
                         #ifdef DEBUG
                         NSLog(@"pan to left 2");
+                        NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%d to:%d plotWidth:%f",changedOne,changedTow,intervalOne,intervalTow,self.rangeFrom,self.rangeTo,self.plotWidth);
+
                         #endif
 					}
 					[self setNeedsDisplay];
@@ -1104,7 +1122,7 @@
                 {
 					if(abs(currFlagTwo-currFlag)-abs(self.touchFlagTwo-self.touchFlag) > 0)
                     {
-						if(self.plotCount>self.rangeTo-self.rangeFrom)
+						if(self.plotCount>(self.rangeTo-self.rangeFrom))
                         {
                             float lnNextFrom = self.rangeFrom + intervalOne;
                             float lnNextTo = self.rangeTo -intervalTow;
@@ -1126,6 +1144,8 @@
                                 }
 #ifdef DEBUG
                                 NSLog(@"zoom in 1");
+                                NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%d to:%d plotWidth:%f",changedOne,changedTow,intervalOne,intervalTow,self.rangeFrom,self.rangeTo,self.plotWidth);
+
 #endif
                             }
 
@@ -1137,6 +1157,8 @@
 							}
                             #ifdef DEBUG
                             NSLog(@"zoom in  2");
+                            NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%d to:%d plotWidth:%f",changedOne,changedTow,intervalOne,intervalTow,self.rangeFrom,self.rangeTo,self.plotWidth);
+
                             #endif
 						}
 						[self setNeedsDisplay];
@@ -1145,7 +1167,7 @@
 					}else
                     {
                         float lnNextFrom = self.rangeFrom - intervalOne;
-                        float lnNextTo = self.rangeTo +intervalTow;
+                        float lnNextTo = self.rangeTo +intervalTow; 
                         
 
                         {
@@ -1154,12 +1176,14 @@
                                 self.rangeFrom -= intervalOne;
 #ifdef DEBUG
                                 NSLog(@"zoom out 1");
+
 #endif
                             }else
                             {
                                 self.rangeFrom = self.rangeFrom_original;
 #ifdef DEBUG
                                 NSLog(@"zoom out 2");
+
 #endif
                             }
                             if (lnNextTo <= self.rangeTo_original)
@@ -1169,6 +1193,9 @@
                             {
                                 self.rangeTo = self.rangeTo_original;
                             }
+#ifdef DEBUG                            
+                            NSLog(@"One:%f Tow:%f One Interval:%f Tow Interval:%f from:%d to:%d plotWidth:%f",changedOne,changedTow,intervalOne,intervalTow,self.rangeFrom,self.rangeTo,self.plotWidth);
+#endif
                         
                         }
 
