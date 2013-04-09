@@ -140,7 +140,7 @@
     loFrame.origin.y = self.m_oSegmentedControl.frame.size.height;
 
     int lnTabBarHeight = self.tabBarController.tabBar.frame.size.height;
-    loFrame.size.height = loFrame.size.height -lnTabBarHeight;
+    loFrame.size.height = loFrame.size.height -lnTabBarHeight+10;
      self.m_oTableView = [[[UITableView alloc] initWithFrame:loFrame]autorelease];
     
     
@@ -203,7 +203,7 @@
     loFrame.origin.y = self.m_oSegmentedControl.frame.size.height;
     
     int lnTabBarHeight = self.tabBarController.tabBar.frame.size.height;
-    loFrame.size.height = loFrame.size.height -lnTabBarHeight;
+    loFrame.size.height = loFrame.size.height -lnTabBarHeight+10;
     self.m_oTableView.frame = loFrame;
 }
 
