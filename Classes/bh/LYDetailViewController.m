@@ -367,7 +367,7 @@
         lpChannView.m_pStrFactory = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"factoryid"]];
         lpChannView.m_pStrSet = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"setid"]];
         lpChannView.m_pStrPlant = [NSString stringWithString: [ self.m_pPlantInfoData objectForKey:@"plantid"]];
-        NSString * lpMachinetype =[ self.m_pPlantInfoData objectForKey:@"machine_type"];
+
         
         lpChannView.m_nPlantType = [[ self.m_pPlantInfoData objectForKey:@"machine_type"]intValue];
         

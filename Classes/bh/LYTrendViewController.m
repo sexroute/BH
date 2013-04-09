@@ -54,12 +54,9 @@
                   @"wave",
                   @"freq",
                   @"diag",
-                  @"drawDot",
+                  @"drawdot",
                   @"reset",
-                  @"actions",
-                  @"Text",
-                  @"heart",
-                  @"gear",
+
                   nil];
 
 
@@ -80,10 +77,7 @@
 					   @"diag",
 					   @"Dot",
 					   @"reset",
-					   @"Actions",
-					   @"Text",
-					   @"Heart",
-					   @"Settings",
+
 					   nil];
 	if (tileNumber >= 0 && tileNumber < labels.count) {
 		return [labels objectAtIndex:tileNumber];
@@ -101,10 +95,7 @@
                       @"Diag",
                       @"Dot",
                       @"reset",
-                      @"Shows export options",
-                      @"Adds some text",
-                      @"Marks something as a favourite",
-                      @"Shows some settings",
+
                       nil];
 	if (tileNumber >= 0 && tileNumber < hints.count) {
 		return [hints objectAtIndex:tileNumber];

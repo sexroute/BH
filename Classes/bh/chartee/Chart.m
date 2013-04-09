@@ -40,6 +40,8 @@
 @synthesize m_pStrFontName;
 @synthesize m_bInMove;
 @synthesize m_bDrawDot;
+@synthesize m_nYAxisFontSize;
+@synthesize m_nLabelFontSize;
 
 @synthesize rangeFrom_original;
 @synthesize rangeTo_original;
@@ -940,7 +942,8 @@
     [super touchesBegan:touches withEvent:event];
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
     self.m_bInMove = YES;
 	NSArray *ts = [touches allObjects];
 	if([ts count]==1)
@@ -1166,7 +1169,7 @@
                     //zoom out
 					}else
                     {
-                        float lnNextFrom = self.rangeFrom - intervalOne;
+
                         float lnNextTo = self.rangeTo +intervalTow; 
                         
 
@@ -1211,7 +1214,8 @@
    // [super touchesBegan:touches withEvent:event];
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
 	NSArray *ts = [touches allObjects];
 	UITouch* touch = [[event allTouches] anyObject];
 	if([ts count]==1)
