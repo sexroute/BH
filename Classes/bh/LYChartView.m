@@ -147,7 +147,7 @@ int g_ResolutionYMax = 960;
 #pragma mark - 绘图开始
 - (void)initGraph
 {
-    
+     self.backgroundColor = [UIColor blackColor];
 #ifdef DEBUG
  #endif
     if(nil!=self->graph)
@@ -155,7 +155,10 @@ int g_ResolutionYMax = 960;
         [self->graph release];
         self->graph = nil;
     }
-    self->graph = [[CPTXYGraph alloc] initWithFrame:self.m_pParent.bounds];
+    self->graph = [[CPTXYGraph alloc] initWithFrame:self.m_pParent.frame];
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.contentMode = UIViewContentModeRedraw;
+
 #ifdef DEBUG
 #endif
     //给画板添加一个主题
@@ -166,6 +169,9 @@ int g_ResolutionYMax = 960;
   #endif
     //创建主画板视图添加画板
     CPTGraphHostingView *hostingView = [[CPTGraphHostingView alloc] initWithFrame:self.m_pParent.bounds];
+    
+    hostingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    hostingView.contentMode = UIViewContentModeRedraw;
     hostingView.hostedGraph = graph;
 #ifdef DEBUG
  #endif
@@ -183,9 +189,9 @@ int g_ResolutionYMax = 960;
 	graph.paddingBottom = 0;
     
     graph.plotAreaFrame.paddingLeft = 45.0 ;
-    graph.plotAreaFrame.paddingTop = 40.0 ;
+    graph.plotAreaFrame.paddingTop = 5.0 ;
     graph.plotAreaFrame.paddingRight = 5.0 ;
-    graph.plotAreaFrame.paddingBottom = 80.0 ;
+    graph.plotAreaFrame.paddingBottom = 25.0 ;
     //设置坐标范围
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = NO;

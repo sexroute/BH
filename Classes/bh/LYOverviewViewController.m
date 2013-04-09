@@ -28,6 +28,7 @@
 -(void)OnRotatePressed:(UIBarButtonItem  *)apButton
 {
     self.m_oImageView.image = rotateUIImage(self.m_oImageView.image, 90.0);
+
 }
 - (void) InitUI
 {
@@ -64,9 +65,11 @@
     loFrame2.origin.x = loFrame.origin.x +5;
     loFrame2.origin.y = loFrame.origin.y-15;
     loFrame2.size.width = loFrame.size.width - 10;
-    loFrame2.size.height = loFrame.size.height - 55 ;
+    loFrame2.size.height = loFrame.size.height - 10 ;
     self.m_oImageView = [[[UIImageView alloc] initWithFrame:loFrame2]autorelease];
     self.m_oImageView.backgroundColor = [UIColor grayColor];
+    self.m_oImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.m_oImageView.contentMode = UIViewContentModeRedraw;
     [self.view addSubview:self.m_oImageView];
     [self doLoadDataUseASIHTTP];
     [self InitUI];

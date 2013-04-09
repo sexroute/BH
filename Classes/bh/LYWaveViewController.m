@@ -100,6 +100,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    self.view.backgroundColor = [UIColor blackColor];
      self.navigationItem.title = self.m_pStrChann;
     if (self.m_nDrawMode == WAVE) {
         self.m_oButtonWave.style = UIBarButtonItemStyleBordered;

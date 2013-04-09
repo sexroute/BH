@@ -70,6 +70,7 @@ typedef enum
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonAlarm;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonStop;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonNormal;
+@property (retain,nonatomic) UISegmentedControl * m_oSegmentedControl;
 @property (retain, nonatomic) NSMutableArray * m_oPlantItems;
 @end
 

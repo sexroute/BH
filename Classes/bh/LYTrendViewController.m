@@ -331,18 +331,25 @@
     return self;
 }
 
+-(void)TuneRect
+{
+    self.m_oChart.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [self.m_oChart setNeedsDisplay];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
+{
+    [self TuneRect];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-
-    
     [self.navigationController.toolbar setHidden:TRUE];
-    
     self.m_oChart = [[[Chart alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)]autorelease];
-    
-    [self.view addSubview:self.m_oChart];    
+    self.m_oChart.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.m_oChart.contentMode = UIViewContentModeRedraw;
+    [self.view addSubview:self.m_oChart];
     [self InitUI];
     [self LoadData];
    
@@ -359,7 +366,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-   
+   [self TuneRect];
 }
 
 

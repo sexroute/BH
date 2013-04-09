@@ -43,6 +43,7 @@
 @synthesize m_oPlantItems;
 @synthesize m_oNetOffPlants;
 @synthesize m_oNavigationTitleView;
+@synthesize m_oSegmentedControl;
 
 
 #pragma mark 初始化
@@ -122,25 +123,29 @@
         [segmentItems addObject:lpFired.m_pSegmentTitle];
     }
     
-    UISegmentedControl * segmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] autorelease];
-    segmentedControl.frame = CGRectMake(0,0,self.view.frame.size.width,40);
-    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-    segmentedControl.selectedSegmentIndex = 0;
+    self.m_oSegmentedControl = [[[UISegmentedControl alloc] initWithItems: segmentItems] autorelease];
+    self.m_oSegmentedControl.frame = CGRectMake(0,0,self.view.frame.size.width,40);
+    self.m_oSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+    self.m_oSegmentedControl.selectedSegmentIndex = 0;
 
-    [segmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
+    [self.m_oSegmentedControl addTarget: self action: @selector(onSegmentedControlChanged:) forControlEvents: UIControlEventValueChanged];
     
-    segmentedControl.tintColor = [UIColor darkGrayColor];
+    self.m_oSegmentedControl.tintColor = [UIColor darkGrayColor];
     
-    [self.view addSubview:segmentedControl];
+    [self.view addSubview:self.m_oSegmentedControl];
     
     
     //2.table view
     CGRect loFrame = self.view.frame;
-    loFrame.origin.y = segmentedControl.frame.size.height;
-    int lnNavigatorBarHeigth = self.navigationController.navigationBar.frame.size.height;
+    loFrame.origin.y = self.m_oSegmentedControl.frame.size.height;
+
     int lnTabBarHeight = self.tabBarController.tabBar.frame.size.height;
-    loFrame.size.height = loFrame.size.height - loFrame.origin.y - lnNavigatorBarHeigth-lnTabBarHeight;
+    loFrame.size.height = loFrame.size.height -lnTabBarHeight;
      self.m_oTableView = [[[UITableView alloc] initWithFrame:loFrame]autorelease];
+    
+    
+    self.m_oTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.m_oTableView.contentMode = UIViewContentModeRedraw;
    
     [self.m_oTableView setDataSource:self];
     [self.m_oTableView setDelegate:self];
@@ -164,13 +169,15 @@
     
     [_refreshHeaderView refreshLastUpdatedDate];
     loFrame = CGRectMake(0, 0, 400, 44);
-    
+      
     self.m_oNavigationTitleView = [[[UILabel alloc] initWithFrame:loFrame] autorelease];
     self.m_oNavigationTitleView.backgroundColor = [UIColor clearColor];
     self.m_oNavigationTitleView.font = [UIFont boldSystemFontOfSize:17.0];
     self.m_oNavigationTitleView.textAlignment = UITextAlignmentCenter;
     self.m_oNavigationTitleView.textColor = [UIColor whiteColor];
     self.m_oNavigationTitleView.text = @"全部设备";
+
+
     
     self.navigationItem.titleView = self.m_oNavigationTitleView;
     self.navigationItem.title = @"设备列表";
@@ -184,6 +191,25 @@
     
     [self.navigationController setToolbarHidden:YES animated:NO];
     
+}
+
+- (void)TuneRect
+{
+    //1.segment control
+    self.m_oSegmentedControl.frame = CGRectMake(0,0,self.view.frame.size.width,40);
+    
+    //2.tableview
+    CGRect loFrame = self.view.frame;
+    loFrame.origin.y = self.m_oSegmentedControl.frame.size.height;
+    
+    int lnTabBarHeight = self.tabBarController.tabBar.frame.size.height;
+    loFrame.size.height = loFrame.size.height -lnTabBarHeight;
+    self.m_oTableView.frame = loFrame;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
+{
+    [self TuneRect];
 }
 
 - (void) onSegmentedControlChanged:(UISegmentedControl *) sender
@@ -206,12 +232,31 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.m_oTableView reloadData];
+    [self TuneRect];
 }
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAll; // etc
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    BOOL lbRet = (interfaceOrientation == UIInterfaceOrientationPortrait);
+    
+    return  lbRet;
+}
+
+- (BOOL)shouldAutorotate {
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    
+    if (orientation==UIInterfaceOrientationPortrait)
+    {
+       return YES;        
+    }
+    
+    return NO;
 }
 
 #pragma mark 析构
@@ -229,6 +274,7 @@
     self.m_pSegmentMap = nil;
     self.m_oPlantItems = nil;
     self.m_oNavigationTitleView = nil;
+    self.m_oSegmentedControl = nil;
 }
 
 - (void)dealloc {

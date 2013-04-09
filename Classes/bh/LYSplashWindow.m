@@ -31,6 +31,11 @@ UITextField * g_pTextPassword = nil;
     return 0.0;
 }
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait; // etc
+}
+
 - (BOOL) textFieldShouldReturn:(UITextField *)tf
 {
     switch (tf.tag) {
