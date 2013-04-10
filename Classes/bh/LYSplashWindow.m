@@ -21,6 +21,7 @@
 @synthesize m_oImageView;
 @synthesize m_oListAllPlantsItem;
 @synthesize m_pResponseData;
+@synthesize m_oRequest;
 
 UITextField * g_pTextUserName = nil;
 UITextField * g_pTextPassword = nil;
@@ -170,7 +171,12 @@ UITextField * g_pTextPassword = nil;
     }
     
 }
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.m_oRequest setDelegate:nil];
+    [self.m_oRequest cancel];
+    self.m_oRequest = nil;
+}
 -(void) InitUI
 {
     //1.根据分辨率和设备类型处理背景图片
@@ -318,14 +324,14 @@ UITextField * g_pTextPassword = nil;
     NSURL* url = [NSURL URLWithString:lpServerAddress];
     
     
-    ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:url];
-    [request setRequestMethod:@"POST"];
-    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    self.m_oRequest = [ASIFormDataRequest  requestWithURL:url];
+    [self.m_oRequest setRequestMethod:@"POST"];
+    [self.m_oRequest addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
     NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
-    [request appendPostData:requestBody];
-    [request setDelegate:self];
-    [request setTimeOutSeconds:NETWORK_TIMEOUT];
-   	[request startAsynchronous];
+    [self.m_oRequest appendPostData:requestBody];
+    [self.m_oRequest setDelegate:self];
+    [self.m_oRequest setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[self.m_oRequest startAsynchronous];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request

@@ -8,7 +8,7 @@
 #import "LYChartView.h"
 #import "LYTrendViewController.h"
 #import <UIKit/UIKit.h>
-
+#import "ASIFormDataRequest.h"
 @interface LYWaveViewController : UIViewController<MBProgressHUDDelegate>
 {
     NSString * m_pStrGroup;
@@ -51,4 +51,5 @@
 @property (nonatomic) DrawMode m_nDrawMode;
 @property (nonatomic) int m_nPlantType;
 @property (nonatomic,retain) NSString * m_strHistoryDateTime;
+@property (retain,nonatomic) ASIFormDataRequest * m_oRequest;
 @end

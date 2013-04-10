@@ -8,7 +8,7 @@
 
 #import "LYDiagViewController.h"
 #import "LYUtility.h"
-#import "ASIFormDataRequest.h"
+
 @interface LYDiagViewController ()
 
 @end
@@ -29,6 +29,7 @@
 @synthesize m_oResponseData;
 @synthesize listOfItems;
 @synthesize m_pChannInfo;
+@synthesize m_oRequest;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -55,6 +56,13 @@
   
 }
 
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.m_oRequest setDelegate:nil];
+    [self.m_oRequest cancel];
+    self.m_oRequest = nil;
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -186,14 +194,14 @@
     NSURL *aUrl = [NSURL URLWithString:lpUrl];
     
     
-    ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:aUrl];
-    [request setRequestMethod:@"POST"];
-    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    self.m_oRequest = [ASIFormDataRequest  requestWithURL:aUrl];
+    [self.m_oRequest setRequestMethod:@"POST"];
+    [self.m_oRequest addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
     NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
-    [request appendPostData:requestBody];
-    [request setDelegate:self];
-    [request setTimeOutSeconds:NETWORK_TIMEOUT];
-   	[request startAsynchronous];
+    [self.m_oRequest appendPostData:requestBody];
+    [self.m_oRequest setDelegate:self];
+    [self.m_oRequest setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[self.m_oRequest startAsynchronous];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -228,8 +236,6 @@
 	{
         //弹出网络错误对话框
         [self alertLoadEmptyDiag:nil];
-        
-        
     }
 	else
     {

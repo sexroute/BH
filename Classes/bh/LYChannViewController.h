@@ -10,7 +10,7 @@
 #import "JSON.h"
 #import "ChannInfo.h"
 #import "MBProgressHUD.h"
-
+#import "ASIFormDataRequest.h"
 @interface LYChannViewController : UITableViewController<MBProgressHUDDelegate>
 {
     NSString * m_pStrGroup;
@@ -40,5 +40,6 @@
 @property (nonatomic) int m_nPlantType;
 @property (retain, nonatomic) NSString * m_pStrTimeStart;
 @property (retain, nonatomic) NSString * m_strChannDiaged;
+@property (retain,nonatomic) ASIFormDataRequest * m_oRequest;
 
 @end

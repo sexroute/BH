@@ -17,6 +17,7 @@
 @synthesize m_oImageView;
 @synthesize m_strRemoteUrl;
 @synthesize m_pResponseData;
+@synthesize m_oRequest;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -76,6 +77,13 @@
 	// Do any additional setup after loading the view.
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.m_oRequest setDelegate:nil];
+    [self.m_oRequest cancel];
+    self.m_oRequest = nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -131,11 +139,11 @@
     self.m_pResponseData = [[[NSMutableData alloc]initWithCapacity:10]autorelease];
     NSString * lpServerAddress = self.m_strRemoteUrl;
     NSURL* url = [NSURL URLWithString:lpServerAddress];
-	ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:url];
-    [request setRequestMethod:@"GET"];
-    [request setDelegate:self];
-    [request setTimeOutSeconds:NETWORK_TIMEOUT];
-   	[request startAsynchronous];
+	self.m_oRequest = [ASIFormDataRequest  requestWithURL:url];
+    [self.m_oRequest setRequestMethod:@"GET"];
+    [self.m_oRequest setDelegate:self];
+    [self.m_oRequest setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[self.m_oRequest startAsynchronous];
 }
 
 -(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width
@@ -209,8 +217,6 @@ UIImage* rotateUIImage(const UIImage* src, float angleDegrees)  {
     self.m_pResponseData = nil;
     
     [self HiddeIndicator];
-    
-    
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request

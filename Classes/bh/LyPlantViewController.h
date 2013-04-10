@@ -10,6 +10,7 @@
 #import "LYDetailViewController.h"
 #import "EGORefreshTableHeaderView.h"
 #import "MBProgressHUD.h"
+#import "ASIFormDataRequest.h"
 typedef enum
 {
     ALL,
@@ -72,5 +73,6 @@ typedef enum
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *m_pButtonNormal;
 @property (retain,nonatomic) UISegmentedControl * m_oSegmentedControl;
 @property (retain, nonatomic) NSMutableArray * m_oPlantItems;
+@property (retain,nonatomic) ASIFormDataRequest * m_oRequest;
 @end
 

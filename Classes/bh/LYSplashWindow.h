@@ -11,7 +11,7 @@
 #import "LYNVController.h"
 #import "LYLoginCell.h"
 #import "LYGlobalSettings.h"
-
+#import "ASIFormDataRequest.h"
 #define IS_RETINA       ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&([UIScreen mainScreen].scale == 2.0))
 @interface LYSplashWindow : UIViewController<UIAlertViewDelegate,UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate> {
 	IBOutlet UILabel *label;
@@ -37,5 +37,6 @@
 @property (retain,nonatomic) NSMutableData * m_pResponseData;
 
 @property (retain, nonatomic) IBOutlet NSMutableArray *m_oListAllPlantsItem;
+@property (retain,nonatomic) ASIFormDataRequest * m_oRequest;
 @end
 

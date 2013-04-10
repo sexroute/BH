@@ -16,4 +16,5 @@
 @property (retain,nonatomic) UIImageView *m_oImageView;
 @property (retain,nonatomic) NSString * m_strRemoteUrl;
 @property (retain, nonatomic) NSMutableData * m_pResponseData;
+@property (retain,nonatomic) ASIFormDataRequest * m_oRequest;
 @end

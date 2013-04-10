@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import "NVUIGradientButton.h"
 #import "MGTileMenuController.h"
+#import "ASIFormDataRequest.h"
 
 @interface LYTrendViewController : UIViewController<MBProgressHUDDelegate,UIPickerViewDelegate ,UIPickerViewDataSource,MGTileMenuDelegate, UIGestureRecognizerDelegate>
 {
@@ -41,4 +42,5 @@
 @property (retain, nonatomic) NVUIGradientButton * m_oTitleButton;
 @property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
 @property (retain, nonatomic) MGTileMenuController *tileController;
+@property (retain,nonatomic) ASIFormDataRequest * m_oRequest;
 @end

@@ -10,7 +10,7 @@
 #import "MBProgressHUD.h"
 #import "LYGlobalSettings.h"
 #import "JSON.h"
-
+#import "ASIFormDataRequest.h"
 
 @interface LYDiagViewController : UITableViewController<MBProgressHUDDelegate>
 {
@@ -29,5 +29,5 @@
 @property  (retain, nonatomic) NSMutableDictionary *listOfItems;
 @property (retain, nonatomic) NSMutableDictionary * m_pChannInfo;
 
-
+@property (retain,nonatomic) ASIFormDataRequest * m_oRequest;
 @end

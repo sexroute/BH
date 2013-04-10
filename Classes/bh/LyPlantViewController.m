@@ -16,7 +16,7 @@
 #import "LYUtility.h"
 #import "ChannInfo.h"
 #import "LYBHUtility.h"
-#import "ASIFormDataRequest.h"
+
 
 @interface LYPlantViewController ()
 
@@ -44,7 +44,7 @@
 @synthesize m_oNetOffPlants;
 @synthesize m_oNavigationTitleView;
 @synthesize m_oSegmentedControl;
-
+@synthesize m_oRequest;
 
 #pragma mark 初始化
 
@@ -233,6 +233,13 @@
 {
     [self.m_oTableView reloadData];
     [self TuneRect];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.m_oRequest setDelegate:nil];
+    [self.m_oRequest cancel];
+    self.m_oRequest = nil;
 }
 
 -(NSUInteger)supportedInterfaceOrientations
@@ -767,14 +774,17 @@
     NSMutableData *requestBody = [[[NSMutableData alloc] initWithData:[lpPostData dataUsingEncoding:NSUTF8StringEncoding]] autorelease];
     NSURL* url = [NSURL URLWithString:lpServerAddress];
     
-	ASIFormDataRequest * request = [ASIFormDataRequest  requestWithURL:url];
+
     
-    [request setRequestMethod:@"POST"];
-    [request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
-    [request appendPostData:requestBody];
-    [request setDelegate:self];
-    [request setTimeOutSeconds:NETWORK_TIMEOUT];
-   	[request startAsynchronous];
+    
+    self.m_oRequest = [ASIFormDataRequest  requestWithURL:url];
+    [self.m_oRequest setRequestMethod:@"POST"];
+    [self.m_oRequest addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+    [self.m_oRequest appendPostData:requestBody];
+    [self.m_oRequest setDelegate:self];
+    [self.m_oRequest setTimeOutSeconds:NETWORK_TIMEOUT];
+   	[self.m_oRequest startAsynchronous];
+
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
