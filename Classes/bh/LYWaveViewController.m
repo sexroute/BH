@@ -267,6 +267,7 @@
     lpTrendView.m_fLH = self.m_fLH;
     lpTrendView.m_nAlarmJudgetType = self.m_nAlarmJudgetType;
     lpTrendView.m_pChannInfo = self.m_pChannInfo;
+    lpTrendView.m_nPlantType = self.m_nPlantType;
     self.navigationItem.title = @"返回";
     [self.navigationController pushViewController:lpTrendView animated:YES];
 }
